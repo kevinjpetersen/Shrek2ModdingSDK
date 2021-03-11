@@ -13,6 +13,11 @@ public:
 	void CC(std::string command);
 	void CCS(std::list<std::string> commands);
 	void OpenMap(Shrek2Maps map);
+	void OpenMap(std::string map);
+	void Ghost();
+	void Walk();
+	void Fly();
+	void ToggleFreeCam();
 private:
 	void ExecCC(std::string command);
 	void ExecCCS(std::list<std::string> commands);

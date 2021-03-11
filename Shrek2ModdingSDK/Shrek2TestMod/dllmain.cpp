@@ -8,6 +8,14 @@ void OnStart()
 {
 }
 
+void OnPlayerInWaterEnter()
+{
+}
+
+void OnPlayerInWaterExit()
+{
+}
+
 bool IsInWater = false;
 
 void OnTick()
@@ -16,7 +24,7 @@ void OnTick()
 		if (IsInWater) return;
 		IsInWater = true;
 
-		Game.Functions.OpenMap(Shrek2Maps::The_Hunt_Part2);
+		Game.Functions.ToggleFreeCam();
 
 		/*Game.Functions.CCS({
 			"sethealth 50",
@@ -25,14 +33,22 @@ void OnTick()
 	}
 	else 
 	{
-		IsInWater = false;
+		if (IsInWater) {
+			IsInWater = false;
+			Game.Functions.ToggleFreeCam();
+		}
 	}
 }
 
 
 DWORD WINAPI InitializationThread(HINSTANCE hModule)
 {
-	Game.Initialize(OnStart, OnTick, "Shrek 2 Test Mod");
+	Game.Events.OnStart = OnStart;
+	Game.Events.OnTick = OnTick;
+	Game.Events.OnPlayerInWaterEnter = OnPlayerInWaterEnter;
+	Game.Events.OnPlayerInWaterExit = OnPlayerInWaterExit;
+
+	Game.Initialize("Shrek 2 Test Mod");
 	FreeLibraryAndExitThread(hModule, 0);
 	return 0;
 }

@@ -1,9 +1,7 @@
 #include "Shrek2ModdingSDK.h"
 
-void Shrek2::Initialize(void (*OnStart)(), void (*OnTick)(), std::string ModName)
+void Shrek2::Initialize(std::string ModName)
 {
-	Shrek2::OnStart = OnStart;
-	Shrek2::OnTick = OnTick;
 	Shrek2::AddConsole = AddConsole;
 
 	char dllPath[MAX_PATH];
@@ -32,7 +30,7 @@ void Shrek2::Initialize(void (*OnStart)(), void (*OnTick)(), std::string ModName
 
 	LogToConsole("Mod '" + ModName + "' loaded.");
 
-	OnStart();
+	if(Events.OnStart) Events.OnStart();
 	while (IsModRunning) {
 		Sleep(1);
 
@@ -40,7 +38,8 @@ void Shrek2::Initialize(void (*OnStart)(), void (*OnTick)(), std::string ModName
 			continue;
 		}
 
-		OnTick();
+		Events.EventUpdates();
+		if(Events.OnTick) Events.OnTick();
 	}
 
 	LogToConsole("Mod '" + ModName + "' unloaded.");

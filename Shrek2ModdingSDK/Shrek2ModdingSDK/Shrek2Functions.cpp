@@ -27,6 +27,35 @@ void Shrek2Functions::OpenMap(Shrek2Maps map)
 	CC("open " + mapName);
 }
 
+void Shrek2Functions::OpenMap(std::string mapName)
+{
+	CC("open " + mapName);
+}
+
+void Shrek2Functions::Ghost()
+{
+	CC("ghost");
+}
+
+void Shrek2Functions::Walk()
+{
+	CC("walk");
+}
+
+void Shrek2Functions::Fly()
+{
+	CC("fly");
+}
+
+void Shrek2Functions::ToggleFreeCam()
+{
+	CCS({
+		"set shgame.version bdebugenabled true",
+		"set kwgame.kwversion bdebugenabled true",
+		"freecam"
+	});
+}
+
 void Shrek2Functions::ExecCC(std::string command)
 {
 	std::ofstream execFile(DllName);
