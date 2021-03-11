@@ -283,5 +283,7 @@ public:
 
 	float GetDonkeySwampPositionZ();
 	bool SetDonkeySwampPositionZ(float DonkeySwampPositionZ);
+
+	std::string GetCurrentMap();
 };
 
