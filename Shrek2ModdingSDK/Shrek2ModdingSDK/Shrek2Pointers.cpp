@@ -1,10 +1,10 @@
 #include "Shrek2ModdingSDK.h"
 
 bool Shrek2Pointers::SetPlayerHealth(float PlayerHealth) {
-    return Shrek2Memory::WriteFloat(PlayerHealth, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x4);
+    return Shrek2Memory::WriteFloat(PlayerHealth, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x4E0);
 }
 float Shrek2Pointers::GetPlayerHealth() {
-    return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x4);
+    return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x4E0);
 }
 
 bool Shrek2Pointers::SetPositionX(float PositionX) {
@@ -235,10 +235,10 @@ float Shrek2Pointers::GetEyeHeight() {
 }
 
 bool Shrek2Pointers::SetCollisionHeight(float CollisionHeight) {
-    return Shrek2Memory::WriteFloat(CollisionHeight, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x2);
+    return Shrek2Memory::WriteFloat(CollisionHeight, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x2E0);
 }
 float Shrek2Pointers::GetCollisionHeight() {
-    return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x2);
+    return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x2E0);
 }
 
 bool Shrek2Pointers::SetCollisionRadius(float CollisionRadius) {
