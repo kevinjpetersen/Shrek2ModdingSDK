@@ -16,10 +16,12 @@ void OnTick()
 		if (IsInWater) return;
 		IsInWater = true;
 
-		Game.Functions.CCS({
+		Game.Functions.OpenMap(Shrek2Maps::The_Hunt_Part2);
+
+		/*Game.Functions.CCS({
 			"sethealth 50",
 			"addcoins 50"
-		});
+		});*/
 	}
 	else 
 	{

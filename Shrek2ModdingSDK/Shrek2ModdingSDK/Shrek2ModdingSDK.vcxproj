@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Shrek2Maps.h" />
     <ClInclude Include="Shrek2Functions.h" />
     <ClInclude Include="Shrek2ModdingSDK.h" />
     <ClInclude Include="Shrek2Memory.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="Shrek2Utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Shrek2Maps.cpp" />
     <ClCompile Include="Shrek2Functions.cpp" />
     <ClCompile Include="Shrek2Memory.cpp" />
     <ClCompile Include="Shrek2.cpp" />

@@ -9,6 +9,7 @@
 #include "Shrek2Utils.h"
 #include "Shrek2Memory.h"
 #include "Shrek2Pointers.h"
+#include "Shrek2Maps.h"
 #include "Shrek2Functions.h"
 #include "Shrek2.h"
 
