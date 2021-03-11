@@ -1,11 +1,15 @@
 #include "Shrek2ModdingSDK.h"
 
-void Shrek2::Initialize(HMODULE DllHandle, void (*OnStart)(), void (*OnTick)(), std::string ModName, std::string GameWindowName = "Shrek 2")
+void Shrek2::Initialize(void (*OnStart)(), void (*OnTick)(), std::string ModName, std::string GameWindowName = "Shrek 2")
 {
-	Shrek2::DllHandle = DllHandle;
 	Shrek2::OnStart = OnStart;
 	Shrek2::OnTick = OnTick;
 	Shrek2::AddConsole = AddConsole;
+
+	char dllPath[MAX_PATH];
+	GetModuleFileName(DllHandle, dllPath, MAX_PATH);
+
+	DllName = fs::path(dllPath).stem().u8string();
 
 	IsModRunning = true;
 	Variables = Shrek2Pointers();
@@ -45,6 +49,11 @@ void Shrek2::Initialize(HMODULE DllHandle, void (*OnStart)(), void (*OnTick)(), 
 void Shrek2::LogToConsole(std::string logMessage)
 {
 	std::cout << logMessage << std::endl;
+}
+
+void Shrek2::SetDllHandle(HMODULE hModule)
+{
+	DllHandle = hModule;
 }
 
 void Shrek2::HideConsole()

@@ -21,6 +21,7 @@ void OnTick()
 		Game.Variables.SetPositionZ(localPlayerPosZ);
 		Game.Variables.SetVelocityZ(0);
 		Game.LogToConsole("Water");
+		
 	}
 	else 
 	{
@@ -31,7 +32,7 @@ void OnTick()
 
 DWORD WINAPI InitializationThread(HINSTANCE hModule)
 {
-	Game.Initialize(hModule, OnStart, OnTick, "Shrek 2 Test Mod", "Shrek 2");
+	Game.Initialize(OnStart, OnTick, "Shrek 2 Test Mod", "Shrek 2");
 	FreeLibraryAndExitThread(hModule, 0);
 	return 0;
 }
@@ -41,6 +42,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
+		Game.SetDllHandle(hModule);
 		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)InitializationThread, NULL, 0, NULL);
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:
