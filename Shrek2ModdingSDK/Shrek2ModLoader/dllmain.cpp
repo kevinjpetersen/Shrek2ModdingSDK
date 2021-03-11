@@ -1,8 +1,10 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "pch.h"
 #include <iostream>
+#include <fstream>
 #include <map>
 #include <filesystem>
+#include <string>
 namespace fs = std::filesystem;
 using namespace std;
 
@@ -27,6 +29,68 @@ void ShowConsole()
 bool IsConsoleVisible()
 {
 	return ::IsWindowVisible(::GetConsoleWindow()) != FALSE;
+}
+
+bool BackupDefUser() {
+	std::ifstream  src("DefUser.ini", std::ios::binary);
+	std::ofstream  dst("Backup_DefUser.ini", std::ios::binary);
+	dst << src.rdbuf();
+
+	return true;
+}
+
+inline bool FileExists(const std::string& name) {
+	ifstream f(name.c_str());
+	return f.good();
+}
+
+bool SetupCCSKeybindings(string mods) {
+	if (FileExists("Backup_DefUser.ini") == false) {
+		LogToConsole("First time setting up keybinds. Backing up DefUser.ini..");
+		bool backedUp = BackupDefUser();
+		if (backedUp) {
+			LogToConsole("Successfully backed up DefUser.ini to Backup_DefUser.ini");
+		}
+	}
+
+	std::ifstream  src("DefUser.ini", std::ios::binary);
+	std::ofstream  dst("Temp_DefUser.ini", std::ios::binary);
+	dst << src.rdbuf();
+
+	ifstream in("Temp_DefUser.ini");
+	ofstream out("DefUser.ini");
+	string wordToCheck("F24=");
+	string wordToReplaceWith("F24=" + mods);
+
+	if (!in)
+	{
+		return false;
+	}
+
+	if (!out)
+	{
+		return false;
+	}
+
+	bool firstTime = false;
+
+	string line;
+	while (getline(in, line))
+	{
+		size_t pos = line.find(wordToCheck);
+		if (pos != string::npos) {
+			LogToConsole("Setting keybindings..");
+			line = wordToReplaceWith;
+			LogToConsole("Finished setting up keybindings.");
+		}
+
+		out << line << '\n';
+	}
+
+	in.close();
+	out.close();
+
+	return true;
 }
 
 void LoadMods() {
@@ -82,7 +146,7 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 				string modName = fs::path(entry.path()).stem().u8string();
 
 				if (fs::path(entry.path()).extension() == ".dll") {
-					AvailableMods.insert( pair<string, string>(modName, entry.path().u8string()) );
+					AvailableMods.insert(pair<string, string>(modName, entry.path().u8string()));
 					LogToConsole("Available Mod: " + modName);
 				}
 			}
@@ -90,6 +154,25 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	}
 
 	LogToConsole("Finished finding mods.");
+
+	int i = 1;
+	string modsKeybinding = "";
+
+	for (const auto& [key, value] : AvailableMods)
+	{
+		string modName = key;
+		remove(modName.begin(), modName.end(), ' ');
+		if (i == AvailableMods.size()) {
+			modsKeybinding += "exec " + modName;
+		}
+		else {
+			modsKeybinding += "exec " + modName + " | ";
+		}
+
+		i++;
+	}
+
+	SetupCCSKeybindings(modsKeybinding);
 
 	if (AvailableMods.size() > 0) {
 		LoadMods();
@@ -111,7 +194,7 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 			if (LoadedMods.size() > 0) {
 				UnloadMods();
 			}
-			else 
+			else
 			{
 				LogToConsole("No mods found to unload.");
 			}
@@ -123,7 +206,7 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 				if (LoadedMods.size() <= 0) {
 					LoadMods();
 				}
-				else 
+				else
 				{
 					LogToConsole("You cannot load mods when they're already loaded.");
 				}

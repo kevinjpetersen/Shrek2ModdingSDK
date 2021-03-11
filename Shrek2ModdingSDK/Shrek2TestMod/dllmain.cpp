@@ -8,14 +8,23 @@ void OnStart()
 {
 }
 
+bool IsInWater = false;
+
 void OnTick()
 {
 	if (Game.Variables.GetIsInWater()) {
-		float localHealth = Game.Variables.GetPlayerHealth();
-		Game.Variables.SetPlayerHealth(localHealth / 2);
+		if (IsInWater) return;
+		IsInWater = true;
+
+		float localPlayerPosZ = Game.Variables.GetPositionZ();
+		localPlayerPosZ = localPlayerPosZ + 200;
+		Game.Variables.SetPositionZ(localPlayerPosZ);
+		Game.Variables.SetVelocityZ(0);
+		Game.LogToConsole("Water");
 	}
-	else {
-		Game.Variables.SetPlayerHealth(100);
+	else 
+	{
+		IsInWater = false;
 	}
 }
 
