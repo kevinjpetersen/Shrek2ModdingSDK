@@ -6,11 +6,11 @@ Shrek2 Game = Shrek2();
 
 void OnStart()
 {
-    Game.LogToConsole("Mod 1: Player Health: " + std::to_string(Game.Variables.GetPlayerHealth()));
 }
 
 void OnTick()
 {
+    Game.LogToConsole("Mod 1: IsInWater: " + std::to_string(Game.Variables.GetIsInWater()));
 }
 
 
