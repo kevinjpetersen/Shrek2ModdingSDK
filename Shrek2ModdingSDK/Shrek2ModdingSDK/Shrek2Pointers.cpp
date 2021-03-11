@@ -183,9 +183,6 @@ int Shrek2Pointers::GetMaxCombatants() {
     return Shrek2Memory::ReadInt("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x1214);
 }
 
-bool Shrek2Pointers::SetNumberofCombatants(int NumberofCombatants) {
-    return Shrek2Memory::WriteInt(NumberofCombatants, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x1210);
-}
 int Shrek2Pointers::GetNumberofCombatants() {
     return Shrek2Memory::ReadInt("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x1210);
 }
@@ -233,9 +230,6 @@ float Shrek2Pointers::GetBaseEyeHeight() {
     return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x4B8);
 }
 
-bool Shrek2Pointers::SetEyeHeight(float EyeHeight) {
-    return Shrek2Memory::WriteFloat(EyeHeight, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x4BC);
-}
 float Shrek2Pointers::GetEyeHeight() {
     return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x4BC);
 }
@@ -275,16 +269,10 @@ float Shrek2Pointers::GetMaxSlopeAngle() {
     return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x49C);
 }
 
-bool Shrek2Pointers::SetIsClimbing(float IsClimbing) {
-    return Shrek2Memory::WriteFloat(IsClimbing, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0xE58);
-}
 float Shrek2Pointers::GetIsClimbing() {
     return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0xE58);
 }
 
-bool Shrek2Pointers::SetIsInAir(float IsInAir) {
-    return Shrek2Memory::WriteFloat(IsInAir, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x538);
-}
 float Shrek2Pointers::GetIsInAir() {
     return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x538);
 }
@@ -396,9 +384,6 @@ bool Shrek2Pointers::GetResetRotation() {
     return localByte == 2 ? true : false;
 }
 
-bool Shrek2Pointers::SetIsInWater(bool IsInWater) {
-    return Shrek2Memory::WriteBool(IsInWater, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x1084);
-}
 bool Shrek2Pointers::GetIsInWater() {
     return Shrek2Memory::ReadBool("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x1084);
 }

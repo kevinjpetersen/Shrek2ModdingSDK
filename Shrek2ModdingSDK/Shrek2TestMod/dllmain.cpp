@@ -10,7 +10,9 @@ void OnStart()
 
 void OnTick()
 {
-    Game.LogToConsole("Mod 1: IsInWater: " + std::to_string(Game.Variables.GetIsInWater()));
+    if (Game.Variables.GetIsInWater()) {
+        Game.LogToConsole("I'm in Water!");
+    }
 }
 
 

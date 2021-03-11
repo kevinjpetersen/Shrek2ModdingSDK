@@ -81,7 +81,6 @@ public:
 	bool SetMaxCombatants(int MaxCombatants);
 
 	int GetNumberofCombatants();
-	bool SetNumberofCombatants(int NumberofCombatants);
 
 	bool GetKnockbackToggle();
 	bool SetKnockbackToggle(bool KnockbackToggle);
@@ -102,7 +101,6 @@ public:
 	bool SetBaseEyeHeight(float BaseEyeHeight);
 
 	float GetEyeHeight();
-	bool SetEyeHeight(float EyeHeight);
 
 	float GetCollisionHeight();
 	bool SetCollisionHeight(float CollisionHeight);
@@ -120,10 +118,8 @@ public:
 	bool SetMaxSlopeAngle(float MaxSlopeAngle);
 
 	float GetIsClimbing();
-	bool SetIsClimbing(float IsClimbing);
 
 	float GetIsInAir();
-	bool SetIsInAir(float IsInAir);
 
 	float GetMovementAnimationSpeed();
 	bool SetMovementAnimationSpeed(float MovementAnimationSpeed);
@@ -171,7 +167,6 @@ public:
 	bool SetResetRotation(bool ResetRotation);
 
 	bool GetIsInWater();
-	bool SetIsInWater(bool IsInWater);
 
 	float GetWaterSpeed();
 	bool SetWaterSpeed(float WaterSpeed);
