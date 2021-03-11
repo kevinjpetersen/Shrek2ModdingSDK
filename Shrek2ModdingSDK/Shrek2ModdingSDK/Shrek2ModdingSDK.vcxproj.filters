@@ -30,6 +30,9 @@
     <ClInclude Include="Shrek2ModdingSDK.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Shrek2Functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Shrek2Memory.cpp">
@@ -42,6 +45,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Shrek2Pointers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shrek2Functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

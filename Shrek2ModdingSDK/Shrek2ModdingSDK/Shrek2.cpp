@@ -1,6 +1,6 @@
 #include "Shrek2ModdingSDK.h"
 
-void Shrek2::Initialize(void (*OnStart)(), void (*OnTick)(), std::string ModName, std::string GameWindowName = "Shrek 2")
+void Shrek2::Initialize(void (*OnStart)(), void (*OnTick)(), std::string ModName)
 {
 	Shrek2::OnStart = OnStart;
 	Shrek2::OnTick = OnTick;
@@ -13,12 +13,13 @@ void Shrek2::Initialize(void (*OnStart)(), void (*OnTick)(), std::string ModName
 
 	IsModRunning = true;
 	Variables = Shrek2Pointers();
+	Functions = Shrek2Functions(DllName);
 
-	Shrek2::WindowHandle = FindWindowA(NULL, GameWindowName.c_str());
+	Shrek2::WindowHandle = FindWindowA(NULL, "Shrek 2");
 
 	bool findWindow = true;
 	while (findWindow) {
-		HWND wnd = FindWindowA(NULL, GameWindowName.c_str());
+		HWND wnd = FindWindowA(NULL, "Shrek 2");
 		if (wnd) {
 			Shrek2::WindowHandle = wnd;
 			findWindow = false;
@@ -70,11 +71,4 @@ bool Shrek2::IsConsoleVisible()
 {
 	return ::IsWindowVisible(::GetConsoleWindow()) != FALSE;
 }
-
-
-void Shrek2::OpenLevel(std::string levelName)
-{
-	// TBD
-}
-
 

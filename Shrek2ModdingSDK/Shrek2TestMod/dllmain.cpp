@@ -16,12 +16,10 @@ void OnTick()
 		if (IsInWater) return;
 		IsInWater = true;
 
-		float localPlayerPosZ = Game.Variables.GetPositionZ();
-		localPlayerPosZ = localPlayerPosZ + 200;
-		Game.Variables.SetPositionZ(localPlayerPosZ);
-		Game.Variables.SetVelocityZ(0);
-		Game.LogToConsole("Water");
-		
+		Game.Functions.CCS({
+			"sethealth 50",
+			"addcoins 50"
+		});
 	}
 	else 
 	{
@@ -32,7 +30,7 @@ void OnTick()
 
 DWORD WINAPI InitializationThread(HINSTANCE hModule)
 {
-	Game.Initialize(OnStart, OnTick, "Shrek 2 Test Mod", "Shrek 2");
+	Game.Initialize(OnStart, OnTick, "Shrek 2 Test Mod");
 	FreeLibraryAndExitThread(hModule, 0);
 	return 0;
 }
