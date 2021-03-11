@@ -11,7 +11,8 @@ void OnStart()
 void OnTick()
 {
 	if (Game.Variables.GetIsInWater()) {
-		Game.Variables.SetPlayerHealth(50);
+		float localHealth = Game.Variables.GetPlayerHealth();
+		Game.Variables.SetPlayerHealth(localHealth / 2);
 	}
 	else {
 		Game.Variables.SetPlayerHealth(100);
