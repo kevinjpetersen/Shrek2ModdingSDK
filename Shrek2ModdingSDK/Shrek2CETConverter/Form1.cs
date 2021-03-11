@@ -75,53 +75,75 @@ namespace Shrek2CETConverter
         {
             if (string.IsNullOrWhiteSpace(inputTextbox.Text)) return;
 
-            try
+            //try
+            //{
+            var ct = JsonConvert.DeserializeObject<SCheatRoot>(inputTextbox.Text);
+
+            var headerPointerCodes = new List<string>();
+            var sourcePointerCodes = new List<string>();
+
+            foreach (var ce in ct.CheatTable.CheatEntries.CheatEntry)
             {
-                var ct = JsonConvert.DeserializeObject<SCheatRoot>(inputTextbox.Text);
+                ce.Description = ce.Description.Replace(" ", "").Replace("\"", "");
+                ce.Offsets.Offset.Reverse();
+                var baseAddr = ce.Address.Split('+')[0];
+                var addr = ce.Address.Split('+')[1];
 
-                var headerPointerCodes = new List<string>();
-                var sourcePointerCodes = new List<string>();
-
-                foreach(var ce in ct.CheatTable.CheatEntries.CheatEntry)
+                if (ce.Description.Contains("T)"))
                 {
-                    if(ce.Description.Contains("T)"))
-                    {
+                    var descSplits = ce.Description.Split('(');
+                    var area = descSplits[1];
+                    ce.Description = descSplits[0];
 
-                    } else
-                    {
-                        ce.Description = ce.Description.Replace(" ", "").Replace("\"", "");
-                        ce.Offsets.Offset.Reverse();
+                    int falseValue = int.Parse(area.Substring(0, area.IndexOf('=')));
+                    int trueValue = int.Parse(area.Substring(area.IndexOf(',') + 1).Replace("=T)", ""));
 
-                        var baseAddr = ce.Address.Split('+')[0];
-                        var addr = ce.Address.Split('+')[1];
-
-                        string header = @"
+                    string header = @"
 " + GetReturnType(ce.VariableType) + " Get" + ce.Description + @"();
 bool Set" + ce.Description + "(" + GetReturnType(ce.VariableType) + " " + ce.Description + @")";
 
-                        string source = @"
+                    string source = @"
+bool Shrek2Pointers::Set" + ce.Description + "(bool " + ce.Description + @") {
+	return Shrek2Memory::WriteByte(" + ce.Description + " ? " + trueValue + " : " + falseValue + ", " + baseAddr + ", " + addr + ", 0x" + ce.Offsets.Offset[0].ToString() + ", 0x" + ce.Offsets.Offset[1].ToString() + ", 0x" + ce.Offsets.Offset[2].ToString() + ", 0x" + ce.Offsets.Offset[3].ToString() + @");
+}
+bool Shrek2Pointers::Get" + ce.Description + @"() {
+    byte localByte = Shrek2Memory::ReadByte(" + ce.Description + ", " + baseAddr + ", " + addr + ", 0x" + ce.Offsets.Offset[0].ToString() + ", 0x" + ce.Offsets.Offset[1].ToString() + ", 0x" + ce.Offsets.Offset[2].ToString() + ", 0x" + ce.Offsets.Offset[3].ToString() + @");
+    return localByte == " + trueValue + @" ? true : false;
+}";
+
+                    headerPointerCodes.Add(header);
+                    sourcePointerCodes.Add(source);
+
+                }
+                else
+                {
+                    string header = @"
+" + GetReturnType(ce.VariableType) + " Get" + ce.Description + @"();
+bool Set" + ce.Description + "(" + GetReturnType(ce.VariableType) + " " + ce.Description + @")";
+
+                    string source = @"
 bool Shrek2Pointers::Set" + ce.Description + "(" + GetReturnType(ce.VariableType) + " " + ce.Description + @") {
-	return Shrek2Memory::Write" + GetMemoryFunctionType(ce.VariableType) + "("+ ce.Description + ", " + baseAddr + ", " + addr + ", 0x" + ce.Offsets.Offset[0].ToString() + ", 0x" + ce.Offsets.Offset[1].ToString() + ", 0x" + ce.Offsets.Offset[2].ToString() + ", 0x" + ce.Offsets.Offset[3].ToString() + @");
+	return Shrek2Memory::Write" + GetMemoryFunctionType(ce.VariableType) + "(" + ce.Description + ", " + baseAddr + ", " + addr + ", 0x" + ce.Offsets.Offset[0].ToString() + ", 0x" + ce.Offsets.Offset[1].ToString() + ", 0x" + ce.Offsets.Offset[2].ToString() + ", 0x" + ce.Offsets.Offset[3].ToString() + @");
 }
 " + GetReturnType(ce.VariableType) + " Shrek2Pointers::Get" + ce.Description + @"() {
     return Shrek2Memory::Read" + GetMemoryFunctionType(ce.VariableType) + "(" + ce.Description + ", " + baseAddr + ", " + addr + ", 0x" + ce.Offsets.Offset[0].ToString() + ", 0x" + ce.Offsets.Offset[1].ToString() + ", 0x" + ce.Offsets.Offset[2].ToString() + ", 0x" + ce.Offsets.Offset[3].ToString() + @");
 }";
 
-                        headerPointerCodes.Add(header);
-                        sourcePointerCodes.Add(source);
-                    }
-
-                    outputTextbox.Text = string.Join("\r\n", headerPointerCodes);
-                    outputTextbox.Text += "\r\n\r\n";
-                    outputTextbox.Text += string.Join("\r\n", sourcePointerCodes);
-
-
+                    headerPointerCodes.Add(header);
+                    sourcePointerCodes.Add(source);
                 }
+
+                outputTextbox.Text = string.Join("\r\n", headerPointerCodes);
+                outputTextbox.Text += "\r\n\r\n";
+                outputTextbox.Text += string.Join("\r\n", sourcePointerCodes);
+
+
             }
-            catch
-            {
-                MessageBox.Show("Invalid Cheat Table JSON");
-            }
+            //}
+            //catch
+            //{
+            //    MessageBox.Show("Invalid Cheat Table JSON");
+            //}
         }
     }
 }

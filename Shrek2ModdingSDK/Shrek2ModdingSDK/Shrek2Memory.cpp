@@ -54,6 +54,24 @@ short int Shrek2Memory::ReadShortInt(LPCSTR shModule, DWORD baseAddress, DWORD o
 	return 0;
 }
 
+bool Shrek2Memory::WriteByte(byte bValue, LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+	DWORD addr = GetAddr(shModule, baseAddress, offset1, offset2, offset3, offset4);
+	if (addr) {
+		*(byte*)(addr) = bValue;
+		return true;
+	}
+	return false;
+}
+
+byte Shrek2Memory::ReadByte(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+	DWORD addr = GetAddr(shModule, baseAddress, offset1, offset2, offset3, offset4);
+	if (addr) {
+		byte fValue = *(byte*)(addr);
+		return fValue;
+	}
+	return 0;
+}
+
 bool Shrek2Memory::WriteBool(bool bValue, LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
 	DWORD addr = GetAddr(shModule, baseAddress, offset1, offset2, offset3, offset4);
 	if (addr) {
