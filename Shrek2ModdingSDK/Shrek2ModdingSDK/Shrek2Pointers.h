@@ -2,60 +2,286 @@
 class Shrek2Pointers
 {
 public:
-	bool SetGodMode(bool bGodMode);
-	bool GetGodMode();
-
-	bool SetPlayerHealth(float fHealth);
 	float GetPlayerHealth();
+	bool SetPlayerHealth(float PlayerHealth);
 
-	bool SetPlayerLocationX(float fValue);
-	float GetPlayerLocationX();
+	float GetPositionX();
+	bool SetPositionX(float PositionX);
 
-	bool SetPlayerLocationY(float fValue);
-	float GetPlayerLocationY();
+	float GetPositionY();
+	bool SetPositionY(float PositionY);
 
-	bool SetPlayerLocationZ(float fValue);
-	float GetPlayerLocationZ();
+	float GetPositionZ();
+	bool SetPositionZ(float PositionZ);
 
-	bool SetPlayerRotationX(short int fValue);
-	short int GetPlayerRotationX();
+	float GetVelocityX();
+	bool SetVelocityX(float VelocityX);
 
-	bool SetPlayerRotationY(short int fValue);
-	short int GetPlayerRotationY();
+	float GetVelocityY();
+	bool SetVelocityY(float VelocityY);
 
-	bool SetPlayerRotationZ(short int fValue);
-	short int GetPlayerRotationZ();
+	float GetVelocityZ();
+	bool SetVelocityZ(float VelocityZ);
 
-	bool SetPlayerAccelerationRate(float fValue);
-	float GetPlayerAccelerationRate();
+	short int GetRotationX();
+	bool SetRotationX(short int RotationX);
 
-	// CAMERA
-	bool SetCameraLocationX(float fValue);
-	float GetCameraLocationX();
+	short int GetRotationY();
+	bool SetRotationY(short int RotationY);
 
-	bool SetCameraLocationY(float fValue);
-	float GetCameraLocationY();
+	short int GetRotationZ();
+	bool SetRotationZ(short int RotationZ);
 
-	bool SetCameraLocationZ(float fValue);
-	float GetCameraLocationZ();
+	bool GetGodMode();
+	bool SetGodMode(bool GodMode);
 
-	bool SetCameraRotationX(short int fValue);
-	short int GetCameraRotationX();
+	int GetFatalFallDistance();
+	bool SetFatalFallDistance(int FatalFallDistance);
 
-	bool SetCameraRotationY(short int fValue);
-	short int GetCameraRotationY();
+	bool GetShrink();
+	bool SetShrink(bool Shrink);
 
-	bool SetCameraRotationZ(short int fValue);
-	short int GetCameraRotationZ();
+	bool GetInvisible();
+	bool SetInvisible(bool Invisible);
 
-	float GetCameraAngleX();
-	float GetCameraAngleY();
-	float GetCameraAngleZ();
+	float GetInvisibilityPercent();
+	bool SetInvisibilityPercent(float InvisibilityPercent);
 
-	std::string GetCurrentMap();
+	bool GetHasStrengthPotion();
+	bool SetHasStrengthPotion(bool HasStrengthPotion);
 
-	// OVERALL CAMERA ROTATION
-	bool SetCameraRotation(short int fValue);
-	short int GetCameraRotation();
+	bool GetStrengthPotionScale();
+	bool SetStrengthPotionScale(bool StrengthPotionScale);
+
+	float GetShrinkSpeed();
+	bool SetShrinkSpeed(float ShrinkSpeed);
+
+	float GetShrinkLimit();
+	bool SetShrinkLimit(float ShrinkLimit);
+
+	float GetPotionScale();
+	bool SetPotionScale(float PotionScale);
+
+	bool GetUseJumpMagnet();
+	bool SetUseJumpMagnet(bool UseJumpMagnet);
+
+	float GetKnockBackDistance();
+	bool SetKnockBackDistance(float KnockBackDistance);
+
+	float GetJumpAttackFallSpeed();
+	bool SetJumpAttackFallSpeed(float JumpAttackFallSpeed);
+
+	float GetJumpAttackBoostHeight();
+	bool SetJumpAttackBoostHeight(float JumpAttackBoostHeight);
+
+	bool GetJumpAttackToggle();
+	bool SetJumpAttackToggle(bool JumpAttackToggle);
+
+	int GetMaxCombatants();
+	bool SetMaxCombatants(int MaxCombatants);
+
+	int GetNumberofCombatants();
+	bool SetNumberofCombatants(int NumberofCombatants);
+
+	bool GetKnockbackToggle();
+	bool SetKnockbackToggle(bool KnockbackToggle);
+
+	bool GetSayCombatDialog();
+	bool SetSayCombatDialog(bool SayCombatDialog);
+
+	float GetAttackMoveAhead();
+	bool SetAttackMoveAhead(float AttackMoveAhead);
+
+	float GetJumpAttackMoveAhead();
+	bool SetJumpAttackMoveAhead(float JumpAttackMoveAhead);
+
+	bool GetFrontEndPlayer();
+	bool SetFrontEndPlayer(bool FrontEndPlayer);
+
+	float GetBaseEyeHeight();
+	bool SetBaseEyeHeight(float BaseEyeHeight);
+
+	float GetEyeHeight();
+	bool SetEyeHeight(float EyeHeight);
+
+	float GetCollisionHeight();
+	bool SetCollisionHeight(float CollisionHeight);
+
+	float GetCollisionRadius();
+	bool SetCollisionRadius(float CollisionRadius);
+
+	float GetDoubleJumpHeight();
+	bool SetDoubleJumpHeight(float DoubleJumpHeight);
+
+	float GetJumpHeight();
+	bool SetJumpHeight(float JumpHeight);
+
+	float GetMaxSlopeAngle();
+	bool SetMaxSlopeAngle(float MaxSlopeAngle);
+
+	float GetIsClimbing();
+	bool SetIsClimbing(float IsClimbing);
+
+	float GetIsInAir();
+	bool SetIsInAir(float IsInAir);
+
+	float GetMovementAnimationSpeed();
+	bool SetMovementAnimationSpeed(float MovementAnimationSpeed);
+
+	float GetMovementAnimationTransitionSpeed();
+	bool SetMovementAnimationTransitionSpeed(float MovementAnimationTransitionSpeed);
+
+	float GetMovementSpeed();
+	bool SetMovementSpeed(float MovementSpeed);
+
+	float GetCurrentMovementSpeed();
+	bool SetCurrentMovementSpeed(float CurrentMovementSpeed);
+
+	int GetTurningSpeed();
+	bool SetTurningSpeed(int TurningSpeed);
+
+	bool GetAmbientGlow();
+	bool SetAmbientGlow(bool AmbientGlow);
+
+	bool GetUnlit();
+	bool SetUnlit(bool Unlit);
+
+	float GetVisualScale();
+	bool SetVisualScale(float VisualScale);
+
+	float GetVisualScaleX();
+	bool SetVisualScaleX(float VisualScaleX);
+
+	float GetVisualScaleY();
+	bool SetVisualScaleY(float VisualScaleY);
+
+	float GetVisualScaleZ();
+	bool SetVisualScaleZ(float VisualScaleZ);
+
+	float GetPrePivotX();
+	bool SetPrePivotX(float PrePivotX);
+
+	float GetPrePivotY();
+	bool SetPrePivotY(float PrePivotY);
+
+	float GetPrePivotZ();
+	bool SetPrePivotZ(float PrePivotZ);
+
+	bool GetResetRotation();
+	bool SetResetRotation(bool ResetRotation);
+
+	bool GetIsInWater();
+	bool SetIsInWater(bool IsInWater);
+
+	float GetWaterSpeed();
+	bool SetWaterSpeed(float WaterSpeed);
+
+	float GetWaterSpeed2();
+	bool SetWaterSpeed2(float WaterSpeed2);
+
+	float GetNoclipSpeed();
+	bool SetNoclipSpeed(float NoclipSpeed);
+
+	float GetLadderSpeed();
+	bool SetLadderSpeed(float LadderSpeed);
+
+	float GetAccelerationRate();
+	bool SetAccelerationRate(float AccelerationRate);
+
+	float GetAirControl();
+	bool SetAirControl(float AirControl);
+
+	float GetAttackDistance();
+	bool SetAttackDistance(float AttackDistance);
+
+	float GetAttackHeight();
+	bool SetAttackHeight(float AttackHeight);
+
+	float GetAttackAngle();
+	bool SetAttackAngle(float AttackAngle);
+
+	float GetSpecialAttackTime();
+	bool SetSpecialAttackTime(float SpecialAttackTime);
+
+	float GetTerminalVelocity();
+	bool SetTerminalVelocity(float TerminalVelocity);
+
+	float GetFriction();
+	bool SetFriction(float Friction);
+
+	float GetInGameTimer();
+	bool SetInGameTimer(float InGameTimer);
+
+	float GetGravityX();
+	bool SetGravityX(float GravityX);
+
+	float GetGravityY();
+	bool SetGravityY(float GravityY);
+
+	float GetGravityZ();
+	bool SetGravityZ(float GravityZ);
+
+	float GetGameSpeed();
+	bool SetGameSpeed(float GameSpeed);
+
+	float GetChangeTo0ToCrash();
+	bool SetChangeTo0ToCrash(float ChangeTo0ToCrash);
+
+	float GetCamPositionX();
+	bool SetCamPositionX(float CamPositionX);
+
+	float GetCamPositionY();
+	bool SetCamPositionY(float CamPositionY);
+
+	float GetCamPositionZ();
+	bool SetCamPositionZ(float CamPositionZ);
+
+	short int GetCamRotationX();
+	bool SetCamRotationX(short int CamRotationX);
+
+	short int GetCamRotationY();
+	bool SetCamRotationY(short int CamRotationY);
+
+	short int GetCamRotationZ();
+	bool SetCamRotationZ(short int CamRotationZ);
+
+	float GetDesiredLookDistance();
+	bool SetDesiredLookDistance(float DesiredLookDistance);
+
+	float GetCamSmoothing();
+	bool SetCamSmoothing(float CamSmoothing);
+
+	float GetCamSensitivity();
+	bool SetCamSensitivity(float CamSensitivity);
+
+	float GetCamHorizontalSpeed();
+	bool SetCamHorizontalSpeed(float CamHorizontalSpeed);
+
+	float GetCamVerticalSpeed();
+	bool SetCamVerticalSpeed(float CamVerticalSpeed);
+
+	float GetCamHorizontalSensitivity();
+	bool SetCamHorizontalSensitivity(float CamHorizontalSensitivity);
+
+	float GetCamVerticalSensitivity();
+	bool SetCamVerticalSensitivity(float CamVerticalSensitivity);
+
+	float GetCamMinimumPitch();
+	bool SetCamMinimumPitch(float CamMinimumPitch);
+
+	float GetCamMaximumPitch();
+	bool SetCamMaximumPitch(float CamMaximumPitch);
+
+	bool GetCamCollisionToggle();
+	bool SetCamCollisionToggle(bool CamCollisionToggle);
+
+	float GetDonkeySwampPositionX();
+	bool SetDonkeySwampPositionX(float DonkeySwampPositionX);
+
+	float GetDonkeySwampPositionY();
+	bool SetDonkeySwampPositionY(float DonkeySwampPositionY);
+
+	float GetDonkeySwampPositionZ();
+	bool SetDonkeySwampPositionZ(float DonkeySwampPositionZ);
 };
 

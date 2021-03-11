@@ -100,14 +100,14 @@ namespace Shrek2CETConverter
 
                     string header = @"
 " + GetReturnType(ce.VariableType) + " Get" + ce.Description + @"();
-bool Set" + ce.Description + "(" + GetReturnType(ce.VariableType) + " " + ce.Description + @")";
+bool Set" + ce.Description + "(" + GetReturnType(ce.VariableType) + " " + ce.Description + @");";
 
                     string source = @"
 bool Shrek2Pointers::Set" + ce.Description + "(bool " + ce.Description + @") {
-	return Shrek2Memory::WriteByte(" + ce.Description + " ? " + trueValue + " : " + falseValue + ", " + baseAddr + ", " + addr + ", 0x" + ce.Offsets.Offset[0].ToString() + ", 0x" + ce.Offsets.Offset[1].ToString() + ", 0x" + ce.Offsets.Offset[2].ToString() + ", 0x" + ce.Offsets.Offset[3].ToString() + @");
+	return Shrek2Memory::WriteByte(" + ce.Description + " ? " + trueValue + " : " + falseValue + ", " + baseAddr + ", 0x" + addr + ", 0x" + ce.Offsets.Offset[0].ToString() + ", 0x" + ce.Offsets.Offset[1].ToString() + ", 0x" + ce.Offsets.Offset[2].ToString() + ", 0x" + ce.Offsets.Offset[3].ToString() + @");
 }
 bool Shrek2Pointers::Get" + ce.Description + @"() {
-    byte localByte = Shrek2Memory::ReadByte(" + ce.Description + ", " + baseAddr + ", " + addr + ", 0x" + ce.Offsets.Offset[0].ToString() + ", 0x" + ce.Offsets.Offset[1].ToString() + ", 0x" + ce.Offsets.Offset[2].ToString() + ", 0x" + ce.Offsets.Offset[3].ToString() + @");
+    byte localByte = Shrek2Memory::ReadByte(" + baseAddr + ", 0x" + addr + ", 0x" + ce.Offsets.Offset[0].ToString() + ", 0x" + ce.Offsets.Offset[1].ToString() + ", 0x" + ce.Offsets.Offset[2].ToString() + ", 0x" + ce.Offsets.Offset[3].ToString() + @");
     return localByte == " + trueValue + @" ? true : false;
 }";
 
@@ -119,14 +119,14 @@ bool Shrek2Pointers::Get" + ce.Description + @"() {
                 {
                     string header = @"
 " + GetReturnType(ce.VariableType) + " Get" + ce.Description + @"();
-bool Set" + ce.Description + "(" + GetReturnType(ce.VariableType) + " " + ce.Description + @")";
+bool Set" + ce.Description + "(" + GetReturnType(ce.VariableType) + " " + ce.Description + @");";
 
                     string source = @"
 bool Shrek2Pointers::Set" + ce.Description + "(" + GetReturnType(ce.VariableType) + " " + ce.Description + @") {
-	return Shrek2Memory::Write" + GetMemoryFunctionType(ce.VariableType) + "(" + ce.Description + ", " + baseAddr + ", " + addr + ", 0x" + ce.Offsets.Offset[0].ToString() + ", 0x" + ce.Offsets.Offset[1].ToString() + ", 0x" + ce.Offsets.Offset[2].ToString() + ", 0x" + ce.Offsets.Offset[3].ToString() + @");
+	return Shrek2Memory::Write" + GetMemoryFunctionType(ce.VariableType) + "(" + ce.Description + ", " + baseAddr + ", 0x" + addr + ", 0x" + ce.Offsets.Offset[0].ToString() + ", 0x" + ce.Offsets.Offset[1].ToString() + ", 0x" + ce.Offsets.Offset[2].ToString() + ", 0x" + ce.Offsets.Offset[3].ToString() + @");
 }
 " + GetReturnType(ce.VariableType) + " Shrek2Pointers::Get" + ce.Description + @"() {
-    return Shrek2Memory::Read" + GetMemoryFunctionType(ce.VariableType) + "(" + ce.Description + ", " + baseAddr + ", " + addr + ", 0x" + ce.Offsets.Offset[0].ToString() + ", 0x" + ce.Offsets.Offset[1].ToString() + ", 0x" + ce.Offsets.Offset[2].ToString() + ", 0x" + ce.Offsets.Offset[3].ToString() + @");
+    return Shrek2Memory::Read" + GetMemoryFunctionType(ce.VariableType) + "(" + baseAddr + ", 0x" + addr + ", 0x" + ce.Offsets.Offset[0].ToString() + ", 0x" + ce.Offsets.Offset[1].ToString() + ", 0x" + ce.Offsets.Offset[2].ToString() + ", 0x" + ce.Offsets.Offset[3].ToString() + @");
 }";
 
                     headerPointerCodes.Add(header);
