@@ -148,6 +148,14 @@ bool Shrek2Pointers::GetUseJumpMagnet() {
     return localByte == 17 ? true : false;
 }
 
+bool Shrek2Pointers::SetUseBouncePad(bool UseBouncePad) {
+    return Shrek2Memory::WriteByte(UseBouncePad ? 9 : 1, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x14B4);
+}
+bool Shrek2Pointers::GetUseBouncePad() {
+    byte localByte = Shrek2Memory::ReadByte("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x14B4);
+    return localByte == 9 ? true : false;
+}
+
 bool Shrek2Pointers::SetKnockBackDistance(float KnockBackDistance) {
     return Shrek2Memory::WriteFloat(KnockBackDistance, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x1480);
 }

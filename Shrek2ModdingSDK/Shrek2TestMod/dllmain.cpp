@@ -38,9 +38,54 @@ void OnPlayerInAirEnter()
 	Game.LogToConsole("In Air Enter");
 }
 
+void OnPlayerInAirTick()
+{
+	Game.LogToConsole("In Air Tick");
+}
+
 void OnPlayerLand()
 {
 	Game.LogToConsole("Player Landed");
+}
+
+void OnPlayerHitJumpMagnetHit()
+{
+	Game.LogToConsole("Hit Jump Magnet (Auto Jump)");
+}
+
+void OnPlayerHitJumpMagnetDone()
+{
+	Game.LogToConsole("Landed Jump Magnet (Auto Jump)");
+}
+
+void OnPlayerHitBouncePadHit()
+{
+	Game.LogToConsole("Hit Bounce Pad");
+}
+
+void OnPlayerHitBouncePadDone()
+{
+	Game.LogToConsole("Landed Bounce Pad");
+}
+
+void OnPlayerDie()
+{
+	Game.LogToConsole("Player Died");
+}
+
+void OnPlayerRespawn()
+{
+	Game.LogToConsole("Player Respawned");
+}
+
+void OnPlayerMove(float x, float y, float z)
+{
+	Game.LogToConsole("Player Move | X: " + std::to_string(x) + ", Y: " + std::to_string(y) + ", Z: " + std::to_string(z));
+}
+
+void OnPlayerRotate(float x, float y, float z)
+{
+	Game.LogToConsole("Player Rotate | X: " + std::to_string(x) + ", Y: " + std::to_string(y) + ", Z: " + std::to_string(z));
 }
 
 void OnTick()
@@ -57,7 +102,17 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	Game.Events.OnPlayerInWaterExit = OnPlayerInWaterExit;
 	Game.Events.OnPlayerHealthUpdate = OnPlayerHealthUpdate;
 	Game.Events.OnPlayerInAirEnter = OnPlayerInAirEnter;
+	//Game.Events.OnPlayerInAirTick = OnPlayerInAirTick;
 	Game.Events.OnPlayerLand = OnPlayerLand;
+	Game.Events.OnPlayerHitJumpMagnetHit = OnPlayerHitJumpMagnetHit;
+	Game.Events.OnPlayerHitJumpMagnetDone = OnPlayerHitJumpMagnetDone;
+	Game.Events.OnPlayerHitBouncePadHit = OnPlayerHitBouncePadHit;
+	Game.Events.OnPlayerHitBouncePadDone = OnPlayerHitBouncePadDone;
+	Game.Events.OnPlayerDie = OnPlayerDie;
+	Game.Events.OnPlayerRespawn = OnPlayerRespawn;
+	//Game.Events.OnPlayerMove = OnPlayerMove;
+	//Game.Events.OnPlayerRotate = OnPlayerRotate;
+
 
 	Game.Initialize("Shrek 2 Test Mod");
 	FreeLibraryAndExitThread(hModule, 0);

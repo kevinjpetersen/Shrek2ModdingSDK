@@ -65,6 +65,9 @@ public:
 	bool GetUseJumpMagnet();
 	bool SetUseJumpMagnet(bool UseJumpMagnet);
 
+	bool GetUseBouncePad();
+	bool SetUseBouncePad(bool UseBouncePad);
+
 	float GetKnockBackDistance();
 	bool SetKnockBackDistance(float KnockBackDistance);
 
