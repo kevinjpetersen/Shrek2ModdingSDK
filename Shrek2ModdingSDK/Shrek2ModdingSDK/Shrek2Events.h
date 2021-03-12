@@ -8,12 +8,15 @@ private:
 	bool IsPlayerInWater = false;
 
 	// OnPlayerHealth
-	bool PlayerHealthUpdate = false;
 	float OldPlayerHealth = -1;
+
+	// OnPlayerInAir
+	bool IsPlayerInAir = false;
 
 	// Event Update Functions
 	void EU_OnPlayerInWater();
 	void EU_OnPlayerHealthUpdate();
+	void EU_OnPlayerInAirLand();
 public:
 	Shrek2Events() {
 		Variables = Shrek2Pointers();
@@ -24,18 +27,18 @@ public:
 	void (*OnTick)();
 	void (*OnMapChange)(std::string map); // Fires ONCE when a Map Change is happening
 	void (*OnMapChangeDone)(std::string map); // Fires ONCE when the Map Change is done
-	void (*OnPlayerHealthUpdate)(float oldHealth, float newHealth); // Fires EVERY TIME the Player's Health changes
+	/*DONE*/ void (*OnPlayerHealthUpdate)(float oldHealth, float newHealth); // Fires EVERY TIME the Player's Health changes
 	void (*OnPlayerDie)(); // Fires ONCE when the Player dies
 	void (*OnPlayerMove)(); // Fires EVERY TIME the Player's Position changes
 	void (*OnPlayerRotate)(); // Fires EVERY TIME the Player's Rotation changes
 	void (*OnPlayerClimb)(); // Fires ONCE when the Player starts climbing
 	void (*OnPlayerClimbDone)(); // Fires ONCE when the Player is done climbing
-	void (*OnPlayerInWaterEnter)(); // Fires ONCE when the Player enters the water
-	void (*OnPlayerInWaterTick)(); // Fires EVERY TICK when the Player is in the water
-	void (*OnPlayerInWaterExit)(); // Fires ONCE when the Player leaves the water
-	void (*OnPlayerInAirEnter)(); // Fires ONCE when the Player enters the air
-	void (*OnPlayerInAirTick)(); // Fires EVERY TICK when the Player is in the air
-	void (*OnPlayerLand)(); // Fires ONCE when the Player lands on the ground
+	/*DONE*/ void (*OnPlayerInWaterEnter)(); // Fires ONCE when the Player enters the water
+	/*DONE*/ void (*OnPlayerInWaterTick)(); // Fires EVERY TICK when the Player is in the water
+	/*DONE*/ void (*OnPlayerInWaterExit)(); // Fires ONCE when the Player leaves the water
+	/*WIP*/ void (*OnPlayerInAirEnter)(); // Fires ONCE when the Player enters the air
+	/*WIP*/ void (*OnPlayerInAirTick)(); // Fires EVERY TICK when the Player is in the air
+	/*WIP*/ void (*OnPlayerLand)(); // Fires ONCE when the Player lands on the ground
 	void (*OnPlayerHitJumpMagnetHit)(); // Fires ONCE when the Player hits a Jump Magnet (Auto Jump)
 	void (*OnPlayerHitJumpMagnetDone)(); // Fires ONCE when the Player finishes a Jump Magnet (Auto Jump)
 	void (*OnPlayerHitBouncePadHit)(); // Fires ONCE when the Player hits a Bounce Pad

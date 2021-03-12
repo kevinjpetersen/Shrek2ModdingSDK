@@ -33,6 +33,16 @@ void OnPlayerHealthUpdate(float oldHealth, float newHealth)
 	);
 }
 
+void OnPlayerInAirEnter()
+{
+	Game.LogToConsole("In Air Enter");
+}
+
+void OnPlayerLand()
+{
+	Game.LogToConsole("Player Landed");
+}
+
 void OnTick()
 {
 	
@@ -46,6 +56,8 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	//Game.Events.OnPlayerInWaterTick = OnPlayerInWaterTick;
 	Game.Events.OnPlayerInWaterExit = OnPlayerInWaterExit;
 	Game.Events.OnPlayerHealthUpdate = OnPlayerHealthUpdate;
+	Game.Events.OnPlayerInAirEnter = OnPlayerInAirEnter;
+	Game.Events.OnPlayerLand = OnPlayerLand;
 
 	Game.Initialize("Shrek 2 Test Mod");
 	FreeLibraryAndExitThread(hModule, 0);

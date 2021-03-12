@@ -31,8 +31,27 @@ void Shrek2Events::EU_OnPlayerHealthUpdate()
 	}
 }
 
+void Shrek2Events::EU_OnPlayerInAirLand()
+{
+	if (Variables.GetIsInAir() == 0) {
+		if (OnPlayerInAirTick) OnPlayerInAirTick();
+		if (IsPlayerInAir) return;
+		IsPlayerInAir = true;
+
+		if (OnPlayerInAirEnter) OnPlayerInAirEnter();
+	}
+	else
+	{
+		if (IsPlayerInAir) {
+			IsPlayerInAir = false;
+			if (OnPlayerLand) OnPlayerLand();
+		}
+	}
+}
+
 void Shrek2Events::EventUpdates()
 {
 	EU_OnPlayerInWater();
 	EU_OnPlayerHealthUpdate();
+	EU_OnPlayerInAirLand();
 }
