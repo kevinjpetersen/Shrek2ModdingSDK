@@ -42,8 +42,8 @@ public:
 	}
 	void EventUpdates();
 
-	void (*OnStart)();
-	void (*OnTick)();
+	/*DONE*/ void (*OnStart)();
+	/*DONE*/ void (*OnTick)();
 	void (*OnMapChange)(std::string map); // Fires ONCE when a Map Change is happening
 	void (*OnMapChangeDone)(std::string map); // Fires ONCE when the Map Change is done
 	/*DONE*/ void (*OnPlayerHealthUpdate)(float oldHealth, float newHealth); // Fires EVERY TIME the Player's Health changes
