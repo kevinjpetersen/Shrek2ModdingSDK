@@ -70,7 +70,10 @@ bool SetupCCSKeybindings(string mods) {
 	in.close();
 	out.close();
 
+	//Sleep(3000);
+	//LogToConsole("Deleting Temp file");
 	fs::remove("Temp_DefUser.ini");
+	//LogToConsole("Deleted Temp file");
 	return true;
 }
 
@@ -112,6 +115,7 @@ int main()
 
 	SetupCCSKeybindings(modsKeybinding);
 	LogToConsole(modsKeybinding);
+
 	system("pause");
 	return 0;
 }

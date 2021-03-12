@@ -58,38 +58,20 @@ void Shrek2Functions::ToggleFreeCam()
 
 void Shrek2Functions::ExecCC(std::string command)
 {
-	try {
-		std::ofstream execFile(DllName);
-		execFile << command << std::endl;
-		if (execFile.bad())
-		{
-			std::cout << "EXEC FILE: Failed to write!" << std::endl;
-		}
-		execFile.close();
-		Exec();
-	}
-	catch (std::exception ex) {
-		std::cout << ex.what() << std::endl;
-	}
+	std::ofstream execFile(DllName);
+	execFile << command << std::endl;
+	execFile.close();
+	Exec();
 }
 
 void Shrek2Functions::ExecCCS(std::list<std::string> commands)
 {
-	try {
-		std::ofstream execFile(DllName);
-		for (auto const& cmd : commands) {
-			execFile << cmd << std::endl;
-		}
-		if (execFile.bad())
-		{
-			std::cout << "EXEC FILE: Failed to write!" << std::endl;
-		}
-		execFile.close();
-		Exec();
+	std::ofstream execFile(DllName);
+	for (auto const& cmd : commands) {
+		execFile << cmd << std::endl;
 	}
-	catch (std::exception ex) {
-		std::cout << ex.what() << std::endl;
-	}
+	execFile.close();
+	Exec();
 }
 
 void Shrek2Functions::Exec()
