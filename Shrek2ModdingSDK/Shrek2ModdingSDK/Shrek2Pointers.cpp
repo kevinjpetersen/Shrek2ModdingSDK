@@ -659,3 +659,24 @@ std::string Shrek2Pointers::GetCurrentMap()
 {
     return Shrek2Memory::ReadText("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0xA8, 0x4E0);
 }
+
+bool Shrek2Pointers::SetRotationRateX(short int RotationRateX) {
+    return Shrek2Memory::WriteShortInt(RotationRateX, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x310);
+}
+short int Shrek2Pointers::GetRotationRateX() {
+    return Shrek2Memory::ReadShortInt("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x310);
+}
+
+bool Shrek2Pointers::SetRotationRateY(short int RotationRateY) {
+    return Shrek2Memory::WriteShortInt(RotationRateY, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x318);
+}
+short int Shrek2Pointers::GetRotationRateY() {
+    return Shrek2Memory::ReadShortInt("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x318);
+}
+
+bool Shrek2Pointers::SetRotationRateZ(short int RotationRateZ) {
+    return Shrek2Memory::WriteShortInt(RotationRateZ, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x314);
+}
+short int Shrek2Pointers::GetRotationRateZ() {
+    return Shrek2Memory::ReadShortInt("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x314);
+}

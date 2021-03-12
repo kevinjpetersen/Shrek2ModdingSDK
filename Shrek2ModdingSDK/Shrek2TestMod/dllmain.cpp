@@ -5,8 +5,12 @@
 Shrek2 Game = Shrek2();
 
 bool isBackflipping = false;
-int rotation = 0;
+int flipRotation = 0;
 bool isBack = true;
+
+bool isDiving = false;
+int swimRotation = 0;
+int defaultRotRateX = 4096;
 
 void OnStart()
 {
@@ -14,58 +18,78 @@ void OnStart()
 
 void OnPlayerInWaterEnter()
 {
-	Game.Functions.CCS({
-   "mortifyplayer",
-   "adminsay Blablablabla"
-		});
+	isDiving = true;
+	swimRotation = 0;
+	Game.Variables.SetRotationRateX(0);
+	Game.Variables.SetPrePivotZ(-20);
 
-	Game.LogToConsole("Enter Water");
-	Game.Variables.SetPlayerHealth(Game.Variables.GetPlayerHealth() - 5);
+	Game.Variables.SetWaterSpeed(700);
+	Game.Variables.SetWaterSpeed2(700);
 }
 
-void OnPlayerInWaterTick() 
+void OnPlayerInWaterTick()
 {
-	Game.LogToConsole("Tick Water");
+	if (swimRotation > -15000) {
+		swimRotation -= 70;
+		Game.Variables.SetRotationX(swimRotation);
+	}
 }
 
 void OnPlayerInWaterExit()
 {
-	Game.LogToConsole("Exit Water");
+	isDiving = false;
+	swimRotation = 0;
+	Game.Variables.SetPrePivotZ(0);
+	Game.Variables.SetRotationRateX(20000);
 }
 
 void OnPlayerHealthUpdate(float oldHealth, float newHealth)
 {
-	Game.LogToConsole(
-		"Old Health: " + std::to_string(oldHealth) + 
-		" | New Health: " + std::to_string(newHealth) + 
+	/*Game.LogToConsole(
+		"Old Health: " + std::to_string(oldHealth) +
+		" | New Health: " + std::to_string(newHealth) +
 		" | Change: " + std::to_string(abs(newHealth - oldHealth))
-	);
+	);*/
 }
 
 void OnPlayerInAirEnter()
 {
-	Game.LogToConsole("In Air Enter");
-	//Game.Variables.SetGameSpeed(0.5f);
 	isBackflipping = true;
 	isBack = (rand() % 100 + 1) >= 50;
-	rotation = isBack ? 0 : 65000;
-	//Game.Variables.SetVisualScaleY(1.5f);
+	flipRotation = isBack ? 0 : 65000;
 }
 
 void OnPlayerInAirTick()
 {
-	Game.LogToConsole("In Air Tick");
+	if (isBackflipping) {
+		if (isBack) {
+			flipRotation += 50;
+			if (flipRotation >= 65000) {
+				// Finished backclip
+				flipRotation = 0;
+				isBackflipping = false;
+			}
+		}
+		else {
+			flipRotation -= 50;
+			if (flipRotation <= 500) {
+				// Finished frontclip
+				flipRotation = 0;
+				isBackflipping = false;
+			}
+		}
+		Game.Variables.SetRotationX(flipRotation);
+	}
 }
 
 void OnPlayerLand()
 {
 	Game.Variables.SetGodMode(true);
-	Game.LogToConsole("Player Landed");
-	//Game.Variables.SetGameSpeed(1);
-	Game.Variables.SetRotationX(0);
-	isBackflipping = false;
-	//Game.Variables.SetVisualScaleY(1);
-	
+
+	if (isBackflipping) {
+		isBackflipping = false;
+		Game.Variables.SetRotationX(0);
+	}
 }
 
 void OnPlayerHitJumpMagnetHit()
@@ -112,26 +136,6 @@ void OnTick()
 {
 	Game.Variables.SetDoubleJumpHeight(1000);
 	Game.Variables.SetJumpHeight(1000);
-
-	if (isBackflipping) {
-		if (isBack) {
-			rotation += 50;
-			if (rotation >= 65000) {
-				// Finished backclip
-				rotation = 0;
-				isBackflipping = false;
-			}
-		}
-		else {
-			rotation -= 50;
-			if (rotation <= 500) {
-				// Finished frontclip
-				rotation = 0;
-				isBackflipping = false;
-			}
-		}
-		Game.Variables.SetRotationX(rotation);
-	}
 }
 
 DWORD WINAPI InitializationThread(HINSTANCE hModule)
@@ -139,11 +143,11 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	Game.Events.OnStart = OnStart;
 	Game.Events.OnTick = OnTick;
 	Game.Events.OnPlayerInWaterEnter = OnPlayerInWaterEnter;
-	//Game.Events.OnPlayerInWaterTick = OnPlayerInWaterTick;
-	//Game.Events.OnPlayerInWaterExit = OnPlayerInWaterExit;
+	Game.Events.OnPlayerInWaterTick = OnPlayerInWaterTick;
+	Game.Events.OnPlayerInWaterExit = OnPlayerInWaterExit;
 	//Game.Events.OnPlayerHealthUpdate = OnPlayerHealthUpdate;
 	Game.Events.OnPlayerInAirEnter = OnPlayerInAirEnter;
-	//Game.Events.OnPlayerInAirTick = OnPlayerInAirTick;
+	Game.Events.OnPlayerInAirTick = OnPlayerInAirTick;
 	Game.Events.OnPlayerLand = OnPlayerLand;
 	//Game.Events.OnPlayerHitJumpMagnetHit = OnPlayerHitJumpMagnetHit;
 	//Game.Events.OnPlayerHitJumpMagnetDone = OnPlayerHitJumpMagnetDone;
