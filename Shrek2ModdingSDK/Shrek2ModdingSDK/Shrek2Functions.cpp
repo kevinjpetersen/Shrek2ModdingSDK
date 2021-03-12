@@ -53,25 +53,43 @@ void Shrek2Functions::ToggleFreeCam()
 		"set shgame.version bdebugenabled true",
 		"set kwgame.kwversion bdebugenabled true",
 		"freecam"
-	});
+		});
 }
 
 void Shrek2Functions::ExecCC(std::string command)
 {
-	std::ofstream execFile(DllName);
-	execFile << command << std::endl;
-	execFile.close();
-	Exec();
+	try {
+		std::ofstream execFile(DllName);
+		execFile << command << std::endl;
+		if (execFile.bad())
+		{
+			std::cout << "EXEC FILE: Failed to write!" << std::endl;
+		}
+		execFile.close();
+		Exec();
+	}
+	catch (std::exception ex) {
+		std::cout << ex.what() << std::endl;
+	}
 }
 
 void Shrek2Functions::ExecCCS(std::list<std::string> commands)
 {
-	std::ofstream execFile(DllName);
-	for (auto const& cmd : commands) {
-		execFile << cmd << std::endl;
+	try {
+		std::ofstream execFile(DllName);
+		for (auto const& cmd : commands) {
+			execFile << cmd << std::endl;
+		}
+		if (execFile.bad())
+		{
+			std::cout << "EXEC FILE: Failed to write!" << std::endl;
+		}
+		execFile.close();
+		Exec();
 	}
-	execFile.close();
-	Exec();
+	catch (std::exception ex) {
+		std::cout << ex.what() << std::endl;
+	}
 }
 
 void Shrek2Functions::Exec()

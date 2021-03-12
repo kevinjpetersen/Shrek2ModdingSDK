@@ -13,6 +13,8 @@ void Shrek2::Initialize(std::string ModName)
 	Variables = Shrek2Pointers();
 	Functions = Shrek2Functions(DllName);
 
+	LogToConsole("DllName is: " + DllName);
+
 	Shrek2::WindowHandle = FindWindowA(NULL, "Shrek 2");
 
 	bool findWindow = true;

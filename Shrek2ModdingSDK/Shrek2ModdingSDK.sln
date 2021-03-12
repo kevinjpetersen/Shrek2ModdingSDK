@@ -11,7 +11,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shrek2ModdingSDK", "Shrek2M
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shrek2TestMod2", "Shrek2TestMod2\Shrek2TestMod2.vcxproj", "{616644BB-0EB4-4CDC-B37C-71EADFE2B8B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shrek2CETConverter", "Shrek2CETConverter\Shrek2CETConverter.csproj", "{25FF3BFC-4089-4605-A248-0975655C895B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shrek2CETConverter", "Shrek2CETConverter\Shrek2CETConverter.csproj", "{25FF3BFC-4089-4605-A248-0975655C895B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shrek2ModSetup", "Shrek2ModSetup\Shrek2ModSetup.vcxproj", "{EDA997CD-992D-4EB2-88B8-DDDED9DF6B54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,16 @@ Global
 		{25FF3BFC-4089-4605-A248-0975655C895B}.Release|x64.Build.0 = Release|Any CPU
 		{25FF3BFC-4089-4605-A248-0975655C895B}.Release|x86.ActiveCfg = Release|Any CPU
 		{25FF3BFC-4089-4605-A248-0975655C895B}.Release|x86.Build.0 = Release|Any CPU
+		{EDA997CD-992D-4EB2-88B8-DDDED9DF6B54}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{EDA997CD-992D-4EB2-88B8-DDDED9DF6B54}.Debug|x64.ActiveCfg = Debug|x64
+		{EDA997CD-992D-4EB2-88B8-DDDED9DF6B54}.Debug|x64.Build.0 = Debug|x64
+		{EDA997CD-992D-4EB2-88B8-DDDED9DF6B54}.Debug|x86.ActiveCfg = Debug|Win32
+		{EDA997CD-992D-4EB2-88B8-DDDED9DF6B54}.Debug|x86.Build.0 = Debug|Win32
+		{EDA997CD-992D-4EB2-88B8-DDDED9DF6B54}.Release|Any CPU.ActiveCfg = Release|Win32
+		{EDA997CD-992D-4EB2-88B8-DDDED9DF6B54}.Release|x64.ActiveCfg = Release|x64
+		{EDA997CD-992D-4EB2-88B8-DDDED9DF6B54}.Release|x64.Build.0 = Release|x64
+		{EDA997CD-992D-4EB2-88B8-DDDED9DF6B54}.Release|x86.ActiveCfg = Release|Win32
+		{EDA997CD-992D-4EB2-88B8-DDDED9DF6B54}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

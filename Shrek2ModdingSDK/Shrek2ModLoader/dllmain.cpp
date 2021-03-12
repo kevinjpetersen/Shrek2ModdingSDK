@@ -31,68 +31,6 @@ bool IsConsoleVisible()
 	return ::IsWindowVisible(::GetConsoleWindow()) != FALSE;
 }
 
-bool BackupDefUser() {
-	std::ifstream  src("DefUser.ini", std::ios::binary);
-	std::ofstream  dst("Backup_DefUser.ini", std::ios::binary);
-	dst << src.rdbuf();
-
-	return true;
-}
-
-inline bool FileExists(const std::string& name) {
-	ifstream f(name.c_str());
-	return f.good();
-}
-
-bool SetupCCSKeybindings(string mods) {
-	if (FileExists("Backup_DefUser.ini") == false) {
-		LogToConsole("First time setting up keybinds. Backing up DefUser.ini..");
-		bool backedUp = BackupDefUser();
-		if (backedUp) {
-			LogToConsole("Successfully backed up DefUser.ini to Backup_DefUser.ini");
-		}
-	}
-
-	std::ifstream  src("DefUser.ini", std::ios::binary);
-	std::ofstream  dst("Temp_DefUser.ini", std::ios::binary);
-	dst << src.rdbuf();
-
-	ifstream in("Temp_DefUser.ini");
-	ofstream out("DefUser.ini");
-	string wordToCheck("F24=");
-	string wordToReplaceWith("F24=" + mods);
-
-	if (!in)
-	{
-		return false;
-	}
-
-	if (!out)
-	{
-		return false;
-	}
-
-	bool firstTime = false;
-
-	string line;
-	while (getline(in, line))
-	{
-		size_t pos = line.find(wordToCheck);
-		if (pos != string::npos) {
-			LogToConsole("Setting keybindings..");
-			line = wordToReplaceWith;
-			LogToConsole("Finished setting up keybindings.");
-		}
-
-		out << line << '\n';
-	}
-
-	in.close();
-	out.close();
-
-	return true;
-}
-
 void LoadMods() {
 	LogToConsole("Loading Mods..");
 
@@ -106,6 +44,8 @@ void LoadMods() {
 		}
 		else
 		{
+			DWORD lastError = GetLastError();
+			std::cout << "General failure. GetLastError returned " << std::hex << lastError << ".";
 			LogToConsole("Failed to load mod: " + key);
 		}
 	}
@@ -128,6 +68,40 @@ void UnloadMods() {
 	LogToConsole("Finished unloading mods.");
 }
 
+DWORD GetAddr(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+	DWORD mod = (DWORD)(GetModuleHandle(shModule));
+	DWORD base = *(DWORD*)(mod + baseAddress);
+
+	if (base == 0) return NULL;
+
+	DWORD pointerValue = *(DWORD*)(base + offset1);
+	if (pointerValue == 0) return NULL;
+
+	pointerValue = *(DWORD*)(pointerValue + offset2);
+	if (pointerValue == 0) return NULL;
+
+	pointerValue = *(DWORD*)(pointerValue + offset3);
+	if (pointerValue == 0) return NULL;
+
+	pointerValue = (pointerValue + offset4);
+	if (pointerValue == 0) return NULL;
+
+	return pointerValue;
+}
+
+float ReadFloat(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+	DWORD addr = GetAddr(shModule, baseAddress, offset1, offset2, offset3, offset4);
+	if (addr) {
+		float fValue = *(float*)(addr);
+		return fValue;
+	}
+	return 0;
+}
+
+float GetPlayerHealth() {
+	return ReadFloat("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x4E0);
+}
+
 DWORD WINAPI InitializationThread(HINSTANCE hModule)
 {
 	FILE* fp = NULL;
@@ -135,6 +109,17 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	AllocConsole();
 	freopen_s(&fp, "CONOUT$", "w", stdout);
 	//HideConsole();
+
+	LogToConsole("Waiting for Shrek 2 to open..");
+	bool findWindow = true;
+	while (findWindow) {
+		float health = GetPlayerHealth();
+		if (health > 0) {
+			findWindow = false;
+			break;
+		}
+		Sleep(500);
+	}
 
 	// Find Mods
 	std::string path = "Shrek 2 Mods/";
@@ -154,25 +139,6 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	}
 
 	LogToConsole("Finished finding mods.");
-
-	int i = 1;
-	string modsKeybinding = "";
-
-	for (const auto& [key, value] : AvailableMods)
-	{
-		string modName = key;
-		remove(modName.begin(), modName.end(), ' ');
-		if (i == AvailableMods.size()) {
-			modsKeybinding += "exec " + modName;
-		}
-		else {
-			modsKeybinding += "exec " + modName + " | ";
-		}
-
-		i++;
-	}
-
-	SetupCCSKeybindings(modsKeybinding);
 
 	if (AvailableMods.size() > 0) {
 		LoadMods();
