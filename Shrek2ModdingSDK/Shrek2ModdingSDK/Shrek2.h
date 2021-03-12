@@ -2,6 +2,7 @@
 class Shrek2
 {
 public:
+	void InitializeEvents();
 	void Initialize(std::string ModName);
 	void ShowConsole();
 	void HideConsole();
@@ -9,7 +10,7 @@ public:
 	void LogToConsole(std::string logMessage);
 	Shrek2Pointers Variables;
 	Shrek2Functions Functions;
-	Shrek2Events Events;
+	Shrek2Events Events = Shrek2Events();
 	bool IsModRunning;
 	void SetDllHandle(HMODULE hModule);
 private:

@@ -2,21 +2,29 @@
 class Shrek2Events
 {
 private:
-	// -1 = Reset, 0 = Enter, 1 = Exit
-	int IsPlayerInWater = -1;
-	int PlayerHealthUpdate = -1;
+	Shrek2Pointers Variables;
+
+	// OnPlayerInWater
+	bool IsPlayerInWater = false;
+
+	// OnPlayerHealth
+	bool PlayerHealthUpdate = false;
+	float OldPlayerHealth = -1;
 
 	// Event Update Functions
 	void EU_OnPlayerInWater();
 	void EU_OnPlayerHealthUpdate();
 public:
+	Shrek2Events() {
+		Variables = Shrek2Pointers();
+	}
 	void EventUpdates();
 
 	void (*OnStart)();
 	void (*OnTick)();
 	void (*OnMapChange)(std::string map); // Fires ONCE when a Map Change is happening
 	void (*OnMapChangeDone)(std::string map); // Fires ONCE when the Map Change is done
-	void (*OnPlayerHealthUpdate)(); // Fires EVERY TIME the Player's Health changes
+	void (*OnPlayerHealthUpdate)(float oldHealth, float newHealth); // Fires EVERY TIME the Player's Health changes
 	void (*OnPlayerDie)(); // Fires ONCE when the Player dies
 	void (*OnPlayerMove)(); // Fires EVERY TIME the Player's Position changes
 	void (*OnPlayerRotate)(); // Fires EVERY TIME the Player's Rotation changes
