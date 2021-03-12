@@ -12,6 +12,12 @@ bool isDiving = false;
 int swimRotation = 0;
 int defaultRotRateX = 4096;
 
+
+bool bIsInAir = false;
+float BhopVelX = 0;
+float BhopVelY = 0;
+float BhopMultipier = 0.7;
+
 void OnStart()
 {
 }
@@ -54,42 +60,60 @@ void OnPlayerHealthUpdate(float oldHealth, float newHealth)
 
 void OnPlayerInAirEnter()
 {
-	isBackflipping = true;
+	/*isBackflipping = true;
 	isBack = (rand() % 100 + 1) >= 50;
-	flipRotation = isBack ? 0 : 65000;
+	flipRotation = isBack ? 0 : 65000;*/
+
+	Game.LogToConsole("Air");
+	bIsInAir = true;
 }
 
 void OnPlayerInAirTick()
 {
-	if (isBackflipping) {
-		if (isBack) {
-			flipRotation += 50;
-			if (flipRotation >= 65000) {
-				// Finished backclip
-				flipRotation = 0;
-				isBackflipping = false;
-			}
-		}
-		else {
-			flipRotation -= 50;
-			if (flipRotation <= 500) {
-				// Finished frontclip
-				flipRotation = 0;
-				isBackflipping = false;
-			}
-		}
-		Game.Variables.SetRotationX(flipRotation);
-	}
+	BhopVelX = Game.Variables.GetVelocityX();
+	BhopVelY = Game.Variables.GetVelocityY();
+
+	Game.LogToConsole("Hello");
+
+	//if (isBackflipping) {
+	//	if (isBack) {
+	//		flipRotation += 50;
+	//		if (flipRotation >= 65000) {
+	//			// Finished backclip
+	//			flipRotation = 0;
+	//			isBackflipping = false;
+	//		}
+	//	}
+	//	else {
+	//		flipRotation -= 50;
+	//		if (flipRotation <= 500) {
+	//			// Finished frontclip
+	//			flipRotation = 0;
+	//			isBackflipping = false;
+	//		}
+	//	}
+	//	Game.Variables.SetRotationX(flipRotation);
+	//}
 }
 
 void OnPlayerLand()
 {
-	Game.Variables.SetGodMode(true);
+	Game.LogToConsole("Land");
+	bIsInAir = false;
 
-	if (isBackflipping) {
-		isBackflipping = false;
-		Game.Variables.SetRotationX(0);
-	}
+	Game.Delay(500).then([]
+	{
+		if (bIsInAir == true)
+		{
+			Game.Variables.SetVelocityX(BhopVelX);
+			Game.Variables.SetVelocityY(BhopVelY);
+			Game.LogToConsole("Player bhopped!");
+		}
+		else
+		{
+			Game.LogToConsole("Player failed to bhop!");
+		}
+	});
 }
 
 void OnPlayerHitJumpMagnetHit()
@@ -134,17 +158,17 @@ void OnPlayerRotate(float x, float y, float z)
 
 void OnTick()
 {
-	Game.Variables.SetDoubleJumpHeight(1000);
-	Game.Variables.SetJumpHeight(1000);
+	/*Game.Variables.SetDoubleJumpHeight(1000);
+	Game.Variables.SetJumpHeight(1000);*/
 }
 
 DWORD WINAPI InitializationThread(HINSTANCE hModule)
 {
 	Game.Events.OnStart = OnStart;
 	Game.Events.OnTick = OnTick;
-	Game.Events.OnPlayerInWaterEnter = OnPlayerInWaterEnter;
-	Game.Events.OnPlayerInWaterTick = OnPlayerInWaterTick;
-	Game.Events.OnPlayerInWaterExit = OnPlayerInWaterExit;
+	//Game.Events.OnPlayerInWaterEnter = OnPlayerInWaterEnter;
+	//Game.Events.OnPlayerInWaterTick = OnPlayerInWaterTick;
+	//Game.Events.OnPlayerInWaterExit = OnPlayerInWaterExit;
 	//Game.Events.OnPlayerHealthUpdate = OnPlayerHealthUpdate;
 	Game.Events.OnPlayerInAirEnter = OnPlayerInAirEnter;
 	Game.Events.OnPlayerInAirTick = OnPlayerInAirTick;

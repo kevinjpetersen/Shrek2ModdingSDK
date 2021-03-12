@@ -13,6 +13,7 @@ public:
 	Shrek2Events Events = Shrek2Events();
 	bool IsModRunning;
 	void SetDllHandle(HMODULE hModule);
+	task<void> Delay(unsigned int delayAmountInMs);
 private:
 	bool AddConsole;
 	HMODULE DllHandle;

@@ -58,6 +58,28 @@ void Shrek2::SetDllHandle(HMODULE hModule)
 	DllHandle = hModule;
 }
 
+task<void> Shrek2::Delay(unsigned int delayAmountInMs)
+{
+	task_completion_event<void> tce;
+	auto fire_once = new timer<int>(delayAmountInMs, 0, nullptr, false);
+
+	auto callback = new call<int>([tce](int)
+		{
+			tce.set();
+		});
+
+	fire_once->link_target(callback);
+	fire_once->start();
+
+	task<void> event_set(tce);
+
+	return event_set.then([callback, fire_once]()
+		{
+			delete callback;
+			delete fire_once;
+		});
+}
+
 void Shrek2::HideConsole()
 {
 	::ShowWindow(::GetConsoleWindow(), SW_HIDE);
