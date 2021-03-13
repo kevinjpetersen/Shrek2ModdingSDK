@@ -32,6 +32,9 @@ private:
 	// OnMapLoad
 	std::string OldMap = "DEFAULT";
 
+	// OnCharacterChanged
+	std::string OldCharacterName = "DEFAULT";
+
 	// Event Update Functions
 	void EU_OnPlayerInWater();
 	void EU_OnPlayerHealthUpdate();
@@ -40,6 +43,7 @@ private:
 	void EU_OnPlayerBouncePad();
 	void EU_OnPlayerInfo();
 	void EU_OnMapLoad();
+	void EU_OnCharacterChanged();
 public:
 	Shrek2Events() {
 		Variables = Shrek2Pointers();
@@ -48,14 +52,14 @@ public:
 
 	/*DONE*/ void (*OnStart)();
 	/*DONE*/ void (*OnTick)();
-	void (*OnMapLoad)(Shrek2Maps oldMap, Shrek2Maps newMap, std::string rawMap); // Fires ONCE when a Map Load is happening
+	/*DONE*/ void (*OnMapLoad)(Shrek2Maps oldMap, Shrek2Maps newMap, std::string rawMap); // Fires ONCE when a Map Load is happening
 	/*DONE*/ void (*OnPlayerHealthUpdate)(float oldHealth, float newHealth); // Fires EVERY TIME the Player's Health changes
 	/*DONE*/ void (*OnPlayerDie)(); // Fires ONCE when the Player dies
 	/*DONE*/ void (*OnPlayerRespawn)(); // Fires ONCE when the Player respawns
 	/*DONE*/ void (*OnPlayerMove)(float x, float y, float z); // Fires EVERY TIME the Player's Position changes
 	/*DONE*/ void (*OnPlayerRotate)(float x, float y, float z); // Fires EVERY TIME the Player's Rotation changes
-	void (*OnPlayerClimb)(); // Fires ONCE when the Player starts climbing
-	void (*OnPlayerClimbDone)(); // Fires ONCE when the Player is done climbing
+	/*UNREADY*/ void (*OnPlayerClimb)(); // Fires ONCE when the Player starts climbing
+	/*UNREADY*/ void (*OnPlayerClimbDone)(); // Fires ONCE when the Player is done climbing
 	/*DONE*/ void (*OnPlayerInWaterEnter)(); // Fires ONCE when the Player enters the water
 	/*DONE*/ void (*OnPlayerInWaterTick)(); // Fires EVERY TICK when the Player is in the water
 	/*DONE*/ void (*OnPlayerInWaterExit)(); // Fires ONCE when the Player leaves the water
@@ -66,12 +70,13 @@ public:
 	/*DONE*/ void (*OnPlayerHitJumpMagnetDone)(); // Fires ONCE when the Player finishes a Jump Magnet (Auto Jump)
 	/*DONE*/ void (*OnPlayerHitBouncePadHit)(); // Fires ONCE when the Player hits a Bounce Pad
 	/*DONE*/ void (*OnPlayerHitBouncePadDone)(); // Fires ONCE when the Player finishes a Bounce Pad
-	void (*OnPlayerMenuOpen)(); // Fires ONCE when the Player opens the Pause Menu
-	void (*OnPlayerMenuClose)(); // Fires ONCE when the Player closes the Pause Menu
+	/*WIP*/ void (*OnPlayerMenuOpen)(); // Fires ONCE when the Player opens the Pause Menu
+	/*WIP*/ void (*OnPlayerMenuClose)(); // Fires ONCE when the Player closes the Pause Menu
+	/*WIP*/ void (*OnCharacterChanged)(std::string oldCharacter, std::string newCharacter); // Fires ONCE when the Player character is changed
 
 	// NYI
-	void (*OnSave)(); // Fires ONCE when a Save is happening
-	void (*OnLoad)(); // Fires ONCE when a Load is happening
-	void (*OnCutLogTick)(); // Fires EVERY TICK with new lines of CutLog Data
+	/*WIP*/ void (*OnSave)(); // Fires ONCE when a Save is happening
+	/*WIP*/ void (*OnLoad)(); // Fires ONCE when a Load is happening
+	/*WIP*/ void (*OnCutLogTick)(); // Fires EVERY TICK with new lines of CutLog Data
 };
 

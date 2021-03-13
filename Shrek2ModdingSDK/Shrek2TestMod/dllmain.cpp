@@ -16,9 +16,15 @@ void OnMapLoad(Shrek2Maps oldMap, Shrek2Maps newMap, std::string rawMap) {
 	}
 }
 
+void OnCharacterChanged(std::string oldCharacter, std::string newCharacter)
+{
+	Game.LogToConsole("Old character: " + oldCharacter + " | New character: " + newCharacter);
+}
+
 DWORD WINAPI InitializationThread(HINSTANCE hModule)
 {
 	Game.Events.OnMapLoad = OnMapLoad;
+	Game.Events.OnCharacterChanged = OnCharacterChanged;
 
 	Game.Initialize("Shrek 2 Test Mod");
 	FreeLibraryAndExitThread(hModule, 0);

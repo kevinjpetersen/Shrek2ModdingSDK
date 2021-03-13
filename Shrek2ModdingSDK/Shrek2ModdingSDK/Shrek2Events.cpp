@@ -154,9 +154,27 @@ void Shrek2Events::EU_OnMapLoad()
 	}
 }
 
+void Shrek2Events::EU_OnCharacterChanged()
+{
+	std::string currentCharacter = Variables.GetCurrentCharacter();
+
+	if (currentCharacter.empty()) return;
+	currentCharacter = Shrek2Utils::StringToLower(currentCharacter);
+
+	if (strcmp(OldCharacterName.c_str(), "DEFAULT") == 0) {
+		OldCharacterName = currentCharacter;
+	}
+
+	if (strcmp(currentCharacter.c_str(), OldCharacterName.c_str()) != 0) {
+		if (OnCharacterChanged) OnCharacterChanged(OldCharacterName, currentCharacter);
+		OldCharacterName = currentCharacter;
+	}
+}
+
 void Shrek2Events::EventUpdates()
 {
 	EU_OnMapLoad();
+	EU_OnCharacterChanged();
 	EU_OnPlayerInWater();
 	EU_OnPlayerHealthUpdate();
 	EU_OnPlayerJumpMagnet();

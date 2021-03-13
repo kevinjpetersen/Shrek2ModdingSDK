@@ -664,6 +664,11 @@ std::string Shrek2Pointers::GetCurrentMap()
     return Shrek2Memory::ReadText("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0xA8, 0x4E0);
 }
 
+std::string Shrek2Pointers::GetCurrentCharacter()
+{
+    return Shrek2Memory::ReadText("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x550);
+}
+
 bool Shrek2Pointers::SetRotationRateX(short int RotationRateX) {
     return Shrek2Memory::WriteShortInt(RotationRateX, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x310);
 }

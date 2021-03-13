@@ -285,6 +285,7 @@ public:
 	bool SetDonkeySwampPositionZ(float DonkeySwampPositionZ);
 
 	std::string GetCurrentMap();
+	std::string GetCurrentCharacter();
 
 	short int GetRotationRateX();
 	bool SetRotationRateX(short int RotationRateX);
