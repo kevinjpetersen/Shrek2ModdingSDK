@@ -124,6 +124,8 @@ public:
 
 	int GetIsInAir();
 
+	bool GetIsInGhost();
+
 	float GetMovementAnimationSpeed();
 	bool SetMovementAnimationSpeed(float MovementAnimationSpeed);
 
@@ -292,5 +294,8 @@ public:
 
 	short int GetRotationRateZ();
 	bool SetRotationRateZ(short int RotationRateZ);
+
+	float GetFOV();
+	bool SetFOV(float FOV);
 };
 

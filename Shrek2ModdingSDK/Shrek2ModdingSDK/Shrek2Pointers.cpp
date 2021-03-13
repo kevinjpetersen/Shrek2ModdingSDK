@@ -285,6 +285,10 @@ int Shrek2Pointers::GetIsInAir() {
     return Shrek2Memory::ReadInt("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x5A8);
 }
 
+bool Shrek2Pointers::GetIsInGhost() {
+    return Shrek2Memory::ReadInt("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x5A8) == 4 ? true : false;
+}
+
 bool Shrek2Pointers::SetMovementAnimationSpeed(float MovementAnimationSpeed) {
     return Shrek2Memory::WriteFloat(MovementAnimationSpeed, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x5BC);
 }
@@ -679,4 +683,11 @@ bool Shrek2Pointers::SetRotationRateZ(short int RotationRateZ) {
 }
 short int Shrek2Pointers::GetRotationRateZ() {
     return Shrek2Memory::ReadShortInt("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x314);
+}
+
+bool Shrek2Pointers::SetFOV(float FOV) {
+    return Shrek2Memory::WriteFloat(FOV, "Engine.dll", 0x004DFFF8, 0x30, 0xD8, 0x34, 0x604);
+}
+float Shrek2Pointers::GetFOV() {
+    return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x30, 0xD8, 0x34, 0x604);
 }

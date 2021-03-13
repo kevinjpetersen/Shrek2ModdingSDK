@@ -21,6 +21,10 @@ int currentMs = 0;
 
 void OnTick()
 {
+    if (Game.Variables.GetIsInGhost()) {
+        Game.LogToConsole("Ghost mode");
+    }
+
     /*if (bIsInAir == true)
     {
         currentMs += 1;
@@ -35,6 +39,9 @@ void OnTick()
 void OnPlayerLand()
 {
     Game.LogToConsole("ON LAND");
+
+    Game.Variables.SetFOV(110);
+
     /*Game.Variables.SetVelocityX(0);
     Game.Variables.SetVelocityY(0);
 
@@ -69,6 +76,8 @@ void OnPlayerInAirEnter()
     Game.LogToConsole("ENTER AIR");
     /*bIsInAir = true;
     bFinishedUpdatingVel = false;*/
+
+    Game.Variables.SetFOV(160);
 }
 
 void OnPlayerInAirTick()
