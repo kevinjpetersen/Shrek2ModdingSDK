@@ -11,6 +11,8 @@ using namespace std;
 map<string, string> AvailableMods;
 map<string, HINSTANCE> LoadedMods;
 
+bool modsLoaded = false;
+
 void LogToConsole(std::string logMessage)
 {
 	std::cout << logMessage << std::endl;
@@ -142,21 +144,17 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 
 	if (AvailableMods.size() > 0) {
 		LoadMods();
+		modsLoaded = true;
 	}
 	else {
-		LogToConsole("No Mods found. Press Numpad 2 to try again!");
+		LogToConsole("No Mods found. Press Numpad 0 to try again!");
 	}
 
 	while (true) {
 		Sleep(1);
 
-		// Disable Mods
-		if (GetAsyncKeyState(VK_NUMPAD3) & 1) {
-			break;
-		}
-
-		// Eject Mods
-		if (GetAsyncKeyState(VK_NUMPAD1) & 1) {
+		// Disable Modloader and Mods
+		if (GetAsyncKeyState(VK_NUMPAD2) & 1) {
 			if (LoadedMods.size() > 0) {
 				UnloadMods();
 			}
@@ -164,27 +162,41 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 			{
 				LogToConsole("No mods found to unload.");
 			}
+			break;
 		}
 
-		// Load Mods
-		if (GetAsyncKeyState(VK_NUMPAD2) & 1) {
-			if (AvailableMods.size() > 0) {
-				if (LoadedMods.size() <= 0) {
-					LoadMods();
+		// Toggle Mods
+		if (GetAsyncKeyState(VK_NUMPAD0) & 1) {
+			if (modsLoaded == false) {
+				modsLoaded = true;
+				if (AvailableMods.size() > 0) {
+					if (LoadedMods.size() <= 0) {
+						LoadMods();
+					}
+					else
+					{
+						LogToConsole("You cannot load mods when they're already loaded.");
+					}
 				}
 				else
 				{
-					LogToConsole("You cannot load mods when they're already loaded.");
+					LogToConsole("No mods found to load.");
 				}
 			}
-			else
-			{
-				LogToConsole("No mods found to load.");
+			else {
+				modsLoaded = false;
+				if (LoadedMods.size() > 0) {
+					UnloadMods();
+				}
+				else
+				{
+					LogToConsole("No mods found to unload.");
+				}
 			}
 		}
 
 		// Toggle Debug Console
-		if (GetAsyncKeyState(VK_NUMPAD0) & 1) {
+		if (GetAsyncKeyState(VK_NUMPAD1) & 1) {
 			if (IsConsoleVisible()) {
 				HideConsole();
 			}
