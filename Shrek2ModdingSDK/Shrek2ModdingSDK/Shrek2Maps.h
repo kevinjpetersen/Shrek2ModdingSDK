@@ -1,5 +1,7 @@
 #pragma once
 enum class Shrek2Maps {
+	Default = -1,
+	Unknown = 0,
 	Shreks_Swamp = 1,
 	Carriage_Hijack = 2,
 	The_Hunt_Part1 = 3,

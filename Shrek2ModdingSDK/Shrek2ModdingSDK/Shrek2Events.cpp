@@ -133,8 +133,30 @@ void Shrek2Events::EU_OnPlayerInfo()
 	}
 }
 
+void Shrek2Events::EU_OnMapLoad()
+{
+	std::string rawMap = Variables.GetCurrentMap();
+	if (rawMap.empty()) return;
+	rawMap = Shrek2Utils::StringToLower(rawMap);
+
+	std::string formattedMap = Shrek2Utils::ReplaceFirstOccurrence(rawMap, ".unr", "");
+	formattedMap = Shrek2Utils::ReplaceFirstOccurrence(formattedMap, ".UNR", "");
+
+	Shrek2Maps currentMap = Shrek2Utils::MapStringToMap(formattedMap);
+
+	if (strcmp(OldMap.c_str(), "DEFAULT") == 0) {
+		OldMap = formattedMap;
+	}
+
+	if (strcmp(formattedMap.c_str(), OldMap.c_str()) != 0) {
+		if (OnMapLoad) OnMapLoad(Shrek2Utils::MapStringToMap(OldMap), currentMap, formattedMap);
+		OldMap = formattedMap;
+	}
+}
+
 void Shrek2Events::EventUpdates()
 {
+	EU_OnMapLoad();
 	EU_OnPlayerInWater();
 	EU_OnPlayerHealthUpdate();
 	EU_OnPlayerJumpMagnet();

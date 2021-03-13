@@ -18,11 +18,11 @@ public:
 	void Walk();
 	void Fly();
 	void ToggleFreeCam();
+	std::string MapIdToString(int mapId);
 private:
 	void ExecCC(std::string command);
 	void ExecCCS(std::list<std::string> commands);
 	void Exec();
-	std::string MapIdToString(int mapId);
 	std::string DllName;
 };
 

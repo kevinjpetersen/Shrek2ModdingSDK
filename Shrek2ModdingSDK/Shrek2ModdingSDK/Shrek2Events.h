@@ -29,6 +29,9 @@ private:
 	float OldPlayerRotationY = -1;
 	float OldPlayerRotationZ = -1;
 
+	// OnMapLoad
+	std::string OldMap = "DEFAULT";
+
 	// Event Update Functions
 	void EU_OnPlayerInWater();
 	void EU_OnPlayerHealthUpdate();
@@ -36,6 +39,7 @@ private:
 	void EU_OnPlayerJumpMagnet();
 	void EU_OnPlayerBouncePad();
 	void EU_OnPlayerInfo();
+	void EU_OnMapLoad();
 public:
 	Shrek2Events() {
 		Variables = Shrek2Pointers();
@@ -44,8 +48,7 @@ public:
 
 	/*DONE*/ void (*OnStart)();
 	/*DONE*/ void (*OnTick)();
-	void (*OnMapChange)(std::string map); // Fires ONCE when a Map Change is happening
-	void (*OnMapChangeDone)(std::string map); // Fires ONCE when the Map Change is done
+	void (*OnMapLoad)(Shrek2Maps oldMap, Shrek2Maps newMap, std::string rawMap); // Fires ONCE when a Map Load is happening
 	/*DONE*/ void (*OnPlayerHealthUpdate)(float oldHealth, float newHealth); // Fires EVERY TIME the Player's Health changes
 	/*DONE*/ void (*OnPlayerDie)(); // Fires ONCE when the Player dies
 	/*DONE*/ void (*OnPlayerRespawn)(); // Fires ONCE when the Player respawns
