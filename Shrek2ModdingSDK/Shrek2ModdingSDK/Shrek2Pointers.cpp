@@ -281,8 +281,8 @@ float Shrek2Pointers::GetIsClimbing() {
     return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0xE58);
 }
 
-float Shrek2Pointers::GetIsInAir() {
-    return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x538);
+int Shrek2Pointers::GetIsInAir() {
+    return Shrek2Memory::ReadInt("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x5A8);
 }
 
 bool Shrek2Pointers::SetMovementAnimationSpeed(float MovementAnimationSpeed) {

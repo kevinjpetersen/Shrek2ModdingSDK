@@ -122,7 +122,7 @@ public:
 
 	float GetIsClimbing();
 
-	float GetIsInAir();
+	int GetIsInAir();
 
 	float GetMovementAnimationSpeed();
 	bool SetMovementAnimationSpeed(float MovementAnimationSpeed);

@@ -43,14 +43,14 @@ void Shrek2Events::EU_OnPlayerHealthUpdate()
 
 void Shrek2Events::EU_OnPlayerInAirLand()
 {
-	if (Variables.GetIsInAir() == 0) {
+	if (Variables.GetIsInAir() == 2) {
 		if (OnPlayerInAirTick) OnPlayerInAirTick();
 		if (IsPlayerInAir) return;
 		IsPlayerInAir = true;
 
 		if (OnPlayerInAirEnter) OnPlayerInAirEnter();
 	}
-	else
+	else if(Variables.GetIsInAir() == 1)
 	{
 		if (IsPlayerInAir) {
 			IsPlayerInAir = false;
@@ -137,8 +137,8 @@ void Shrek2Events::EventUpdates()
 {
 	EU_OnPlayerInWater();
 	EU_OnPlayerHealthUpdate();
-	EU_OnPlayerInAirLand();
 	EU_OnPlayerJumpMagnet();
 	EU_OnPlayerBouncePad();
+	EU_OnPlayerInAirLand();
 	EU_OnPlayerInfo();
 }
