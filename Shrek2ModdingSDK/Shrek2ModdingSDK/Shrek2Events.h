@@ -72,7 +72,7 @@ public:
 	/*DONE*/ void (*OnPlayerHitBouncePadDone)(); // Fires ONCE when the Player finishes a Bounce Pad
 	/*WIP*/ void (*OnPlayerMenuOpen)(); // Fires ONCE when the Player opens the Pause Menu
 	/*WIP*/ void (*OnPlayerMenuClose)(); // Fires ONCE when the Player closes the Pause Menu
-	/*WIP*/ void (*OnCharacterChanged)(std::string oldCharacter, std::string newCharacter); // Fires ONCE when the Player character is changed
+	/*DONE*/ void (*OnCharacterChanged)(std::string oldCharacter, std::string newCharacter); // Fires ONCE when the Player character is changed
 
 	// NYI
 	/*WIP*/ void (*OnSave)(); // Fires ONCE when a Save is happening
