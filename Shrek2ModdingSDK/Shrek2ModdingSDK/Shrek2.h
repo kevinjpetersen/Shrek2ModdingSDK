@@ -14,6 +14,7 @@ public:
 	bool IsModRunning;
 	void SetDllHandle(HMODULE hModule);
 	task<void> Delay(unsigned int delayAmountInMs);
+	void Wait(unsigned int waitAmountInMs);
 private:
 	bool AddConsole;
 	HMODULE DllHandle;

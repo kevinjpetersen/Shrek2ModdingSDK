@@ -58,6 +58,11 @@ void Shrek2::SetDllHandle(HMODULE hModule)
 	DllHandle = hModule;
 }
 
+void Shrek2::Wait(unsigned int waitAmountInMs)
+{
+	concurrency::wait(1000);
+}
+
 task<void> Shrek2::Delay(unsigned int delayAmountInMs)
 {
 	task_completion_event<void> tce;
