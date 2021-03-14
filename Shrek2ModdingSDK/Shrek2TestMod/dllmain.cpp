@@ -18,27 +18,31 @@ void OnMapLoad(Shrek2Maps oldMap, Shrek2Maps newMap, std::string rawMap) {
 
 void OnCharacterChanged(std::string oldCharacter, std::string newCharacter)
 {
-	Game.LogToConsole("Old character: " + oldCharacter + " | New character: " + newCharacter);
+	if (Shrek2Utils::DoesEqual(newCharacter, "fionaogre")) {
+		Game.LogToConsole("It was fiona all along!");
+	}
 
-	Game.Delay(1000).then([]() {
-		Game.Functions.CC("adminsay Hello 1");
-		Game.Wait(1000);
-		Game.Functions.CC("adminsay Hello 2");
-		Game.Wait(1000);
-		Game.Functions.CC("adminsay Hello 3");
-		Game.Wait(1000);
-		Game.Functions.CC("adminsay Hello 4");
-		Game.Wait(1000);
-		Game.Functions.CC("adminsay Hello 5");
-		Game.Wait(1000);
-		Game.Functions.CC("adminsay DONE");
-	});
-	Game.LogToConsole("KEEP RUNNING");
+	//Game.LogToConsole("Old character: " + oldCharacter + " | New character: " + newCharacter);
+
+	//Game.Delay(1000).then([]() {
+	//	Game.Functions.CC("adminsay Hello 1");
+	//	Game.Wait(1000);
+	//	Game.Functions.CC("adminsay Hello 2");
+	//	Game.Wait(1000);
+	//	Game.Functions.CC("adminsay Hello 3");
+	//	Game.Wait(1000);
+	//	Game.Functions.CC("adminsay Hello 4");
+	//	Game.Wait(1000);
+	//	Game.Functions.CC("adminsay Hello 5");
+	//	Game.Wait(1000);
+	//	Game.Functions.CC("adminsay DONE");
+	//});
+	//Game.LogToConsole("KEEP RUNNING");
 }
 
 void OnTick()
 {
-	Game.LogToConsole("Tick tock");
+	//Game.LogToConsole("Tick tock");
 }
 
 DWORD WINAPI InitializationThread(HINSTANCE hModule)

@@ -10,5 +10,6 @@ public:
 	static Shrek2Maps MapStringToMap(std::string map);
 	static std::string StringToLower(std::string str);
 	static std::string ReplaceFirstOccurrence(std::string& s, const std::string& toReplace, const std::string& replaceWith);
+	static bool DoesEqual(std::string str1, std::string str2);
 };
 

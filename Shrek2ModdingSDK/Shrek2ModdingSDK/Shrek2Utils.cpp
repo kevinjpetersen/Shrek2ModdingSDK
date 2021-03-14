@@ -79,3 +79,8 @@ std::string Shrek2Utils::ReplaceFirstOccurrence(std::string& s, const std::strin
 	if (pos == std::string::npos) return s;
 	return s.replace(pos, toReplace.length(), replaceWith);
 }
+
+bool Shrek2Utils::DoesEqual(std::string str1, std::string str2)
+{
+	return std::strcmp(str1.c_str(), str2.c_str()) == 0;
+}
