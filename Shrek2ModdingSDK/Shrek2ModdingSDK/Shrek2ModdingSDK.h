@@ -17,8 +17,7 @@
 #include "Shrek2Functions.h"
 
 using namespace Concurrency;
-
 #include "Shrek2.h"
-
 namespace fs = std::filesystem;
+
 #endif

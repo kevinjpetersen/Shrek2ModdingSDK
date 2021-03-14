@@ -1,6 +1,7 @@
 #include <windows.h>
-#include "Shrek2ModdingSDK.h"
 #include <string>
+#include "Shrek2ModdingSDK.h"
+#include "Shrek2UI.h"
 
 Shrek2 Game = Shrek2();
 
@@ -57,6 +58,11 @@ void OnTick()
 	//Game.LogToConsole("Tick tock");
 }
 
+void RenderUI()
+{
+
+}
+
 DWORD WINAPI InitializationThread(HINSTANCE hModule)
 {
 	Game.Events.OnMapLoad = OnMapLoad;
@@ -64,6 +70,9 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	Game.Events.OnTick = OnTick;
 	Game.Events.OnPlayerInWaterEnter = OnPlayerInWaterEnter;
 	Game.Events.OnPlayerInWaterExit = OnPlayerInWaterExit;
+
+	Shrek2UI::Initialize();
+	Shrek2UI::RenderUI = RenderUI;
 
 	Game.Initialize("Shrek 2 Test Mod");
 	FreeLibraryAndExitThread(hModule, 0);

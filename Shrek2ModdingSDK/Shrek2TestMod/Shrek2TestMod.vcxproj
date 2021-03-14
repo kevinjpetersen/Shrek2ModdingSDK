@@ -78,7 +78,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>C:\Users\Kevin\Games\Shrek 2 Modding Folder\System\Shrek 2 Mods\Shrek 2 Test Mod\</OutDir>
-    <LibraryPath>C:\Shrek 2 Modding SDK Library;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Shrek 2 Modding SDK Library;$(LibraryPath);C:\Shrek 2 Modding SDK Library\DirectX8SDK</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Shrek 2 Modding SDK Library\DirectX8SDK</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -126,6 +127,7 @@
       <EnableUAC>false</EnableUAC>
       <AdditionalLibraryDirectories>C:\Shrek 2 Modding SDK Library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Shrek2ModdingSDK.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -163,7 +165,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="dllmain.h" />
     <ClInclude Include="framework.h" />
   </ItemGroup>
   <ItemGroup>
