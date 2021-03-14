@@ -30,11 +30,15 @@ void Shrek2::Initialize(std::string ModName)
 		Sleep(500);
 	}
 
+	GameWindowSize = Shrek2Utils::GetWindowSize(WindowHandle);
+
 	LogToConsole("Mod '" + ModName + "' loaded.");
 
 	if(Events.OnStart) Events.OnStart();
 	while (IsModRunning) {
 		Sleep(1);
+
+		GameWindowSize = Shrek2Utils::GetWindowSize(WindowHandle);
 
 		if (Shrek2::WindowHandle != GetForegroundWindow()) {
 			continue;

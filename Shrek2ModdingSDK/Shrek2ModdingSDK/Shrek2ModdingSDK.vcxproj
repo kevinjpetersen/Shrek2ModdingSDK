@@ -114,6 +114,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -163,6 +164,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Shrek2DirectX.h" />
     <ClInclude Include="Shrek2Events.h" />
     <ClInclude Include="Shrek2Maps.h" />
     <ClInclude Include="Shrek2Functions.h" />
@@ -170,6 +172,9 @@
     <ClInclude Include="Shrek2Memory.h" />
     <ClInclude Include="Shrek2.h" />
     <ClInclude Include="Shrek2Pointers.h" />
+    <ClInclude Include="Shrek2Rect.h" />
+    <ClInclude Include="Shrek2Texture.h" />
+    <ClInclude Include="Shrek2Textures.h" />
     <ClInclude Include="Shrek2UI.h" />
     <ClInclude Include="Shrek2Utils.h" />
   </ItemGroup>
@@ -180,6 +185,9 @@
     <ClCompile Include="Shrek2Memory.cpp" />
     <ClCompile Include="Shrek2.cpp" />
     <ClCompile Include="Shrek2Pointers.cpp" />
+    <ClCompile Include="Shrek2Rect.cpp" />
+    <ClCompile Include="Shrek2Texture.cpp" />
+    <ClCompile Include="Shrek2Textures.cpp" />
     <ClCompile Include="Shrek2UI.cpp" />
     <ClCompile Include="Shrek2Utils.cpp" />
   </ItemGroup>

@@ -15,6 +15,7 @@ public:
 	void SetDllHandle(HMODULE hModule);
 	task<void> Delay(unsigned int delayAmountInMs);
 	void Wait(unsigned int waitAmountInMs);
+	RECT GameWindowSize;
 private:
 	bool AddConsole;
 	HMODULE DllHandle;

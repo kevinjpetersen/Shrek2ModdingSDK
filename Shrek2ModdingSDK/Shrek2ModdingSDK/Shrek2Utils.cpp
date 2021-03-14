@@ -84,3 +84,10 @@ bool Shrek2Utils::DoesEqual(std::string str1, std::string str2)
 {
 	return std::strcmp(str1.c_str(), str2.c_str()) == 0;
 }
+
+RECT Shrek2Utils::GetWindowSize(HWND windowHandle)
+{
+	RECT windowRect;
+	GetWindowRect(windowHandle, &windowRect);
+	return windowRect;
+}

@@ -1,7 +1,8 @@
 #include <windows.h>
 #include <string>
 #include "Shrek2ModdingSDK.h"
-#include "Shrek2UI.h"
+//#include "Shrek2DirectX.h"
+#include "Shrek2DirectX.h"
 
 Shrek2 Game = Shrek2();
 
@@ -60,21 +61,30 @@ void OnTick()
 
 void RenderUI()
 {
+	Shrek2UI::RenderRectangle(Shrek2Rect(0, 0, 64, 64), Shrek2UI::GetColor(255, 255, 0));
+	Shrek2UI::RenderRectangle(Shrek2Rect(0, 64, 64, 64), Shrek2UI::GetColor(255, 0, 0));
+	Shrek2UI::RenderText(Shrek2Rect(50, 50, 200, 100), "Master_64 is a Shrekster!", Shrek2UI::GetColor(255, 0, 0), true);
+	Shrek2UI::RenderTexture(Shrek2UI::Textures.sh2o_logo, D3DXVECTOR2(200, 200));
+}
 
+void OnStart()
+{
+	Shrek2UI::GameWindowSize = Game.GameWindowSize;
+	Shrek2UI::RenderUI = RenderUI;
+	Shrek2UI::Initialize();
 }
 
 DWORD WINAPI InitializationThread(HINSTANCE hModule)
 {
+	Game.Events.OnStart = OnStart;
 	Game.Events.OnMapLoad = OnMapLoad;
 	Game.Events.OnCharacterChanged = OnCharacterChanged;
 	Game.Events.OnTick = OnTick;
 	Game.Events.OnPlayerInWaterEnter = OnPlayerInWaterEnter;
 	Game.Events.OnPlayerInWaterExit = OnPlayerInWaterExit;
 
-	Shrek2UI::Initialize();
-	Shrek2UI::RenderUI = RenderUI;
-
 	Game.Initialize("Shrek 2 Test Mod");
+	
 	FreeLibraryAndExitThread(hModule, 0);
 	return 0;
 }
@@ -92,6 +102,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 	case DLL_PROCESS_DETACH:
 		if (Game.IsModRunning) {
 			Game.IsModRunning = false;
+			Shrek2UI::StopUI();
 			Sleep(1000);
 		}
 		break;
