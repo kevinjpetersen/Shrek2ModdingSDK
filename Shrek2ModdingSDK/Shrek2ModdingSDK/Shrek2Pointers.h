@@ -50,8 +50,8 @@ public:
 	bool GetHasStrengthPotion();
 	bool SetHasStrengthPotion(bool HasStrengthPotion);
 
-	bool GetStrengthPotionScale();
-	bool SetStrengthPotionScale(bool StrengthPotionScale);
+	int GetStrengthPotionScale();
+	bool SetStrengthPotionScale(int StrengthPotionScale);
 
 	float GetShrinkSpeed();
 	bool SetShrinkSpeed(float ShrinkSpeed);
@@ -120,11 +120,15 @@ public:
 	float GetMaxSlopeAngle();
 	bool SetMaxSlopeAngle(float MaxSlopeAngle);
 
-	float GetIsClimbing();
+	bool GetIsClimbing();
 
 	int GetIsInAir();
 
 	bool GetIsInGhost();
+
+	bool GetIsBigMount();
+
+	bool GetIsLadderOrShimmeyPipe();
 
 	float GetMovementAnimationSpeed();
 	bool SetMovementAnimationSpeed(float MovementAnimationSpeed);
@@ -298,5 +302,14 @@ public:
 
 	float GetFOV();
 	bool SetFOV(float FOV);
+
+	float GetAccelerationX();
+	bool SetAccelerationX(float AccelerationX);
+
+	float GetAccelerationY();
+	bool SetAccelerationY(float AccelerationY);
+
+	float GetAccelerationZ();
+	bool SetAccelerationZ(float AccelerationZ);
 };
 

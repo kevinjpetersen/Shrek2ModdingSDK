@@ -36,10 +36,16 @@ void OnCharacterChanged(std::string oldCharacter, std::string newCharacter)
 	Game.LogToConsole("KEEP RUNNING");
 }
 
+void OnTick()
+{
+	Game.LogToConsole("Tick tock");
+}
+
 DWORD WINAPI InitializationThread(HINSTANCE hModule)
 {
 	Game.Events.OnMapLoad = OnMapLoad;
 	Game.Events.OnCharacterChanged = OnCharacterChanged;
+	Game.Events.OnTick = OnTick;
 
 	Game.Initialize("Shrek 2 Test Mod");
 	FreeLibraryAndExitThread(hModule, 0);

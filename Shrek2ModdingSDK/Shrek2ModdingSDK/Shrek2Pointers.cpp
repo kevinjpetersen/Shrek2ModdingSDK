@@ -112,11 +112,11 @@ bool Shrek2Pointers::GetHasStrengthPotion() {
     return Shrek2Memory::ReadBool("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x14DC);
 }
 
-bool Shrek2Pointers::SetStrengthPotionScale(bool StrengthPotionScale) {
-    return Shrek2Memory::WriteBool(StrengthPotionScale, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x14FC);
+bool Shrek2Pointers::SetStrengthPotionScale(int StrengthPotionScale) {
+    return Shrek2Memory::WriteInt(StrengthPotionScale, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x14FC);
 }
-bool Shrek2Pointers::GetStrengthPotionScale() {
-    return Shrek2Memory::ReadBool("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x14FC);
+int Shrek2Pointers::GetStrengthPotionScale() {
+    return Shrek2Memory::ReadInt("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x14FC);
 }
 
 bool Shrek2Pointers::SetShrinkSpeed(float ShrinkSpeed) {
@@ -277,8 +277,9 @@ float Shrek2Pointers::GetMaxSlopeAngle() {
     return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x49C);
 }
 
-float Shrek2Pointers::GetIsClimbing() {
-    return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0xE58);
+bool Shrek2Pointers::GetIsClimbing() {
+    byte localByte = Shrek2Memory::ReadByte("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0xEBC);
+    return localByte == 1 ? true : false;
 }
 
 int Shrek2Pointers::GetIsInAir() {
@@ -287,6 +288,14 @@ int Shrek2Pointers::GetIsInAir() {
 
 bool Shrek2Pointers::GetIsInGhost() {
     return Shrek2Memory::ReadInt("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x5A8) == 4 ? true : false;
+}
+
+bool Shrek2Pointers::GetIsBigMount() {
+    return Shrek2Memory::ReadInt("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x5A8) == 6 ? true : false;
+}
+
+bool Shrek2Pointers::GetIsLadderOrShimmeyPipe() {
+    return Shrek2Memory::ReadInt("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x5A8) == 11 ? true : false;
 }
 
 bool Shrek2Pointers::SetMovementAnimationSpeed(float MovementAnimationSpeed) {
@@ -695,4 +704,25 @@ bool Shrek2Pointers::SetFOV(float FOV) {
 }
 float Shrek2Pointers::GetFOV() {
     return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x30, 0xD8, 0x34, 0x604);
+}
+
+bool Shrek2Pointers::SetAccelerationX(float AccelerationX) {
+    return Shrek2Memory::WriteFloat(AccelerationX, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x5B0);
+}
+float Shrek2Pointers::GetAccelerationX() {
+    return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x5B0);
+}
+
+bool Shrek2Pointers::SetAccelerationY(float AccelerationY) {
+    return Shrek2Memory::WriteFloat(AccelerationY, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x5B4);
+}
+float Shrek2Pointers::GetAccelerationY() {
+    return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x5B4);
+}
+
+bool Shrek2Pointers::SetAccelerationZ(float AccelerationZ) {
+    return Shrek2Memory::WriteFloat(AccelerationZ, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x5B8);
+}
+float Shrek2Pointers::GetAccelerationZ() {
+    return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x5B8);
 }
