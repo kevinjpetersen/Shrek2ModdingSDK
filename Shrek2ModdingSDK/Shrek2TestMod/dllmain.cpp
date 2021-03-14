@@ -22,6 +22,8 @@ void OnCharacterChanged(std::string oldCharacter, std::string newCharacter)
 		Game.LogToConsole("It was fiona all along!");
 	}
 
+	Game.LogToConsole("CHARACER CHANGE");
+
 	//Game.LogToConsole("Old character: " + oldCharacter + " | New character: " + newCharacter);
 
 	//Game.Delay(1000).then([]() {
@@ -40,6 +42,16 @@ void OnCharacterChanged(std::string oldCharacter, std::string newCharacter)
 	//Game.LogToConsole("KEEP RUNNING");
 }
 
+void OnPlayerInWaterEnter()
+{
+	Game.Events.OnCharacterChanged = NULL;
+}
+
+void OnPlayerInWaterExit() 
+{
+	Game.Events.OnCharacterChanged = OnCharacterChanged;
+}
+
 void OnTick()
 {
 	//Game.LogToConsole("Tick tock");
@@ -50,6 +62,8 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	Game.Events.OnMapLoad = OnMapLoad;
 	Game.Events.OnCharacterChanged = OnCharacterChanged;
 	Game.Events.OnTick = OnTick;
+	Game.Events.OnPlayerInWaterEnter = OnPlayerInWaterEnter;
+	Game.Events.OnPlayerInWaterExit = OnPlayerInWaterExit;
 
 	Game.Initialize("Shrek 2 Test Mod");
 	FreeLibraryAndExitThread(hModule, 0);
