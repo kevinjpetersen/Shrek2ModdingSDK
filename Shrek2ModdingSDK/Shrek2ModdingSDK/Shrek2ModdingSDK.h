@@ -10,6 +10,7 @@
 #include <ppltasks.h>
 #include <agents.h>
 #include <map>
+#include <string>
 #include "Shrek2Maps.h"
 #include "Shrek2Utils.h"
 #include "Shrek2Memory.h"

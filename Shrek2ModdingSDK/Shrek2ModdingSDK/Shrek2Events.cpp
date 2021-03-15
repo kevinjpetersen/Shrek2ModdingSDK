@@ -171,8 +171,17 @@ void Shrek2Events::EU_OnCharacterChanged()
 	}
 }
 
+void Shrek2Events::EU_OnCutLogTick()
+{
+	char* log = Shrek2Memory::ReadChar("game.exe", 0x000566B4, 0x50);
+	int t = Shrek2Memory::ReadInt("game.exe", 0x000566B4, 0x4c);
+	std::cout << t << std::endl;
+	std::cout << log << std::endl;
+}
+
 void Shrek2Events::EventUpdates()
 {
+	EU_OnCutLogTick();
 	EU_OnMapLoad();
 	EU_OnCharacterChanged();
 	EU_OnPlayerInWater();

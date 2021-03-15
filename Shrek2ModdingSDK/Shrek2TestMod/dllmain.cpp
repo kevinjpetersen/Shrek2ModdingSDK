@@ -7,7 +7,11 @@
 
 Shrek2 Game = Shrek2();
 
+Shrek2Maps NewMap;
+
 void OnMapLoad(Shrek2Maps oldMap, Shrek2Maps newMap, std::string rawMap) {
+	NewMap = newMap;
+
 	Game.LogToConsole("Old map: " + Game.Functions.MapIdToString(static_cast<int>(oldMap)) +
 		" | New Map: " + Game.Functions.MapIdToString(static_cast<int>(newMap)));
 

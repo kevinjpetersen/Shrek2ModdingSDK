@@ -44,6 +44,7 @@ private:
 	void EU_OnPlayerInfo();
 	void EU_OnMapLoad();
 	void EU_OnCharacterChanged();
+	void EU_OnCutLogTick();
 public:
 	Shrek2Events() {
 		Variables = Shrek2Pointers();
@@ -73,10 +74,10 @@ public:
 	/*WIP*/ void (*OnPlayerMenuOpen)(); // Fires ONCE when the Player opens the Pause Menu
 	/*WIP*/ void (*OnPlayerMenuClose)(); // Fires ONCE when the Player closes the Pause Menu
 	/*DONE*/ void (*OnCharacterChanged)(std::string oldCharacter, std::string newCharacter); // Fires ONCE when the Player character is changed
+	/*WIP*/ void (*OnCutLogTick)(); // Fires EVERY TICK with new lines of CutLog Data
 
 	// NYI
 	/*WIP*/ void (*OnSave)(); // Fires ONCE when a Save is happening
 	/*WIP*/ void (*OnLoad)(); // Fires ONCE when a Load is happening
-	/*WIP*/ void (*OnCutLogTick)(); // Fires EVERY TICK with new lines of CutLog Data
 };
 
