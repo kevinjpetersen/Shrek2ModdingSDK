@@ -51,12 +51,14 @@ void OnCharacterChanged(std::string oldCharacter, std::string newCharacter)
 
 void OnPlayerInWaterEnter()
 {
+	Game.LogToConsole("Enter water");
 	Game.Events.OnCharacterChanged = NULL;
 	Game.Sounds.Play("Fanfare");
 }
 
 void OnPlayerInWaterExit() 
 {
+	Game.LogToConsole("Exit wait");
 	Game.Events.OnCharacterChanged = OnCharacterChanged;
 	Game.Sounds.Stop("Fanfare");
 }
@@ -81,6 +83,14 @@ void OnStart()
 	Shrek2UI::Initialize();*/
 }
 
+void OnCutLogTick(std::vector<std::string> lines)
+{
+	for (auto line : lines)
+	{
+		std::cout << line << std::endl << std::endl;
+	}
+}
+
 DWORD WINAPI InitializationThread(HINSTANCE hModule)
 {
 	Game.Events.OnStart = OnStart;
@@ -89,6 +99,7 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	Game.Events.OnTick = OnTick;
 	Game.Events.OnPlayerInWaterEnter = OnPlayerInWaterEnter;
 	Game.Events.OnPlayerInWaterExit = OnPlayerInWaterExit;
+	Game.Events.OnCutLogTick = OnCutLogTick;
 
 	Game.Initialize("Shrek 2 Test Mod");
 	

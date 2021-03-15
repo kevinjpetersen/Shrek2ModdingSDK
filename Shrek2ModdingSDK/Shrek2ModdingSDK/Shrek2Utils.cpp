@@ -91,3 +91,18 @@ RECT Shrek2Utils::GetWindowSize(HWND windowHandle)
 	GetWindowRect(windowHandle, &windowRect);
 	return windowRect;
 }
+
+std::vector<std::string> Shrek2Utils::SplitString(const std::string& stringToSplit, const std::string& regexPattern)
+{
+	std::vector<std::string> result;
+
+	const std::regex rgx(regexPattern);
+	std::sregex_token_iterator iter(stringToSplit.begin(), stringToSplit.end(), rgx, -1);
+
+	for (std::sregex_token_iterator end; iter != end; ++iter)
+	{
+		result.push_back(iter->str());
+	}
+
+	return result;
+}

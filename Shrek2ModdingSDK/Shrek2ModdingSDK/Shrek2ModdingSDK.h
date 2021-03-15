@@ -11,6 +11,7 @@
 #include <agents.h>
 #include <map>
 #include <string>
+#include <regex>
 #include "Shrek2Maps.h"
 #include "Shrek2Utils.h"
 #include "Shrek2Memory.h"

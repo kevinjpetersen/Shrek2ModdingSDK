@@ -35,6 +35,10 @@ private:
 	// OnCharacterChanged
 	std::string OldCharacterName = "DEFAULT";
 
+	// OnCutLogTick
+	int PrevBufCursor = 0;
+	std::string PrevBuf = "";
+
 	// Event Update Functions
 	void EU_OnPlayerInWater();
 	void EU_OnPlayerHealthUpdate();
@@ -74,7 +78,7 @@ public:
 	/*WIP*/ void (*OnPlayerMenuOpen)(); // Fires ONCE when the Player opens the Pause Menu
 	/*WIP*/ void (*OnPlayerMenuClose)(); // Fires ONCE when the Player closes the Pause Menu
 	/*DONE*/ void (*OnCharacterChanged)(std::string oldCharacter, std::string newCharacter); // Fires ONCE when the Player character is changed
-	/*WIP*/ void (*OnCutLogTick)(); // Fires EVERY TICK with new lines of CutLog Data
+	/*WIP*/ void (*OnCutLogTick)(std::vector<std::string> lines); // Fires EVERY TICK with new lines of CutLog Data
 
 	// NYI
 	/*WIP*/ void (*OnSave)(); // Fires ONCE when a Save is happening
