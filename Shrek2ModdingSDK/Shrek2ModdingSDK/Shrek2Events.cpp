@@ -173,8 +173,8 @@ void Shrek2Events::EU_OnCharacterChanged()
 
 void Shrek2Events::EU_OnCutLogTick()
 {
-	char* cBuf = Shrek2Memory::ReadChar("game.exe", 0x000566B4, 0x50);
-	int bufCursor = Shrek2Memory::ReadInt("game.exe", 0x000566B4, 0x4c);
+	char* cBuf = Shrek2Memory::ReadChar("Shrek 2 Modded.exe", 0x000566B4, 0x50);
+	int bufCursor = Shrek2Memory::ReadInt("Shrek 2 Modded.exe", 0x000566B4, 0x4c);
 	
 	std::string buf(cBuf);
 
@@ -188,7 +188,10 @@ void Shrek2Events::EU_OnCutLogTick()
 
 		auto logLines = Shrek2Utils::SplitString(log, "[\\r\\n]+");
 
-		if (OnCutLogTick) OnCutLogTick(logLines);
+		for (auto line : logLines)
+		{
+			if (OnCutLogTick) OnCutLogTick(line);
+		}
 	}
 
 	PrevBuf = buf;

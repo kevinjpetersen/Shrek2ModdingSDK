@@ -56,7 +56,7 @@ void OnPlayerInWaterEnter()
 	Game.Sounds.Play("Fanfare");
 }
 
-void OnPlayerInWaterExit() 
+void OnPlayerInWaterExit()
 {
 	Game.LogToConsole("Exit wait");
 	Game.Events.OnCharacterChanged = OnCharacterChanged;
@@ -83,24 +83,21 @@ void OnStart()
 	Shrek2UI::Initialize();*/
 }
 
-void OnCutLogTick(std::vector<std::string> lines)
+void OnCutLogTick(std::string line)
 {
-	for (auto line : lines)
-	{
-		if (Shrek2Utils::Contains(line, "kwherocontroller ShowMenu")) {
-			Game.LogToConsole("PAUSE MENU OPENED");
-		}
-		else if (Shrek2Utils::Contains(line, "GUIController::CloseMenu")) {
-			Game.LogToConsole("PAUSE MENU CLOSED");
-		}
-		else if (Shrek2Utils::Contains(line, "Saving into slot")) {
-			Game.LogToConsole("SAVING");
-		}
-		else if (Shrek2Utils::Contains(line, "Resetting GLevel: Level")) {
-			Game.LogToConsole("LOADING");
-		}
-		//std::cout << line << std::endl << std::endl;
+	if (Shrek2Utils::Contains(line, "kwherocontroller ShowMenu")) {
+		Game.LogToConsole("PAUSE MENU OPENED");
 	}
+	else if (Shrek2Utils::Contains(line, "GUIController::CloseMenu")) {
+		Game.LogToConsole("PAUSE MENU CLOSED");
+	}
+	else if (Shrek2Utils::Contains(line, "Saving into slot")) {
+		Game.LogToConsole("SAVING");
+	}
+	else if (Shrek2Utils::Contains(line, "Resetting GLevel: Level")) {
+		Game.LogToConsole("LOADING");
+	}
+	//std::cout << line << std::endl << std::endl;
 }
 
 DWORD WINAPI InitializationThread(HINSTANCE hModule)
@@ -114,7 +111,7 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	Game.Events.OnCutLogTick = OnCutLogTick;
 
 	Game.Initialize("Shrek 2 Test Mod");
-	
+
 	FreeLibraryAndExitThread(hModule, 0);
 	return 0;
 }
