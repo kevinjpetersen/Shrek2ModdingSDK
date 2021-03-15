@@ -11,6 +11,7 @@ public:
 	Shrek2Pointers Variables;
 	Shrek2Functions Functions;
 	Shrek2Events Events = Shrek2Events();
+	Shrek2Sound Sounds;
 	bool IsModRunning;
 	void SetDllHandle(HMODULE hModule);
 	task<void> Delay(unsigned int delayAmountInMs);
@@ -21,5 +22,7 @@ private:
 	HMODULE DllHandle;
 	HWND WindowHandle;
 	std::string DllName;
+	std::string DllPath;
+	std::string DllFolderPath;
 };
 

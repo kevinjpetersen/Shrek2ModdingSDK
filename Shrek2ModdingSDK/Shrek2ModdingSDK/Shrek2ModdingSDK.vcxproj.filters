@@ -54,6 +54,9 @@
     <ClInclude Include="Shrek2Textures.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Shrek2Sound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Shrek2Memory.cpp">
@@ -87,6 +90,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Shrek2Textures.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shrek2Sound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
