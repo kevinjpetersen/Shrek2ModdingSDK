@@ -87,7 +87,19 @@ void OnCutLogTick(std::vector<std::string> lines)
 {
 	for (auto line : lines)
 	{
-		std::cout << line << std::endl << std::endl;
+		if (Shrek2Utils::Contains(line, "kwherocontroller ShowMenu")) {
+			Game.LogToConsole("PAUSE MENU OPENED");
+		}
+		else if (Shrek2Utils::Contains(line, "GUIController::CloseMenu")) {
+			Game.LogToConsole("PAUSE MENU CLOSED");
+		}
+		else if (Shrek2Utils::Contains(line, "Saving into slot")) {
+			Game.LogToConsole("SAVING");
+		}
+		else if (Shrek2Utils::Contains(line, "Resetting GLevel: Level")) {
+			Game.LogToConsole("LOADING");
+		}
+		//std::cout << line << std::endl << std::endl;
 	}
 }
 

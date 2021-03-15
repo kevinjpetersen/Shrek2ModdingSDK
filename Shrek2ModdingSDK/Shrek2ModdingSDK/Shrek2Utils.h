@@ -13,5 +13,6 @@ public:
 	static bool DoesEqual(std::string str1, std::string str2);
 	static RECT GetWindowSize(HWND windowHandle);
 	static std::vector<std::string> SplitString(const std::string& stringToSplit, const std::string& regexPattern);
+	static bool Contains(std::string source, std::string find);
 };
 

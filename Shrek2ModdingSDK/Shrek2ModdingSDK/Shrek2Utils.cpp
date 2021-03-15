@@ -106,3 +106,8 @@ std::vector<std::string> Shrek2Utils::SplitString(const std::string& stringToSpl
 
 	return result;
 }
+
+bool Shrek2Utils::Contains(std::string source, std::string find)
+{
+	return source.find(find) != std::string::npos;
+}
