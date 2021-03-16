@@ -3,8 +3,6 @@
 
 void Shrek2UI::Initialize()
 {
-	Textures = Shrek2Textures();
-
 	IsUIRunning = true;
 	std::cout << "Trying to attach to Shrek 2's UI Pipeline (DirectX)" << std::endl;
 	bool hasHookedEndScene = false;
@@ -76,8 +74,8 @@ void Shrek2UI::RenderTexture(Shrek2Texture& texture, D3DXVECTOR2 position, D3DXC
 
 void Shrek2UI::StopUI() {
 	IsUIRunning = false;
-	if (pEndScene) DetourRemove((PBYTE)pEndScene, (PBYTE)hookedEndScene);
 	Textures.ReleaseTextures();
+	if (pEndScene) DetourRemove((PBYTE)pEndScene, (PBYTE)hookedEndScene);
 }
 
 D3DCOLOR Shrek2UI::GetColor(int r, int g, int b) {

@@ -1,6 +1,6 @@
 namespace Shrek2UI
 {
-	inline Shrek2Textures Textures;
+	inline Shrek2Textures Textures = Shrek2Textures();
 
 	void Reset(IDirect3DDevice8* pDevice);
 

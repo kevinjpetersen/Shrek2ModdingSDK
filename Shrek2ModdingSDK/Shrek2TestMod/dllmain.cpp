@@ -70,17 +70,21 @@ void OnTick()
 
 void RenderUI()
 {
-	Shrek2UI::RenderRectangle(Shrek2Rect(0, 0, 64, 64), Shrek2UI::GetColor(255, 255, 0));
-	Shrek2UI::RenderRectangle(Shrek2Rect(0, 64, 64, 64), Shrek2UI::GetColor(255, 0, 0));
-	Shrek2UI::RenderText(Shrek2Rect(50, 50, 200, 100), "Master_64 is a Shrekster!", Shrek2UI::GetColor(255, 0, 0), true);
+	Shrek2UI::RenderTexture(Shrek2UI::Textures.sh2o_logo2, D3DXVECTOR2(50, 50));
+	Shrek2UI::RenderTexture(Shrek2UI::Textures.sh2o_logo, D3DXVECTOR2(50, 50));
+	//Shrek2UI::RenderRectangle(Shrek2Rect(0, 0, 64, 64), Shrek2UI::GetColor(255, 255, 0));
+	//Shrek2UI::RenderRectangle(Shrek2Rect(0, 64, 64, 64), Shrek2UI::GetColor(255, 0, 0));
+	//Shrek2UI::RenderText(Shrek2Rect(50, 50, 200, 100), "Master_64 is a Shrekster!", Shrek2UI::GetColor(255, 0, 0), true);
 }
 
 void OnStart()
 {
 	Game.Sounds.AddSound("Sounds/fanfare.wav", "Fanfare");
-	/*Shrek2UI::GameWindowSize = Game.GameWindowSize;
+	//Game.Sounds.AddSound("Sounds/allstars.wav", "Allstars");
+	//Game.Sounds.Play("Allstars");
+	Shrek2UI::GameWindowSize = Game.GameWindowSize;
 	Shrek2UI::RenderUI = RenderUI;
-	Shrek2UI::Initialize();*/
+	Shrek2UI::Initialize();
 }
 
 void OnCutLogTick(std::string line)
@@ -129,7 +133,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 	case DLL_PROCESS_DETACH:
 		if (Game.IsModRunning) {
 			Game.IsModRunning = false;
-			//Shrek2UI::StopUI();
+			Shrek2UI::StopUI();
 			Sleep(1000);
 		}
 		break;
