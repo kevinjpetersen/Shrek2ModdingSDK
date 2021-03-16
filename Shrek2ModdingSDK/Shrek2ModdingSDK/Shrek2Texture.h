@@ -5,6 +5,10 @@ public:
 	LPCSTR TextureFileLocation;
 	IDirect3DTexture8* Texture;
 
+	Shrek2Texture() {
+
+	}
+
 	Shrek2Texture(LPCSTR textureFileLocation) {
 		TextureFileLocation = textureFileLocation;
 	}

@@ -11,10 +11,10 @@ void Shrek2::Initialize(std::string ModName)
 
 	DllName = path.stem().u8string();
 	DllPath = path.u8string();
-	DllFolderPath = path.parent_path().u8string();
+	Shrek2StaticVars::DllFolderPath = path.parent_path().u8string();
 
 	IsModRunning = true;
-	Sounds = Shrek2Sound(DllFolderPath);
+	Sounds = Shrek2Sound(Shrek2StaticVars::DllFolderPath);
 	Variables = Shrek2Pointers();
 	Functions = Shrek2Functions(DllName);
 

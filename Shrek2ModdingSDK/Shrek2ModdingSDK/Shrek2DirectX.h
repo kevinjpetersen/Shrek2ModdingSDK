@@ -6,6 +6,8 @@
 #include <d3d8.h>
 #include <d3dx8.h>
 #include <d3dx8core.h>
+#include <map>
+#include "Shrek2StaticVars.h"
 #include "detours.h"
 #include "Shrek2Rect.h"
 #include "Shrek2Texture.h"

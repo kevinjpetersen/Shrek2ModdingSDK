@@ -23,6 +23,5 @@ private:
 	HWND WindowHandle;
 	std::string DllName;
 	std::string DllPath;
-	std::string DllFolderPath;
 };
 

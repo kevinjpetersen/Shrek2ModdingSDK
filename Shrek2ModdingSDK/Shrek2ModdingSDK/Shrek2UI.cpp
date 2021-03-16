@@ -74,7 +74,7 @@ void Shrek2UI::RenderTexture(Shrek2Texture& texture, D3DXVECTOR2 position, D3DXC
 
 void Shrek2UI::StopUI() {
 	IsUIRunning = false;
-	Textures.ReleaseTextures();
+	Shrek2Textures::ReleaseTextures();
 	if (pEndScene) DetourRemove((PBYTE)pEndScene, (PBYTE)hookedEndScene);
 }
 
@@ -94,7 +94,7 @@ HRESULT __stdcall Shrek2UI::hookedEndScene(IDirect3DDevice8* pDevice)
 
 		InitializeFonts(pDevice);
 		InitializeSprite(pDevice);
-		Textures.InitializeTextures(pDevice);
+		Shrek2Textures::InitializeTextures(pDevice);
 
 		/*if (EqualRect(&GameWindowSize, &LastGameWindowSize) == false) {
 			std::cout << "RESIZE: Equaled" << std::endl;
