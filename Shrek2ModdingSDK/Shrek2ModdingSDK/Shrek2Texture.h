@@ -2,14 +2,14 @@
 class Shrek2Texture
 {
 public:
-	LPCSTR TextureFileLocation;
+	std::string TextureFileLocation;
 	IDirect3DTexture8* Texture;
 
 	Shrek2Texture() {
 
 	}
 
-	Shrek2Texture(LPCSTR textureFileLocation) {
+	Shrek2Texture(std::string textureFileLocation) {
 		TextureFileLocation = textureFileLocation;
 	}
 

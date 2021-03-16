@@ -18,10 +18,10 @@ bool Shrek2Textures::RemoveTexture(std::string alias)
 	return true;
 }
 
-Shrek2Texture* Shrek2Textures::GetTexture(std::string alias)
+Shrek2Texture Shrek2Textures::GetTexture(std::string alias)
 {
-	//if (AliasExist(alias) == false) return nullptr_t;
-	return &AddedTextures[alias];
+	auto item = AddedTextures[alias];
+	return item;
 }
 
 bool Shrek2Textures::AliasExist(std::string alias)
@@ -35,9 +35,15 @@ void Shrek2Textures::InitializeTextures(IDirect3DDevice8* pDevice)
 		InitializedTextures = true;
 		if (AddedTextures.size() > 0)
 		{
+			std::list<std::string> keys;
 			for (auto texture : AddedTextures)
 			{
-				texture.second.SetIDirect3DTexture(pDevice);
+				keys.push_back(texture.first);
+			}
+
+			for (auto key : keys)
+			{
+				AddedTextures[key].SetIDirect3DTexture(pDevice);
 			}
 		}
 	}
@@ -51,7 +57,8 @@ void Shrek2Textures::ReleaseTextures()
 		{
 			for (auto texture : AddedTextures)
 			{
-				D3D_RELEASE(texture.second.Texture);
+				auto& t = texture.second;
+				D3D_RELEASE(t.Texture);
 			}
 		}
 	}

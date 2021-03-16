@@ -63,7 +63,7 @@ void Shrek2UI::RenderText(Shrek2Rect rect, LPCSTR text, D3DCOLOR color, bool isN
 	}
 }
 
-void Shrek2UI::RenderTexture(Shrek2Texture& texture, D3DXVECTOR2 position, D3DXCOLOR color)
+void Shrek2UI::RenderTexture(Shrek2Texture texture, D3DXVECTOR2 position, D3DXCOLOR color)
 {
 	g_pSprite->Begin();
 	{

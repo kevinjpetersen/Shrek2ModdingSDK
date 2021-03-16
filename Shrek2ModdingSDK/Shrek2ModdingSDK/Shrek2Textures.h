@@ -8,7 +8,7 @@ public:
 
 	static bool AddTexture(std::string path, std::string alias);
 	static bool RemoveTexture(std::string alias);
-	static Shrek2Texture* GetTexture(std::string alias);
+	static Shrek2Texture GetTexture(std::string alias);
 
 	static void InitializeTextures(IDirect3DDevice8* pDevice);
 	static void ReleaseTextures();

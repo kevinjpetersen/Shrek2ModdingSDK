@@ -2,5 +2,5 @@
 
 void Shrek2Texture::SetIDirect3DTexture(IDirect3DDevice8* pDevice)
 {
-	D3DXCreateTextureFromFile(pDevice, TextureFileLocation, &Texture);
+	D3DXCreateTextureFromFile(pDevice, TextureFileLocation.c_str(), &Texture);
 }
