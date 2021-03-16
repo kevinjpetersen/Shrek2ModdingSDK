@@ -7,7 +7,7 @@ namespace Shrek2UI
 
 	void RenderRectangle(Shrek2Rect rect, D3DCOLOR color);
 	void RenderText(Shrek2Rect rect, LPCSTR text, D3DCOLOR color, bool isNormalText);
-	void RenderTexture(Shrek2Texture texture, D3DXVECTOR2 position, D3DXCOLOR color = 0xFFFFFFFF);
+	void RenderTexture(Shrek2Texture texture, Shrek2Position position, float rotation = 0, D3DXCOLOR color = 0xFFFFFFFF);
 
 	void StopUI();
 	inline bool IsUIRunning = false;

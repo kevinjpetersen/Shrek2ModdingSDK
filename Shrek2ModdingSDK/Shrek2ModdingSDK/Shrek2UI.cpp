@@ -63,11 +63,12 @@ void Shrek2UI::RenderText(Shrek2Rect rect, LPCSTR text, D3DCOLOR color, bool isN
 	}
 }
 
-void Shrek2UI::RenderTexture(Shrek2Texture texture, D3DXVECTOR2 position, D3DXCOLOR color)
+void Shrek2UI::RenderTexture(Shrek2Texture texture, Shrek2Position position, float rotation, D3DXCOLOR color)
 {
 	g_pSprite->Begin();
 	{
-		g_pSprite->Draw(texture.Texture, NULL, NULL, NULL, 0, &position, color);
+		auto pos = D3DXVECTOR2(position.X, position.Y);
+		g_pSprite->Draw(texture.Texture, NULL, NULL, NULL, rotation, &pos, color);
 	}
 	g_pSprite->End();
 }

@@ -68,8 +68,8 @@ void OnTick()
 
 void RenderUI()
 {
-	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("PIB"), D3DXVECTOR2(50, 50));
-	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("M64"), D3DXVECTOR2(350, 200));
+	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("PIB"), Shrek2Position(50, 50));
+	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("M64"), Shrek2Position(350, 200), 45);
 	//Shrek2UI::RenderRectangle(Shrek2Rect(0, 0, 64, 64), Shrek2UI::GetColor(255, 255, 0));
 	//Shrek2UI::RenderRectangle(Shrek2Rect(0, 64, 64, 64), Shrek2UI::GetColor(255, 0, 0));
 	//Shrek2UI::RenderText(Shrek2Rect(50, 50, 200, 100), "Master_64 is a Shrekster!", Shrek2UI::GetColor(255, 0, 0), true);

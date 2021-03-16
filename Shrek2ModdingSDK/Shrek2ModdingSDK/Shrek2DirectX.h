@@ -10,6 +10,7 @@
 #include <list>
 #include "Shrek2StaticVars.h"
 #include "detours.h"
+#include "Shrek2Position.h"
 #include "Shrek2Rect.h"
 #include "Shrek2Texture.h"
 #include "Shrek2Textures.h"

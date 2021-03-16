@@ -172,6 +172,7 @@
     <ClInclude Include="Shrek2Memory.h" />
     <ClInclude Include="Shrek2.h" />
     <ClInclude Include="Shrek2Pointers.h" />
+    <ClInclude Include="Shrek2Position.h" />
     <ClInclude Include="Shrek2Rect.h" />
     <ClInclude Include="Shrek2Sound.h" />
     <ClInclude Include="Shrek2StaticVars.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="Shrek2Memory.cpp" />
     <ClCompile Include="Shrek2.cpp" />
     <ClCompile Include="Shrek2Pointers.cpp" />
+    <ClCompile Include="Shrek2Position.cpp" />
     <ClCompile Include="Shrek2Rect.cpp" />
     <ClCompile Include="Shrek2Sound.cpp" />
     <ClCompile Include="Shrek2StaticVars.cpp" />
