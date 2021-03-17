@@ -2,10 +2,13 @@
 class Shrek2Functions
 {
 public:
-	Shrek2Functions() {
+	typedef void(__cdecl* Shrek2DeleteSaveGame)(int num);
+	Shrek2DeleteSaveGame _DeleteSaveGame;
 
+	Shrek2Functions() {
 	}
 	Shrek2Functions(std::string dllName) {
+		_DeleteSaveGame = (Shrek2DeleteSaveGame)GetProcAddress(GetModuleHandle(TEXT("Core.dll")), "?KWDeleteSaveGame@@YAXH@Z");
 		DllName = dllName;
 	}
 	void ExecuteConsoleCommand(std::string command);
@@ -18,6 +21,7 @@ public:
 	void Walk();
 	void Fly();
 	void ToggleFreeCam();
+	void DeleteSaveGame(int slot);
 	std::string MapIdToString(int mapId);
 private:
 	void ExecCC(std::string command);

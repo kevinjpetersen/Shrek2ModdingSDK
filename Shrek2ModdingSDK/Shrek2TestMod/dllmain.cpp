@@ -52,6 +52,16 @@ void OnPlayerInWaterEnter()
 	Game.LogToConsole("Enter water");
 	//Game.Events.OnCharacterChanged = NULL;
 	//Game.Sounds.Play("Fanfare");
+	Game.Functions.DeleteSaveGame(1);
+	/*Game.Functions.DeleteSaveGame(1);
+	Game.Functions.DeleteSaveGame(2);
+	Game.Functions.DeleteSaveGame(3);
+	Game.Functions.DeleteSaveGame(4);
+	Game.Functions.DeleteSaveGame(5);
+	Game.Functions.DeleteSaveGame(6);
+	Game.Functions.DeleteSaveGame(7);
+	Game.Functions.DeleteSaveGame(8);
+	Game.Functions.DeleteSaveGame(9);*/
 }
 
 void OnPlayerInWaterExit()
@@ -106,19 +116,6 @@ void OnCutLogTick(std::string line)
 	//std::cout << line << std::endl << std::endl;
 }
 
-void ReorderEvents()
-{
-	Game.Events.EU_OnMapLoad();
-	Game.Events.EU_OnCharacterChanged();
-	Game.Events.EU_OnPlayerInWater();
-	Game.Events.EU_OnPlayerHealthUpdate();
-	Game.Events.EU_OnPlayerJumpMagnet();
-	Game.Events.EU_OnPlayerBouncePad();
-	Game.Events.EU_OnPlayerInAirLand();
-	Game.Events.EU_OnPlayerInfo();
-	Game.Events.EU_OnCutLogTick();
-}
-
 void OnPlayerHealth(float oldHealth, float newHealth)
 {
 	Game.LogToConsole("Player health update");
@@ -134,7 +131,6 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	//Game.Events.OnPlayerInWaterExit = OnPlayerInWaterExit;
 	//Game.Events.OnCutLogTick = OnCutLogTick;
 	//Game.Events.OnPlayerHealthUpdate = OnPlayerHealth;
-	Game.Events.ReorderEvents = ReorderEvents;
 
 	Game.Initialize("Shrek 2 Test Mod");
 

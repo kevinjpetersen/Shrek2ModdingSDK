@@ -56,6 +56,11 @@ void Shrek2Functions::ToggleFreeCam()
 		});
 }
 
+void Shrek2Functions::DeleteSaveGame(int slot)
+{
+	_DeleteSaveGame(slot);
+}
+
 void Shrek2Functions::ExecCC(std::string command)
 {
 	std::ofstream execFile(DllName);
