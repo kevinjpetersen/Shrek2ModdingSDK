@@ -74,8 +74,8 @@ void OnPlayerInWaterExit()
 void OnTick()
 {
 	//Game.LogToConsole("Tick tock");
-	if (Game.Input.OnKeyPress(VK_NUMPAD6)) {
-		Game.LogToConsole("Numpad 6 pressed");
+	if (Game.Input.OnKeyPress(Shrek2Input::A)) {
+		Game.LogToConsole("Letter A pressed");
 	}
 }
 

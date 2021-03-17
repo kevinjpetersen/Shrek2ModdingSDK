@@ -2,6 +2,13 @@
 class Shrek2Input
 {
 public:
-	bool OnKeyPress(int vKey);
+	enum Keys {
+		A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z,
+		NUMBER_0, NUMBER_1, NUMBER_2, NUMBER_3, NUMBER_4, NUMBER_5, NUMBER_6, NUMBER_7, NUMBER_8, NUMBER_9
+	};
+
+	bool OnKeyPress(Keys key);
+private:
+	int KeyToVKey(Keys key);
 };
 
