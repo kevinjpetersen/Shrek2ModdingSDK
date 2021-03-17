@@ -8,6 +8,8 @@ public:
 	void HideConsole();
 	bool IsConsoleVisible();
 	void LogToConsole(std::string logMessage);
+	LONG GetGameWindowHeight();
+	LONG GetGameWindowWidth();
 	Shrek2Pointers Variables;
 	Shrek2Functions Functions;
 	Shrek2Events Events = Shrek2Events();

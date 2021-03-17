@@ -97,22 +97,14 @@ HRESULT __stdcall Shrek2UI::hookedEndScene(IDirect3DDevice8* pDevice)
 		InitializeSprite(pDevice);
 		Shrek2Textures::InitializeTextures(pDevice);
 
-		/*if (EqualRect(&GameWindowSize, &LastGameWindowSize) == false) {
-			std::cout << "RESIZE: Equaled" << std::endl;
+		if (EqualRect(&GameWindowSize, &LastGameWindowSize) == false) {
 			LastGameWindowSize = GameWindowSize;
 			pDevice->GetViewport(&Viewport);
-			std::cout << "RESIZE: Got viewport" << std::endl;
 
 			Reset(pDevice);
-
-			std::cout << "RESIZE: RESETTED" << std::endl;
-
-			Textures.ReleaseTextures();
-			std::cout << "RESIZE: RELEASED" << std::endl;
-
-			Textures.InitializeTextures(pDevice);
-			std::cout << "RESIZE: INIT TEXTURES" << std::endl;
-		}*/
+			Shrek2Textures::ReleaseTextures();
+			Shrek2Textures::InitializeTextures(pDevice);
+		}
 
 		RenderUI();
 	}

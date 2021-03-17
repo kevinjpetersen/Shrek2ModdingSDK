@@ -74,13 +74,18 @@ void OnPlayerInWaterExit()
 void OnTick()
 {
 	//Game.LogToConsole("Tick tock");
-	if (Game.Input.OnKeyPress(Shrek2Input::A)) {
-		Game.LogToConsole("Letter A pressed");
+	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
+		Game.LogToConsole(
+			std::to_string(Game.Variables.GetPositionX()) + ", " +
+			std::to_string(Game.Variables.GetPositionY()) + ", " +
+			std::to_string(Game.Variables.GetPositionZ())
+		);
 	}
 }
 
 void RenderUI()
 {
+	Shrek2UI::RenderRectangle(Shrek2Rect(0, Game.GetGameWindowHeight() - 256, 256, 256), Shrek2UI::GetColor(255, 255, 0));
 	//Sleep(1000 / 5);
 	/*Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("PIB"), Shrek2Position(50, 50));
 	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("M64"), Shrek2Position(350, 200), 45);

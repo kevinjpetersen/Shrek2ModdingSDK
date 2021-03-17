@@ -110,3 +110,12 @@ bool Shrek2::IsConsoleVisible()
 	return ::IsWindowVisible(::GetConsoleWindow()) != FALSE;
 }
 
+LONG Shrek2::GetGameWindowHeight()
+{
+	return GameWindowSize.bottom - GameWindowSize.top;
+}
+
+LONG Shrek2::GetGameWindowWidth()
+{
+	return GameWindowSize.right - GameWindowSize.left;
+}
