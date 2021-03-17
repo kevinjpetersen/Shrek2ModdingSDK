@@ -6,7 +6,7 @@ namespace Shrek2UI
 	void InitializeSprite(IDirect3DDevice8* pDevice);
 
 	void RenderRectangle(Shrek2Rect rect, D3DCOLOR color);
-	void RenderText(Shrek2Rect rect, LPCSTR text, D3DCOLOR color, bool isNormalText);
+	void RenderText(Shrek2Rect rect, std::string text, D3DCOLOR color, bool isNormalText);
 	void RenderTexture(Shrek2Texture texture, Shrek2Position position, float rotation = 0, D3DXCOLOR color = 0xFFFFFFFF);
 
 	void StopUI();

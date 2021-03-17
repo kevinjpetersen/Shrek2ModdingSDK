@@ -50,16 +50,16 @@ void Shrek2UI::RenderRectangle(Shrek2Rect rect, D3DCOLOR color) {
 	GlobalPDevice->Clear(1, &rectangle, D3DCLEAR_TARGET | D3DCLEAR_TARGET, color, 0.0f, 0);
 }
 
-void Shrek2UI::RenderText(Shrek2Rect rect, LPCSTR text, D3DCOLOR color, bool isNormalText)
+void Shrek2UI::RenderText(Shrek2Rect rect, std::string text, D3DCOLOR color, bool isNormalText)
 {
 	RECT textRectangle;
 	SetRect(&textRectangle, rect.X, rect.Y, rect.X2, rect.Y2);
 
 	if (isNormalText) {
-		shNormalFont->DrawText(text, -1, &textRectangle, DT_LEFT, color);
+		shNormalFont->DrawText(text.c_str(), -1, &textRectangle, DT_LEFT, color);
 	}
 	else {
-		shSmallFont->DrawText(text, -1, &textRectangle, DT_LEFT, color);
+		shSmallFont->DrawText(text.c_str(), -1, &textRectangle, DT_LEFT, color);
 	}
 }
 

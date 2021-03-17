@@ -77,7 +77,6 @@ void OnPlayerInWaterExit()
 
 void OnTick()
 {
-	//Game.LogToConsole("Tick tock");
 	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
 		Game.LogToConsole(
 			std::to_string(Game.Variables.GetPositionX()) + ", " +
@@ -97,6 +96,8 @@ void RenderUI()
 		Shrek2UI::GetColor(insideTrigger ? 0 : 255, insideTrigger ? 255 : 0, 0), 
 		true
 	);
+
+	Shrek2UI::RenderText(Shrek2Rect(0, 0, 400, 100), "Player Health: " + std::to_string((int)Shrek2Maps::Beanstalk_bonus), Shrek2UI::GetColor(255, 0, 0), true);
 	Shrek2UI::RenderRectangle(Shrek2Rect(10, Game.GetGameWindowHeight() / 2 - 64, 128, 128), Shrek2UI::GetColor(insideTrigger ? 0 : 255, insideTrigger ? 255 : 0, 0));
 	//Shrek2UI::RenderRectangle(Shrek2Rect(PlayerLocation.x, PlayerLocation.y, 10, 10), Shrek2UI::GetColor(255, 0, 0));
 
