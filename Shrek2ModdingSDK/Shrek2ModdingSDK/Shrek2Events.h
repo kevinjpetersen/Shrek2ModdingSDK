@@ -39,6 +39,7 @@ private:
 	int PrevBufCursor = 0;
 	std::string PrevBuf = "";
 
+public:
 	// Event Update Functions
 	void EU_OnPlayerInWater();
 	void EU_OnPlayerHealthUpdate();
@@ -49,11 +50,13 @@ private:
 	void EU_OnMapLoad();
 	void EU_OnCharacterChanged();
 	void EU_OnCutLogTick();
-public:
+
 	Shrek2Events() {
 		Variables = Shrek2Pointers();
 	}
+
 	void EventUpdates();
+	void (*ReorderEvents)();
 
 	/*DONE*/ void (*OnStart)();
 	/*DONE*/ void (*OnTick)();

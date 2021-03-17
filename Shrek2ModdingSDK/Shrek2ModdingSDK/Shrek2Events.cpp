@@ -200,13 +200,20 @@ void Shrek2Events::EU_OnCutLogTick()
 
 void Shrek2Events::EventUpdates()
 {
-	EU_OnCutLogTick();
-	EU_OnMapLoad();
-	EU_OnCharacterChanged();
-	EU_OnPlayerInWater();
-	EU_OnPlayerHealthUpdate();
-	EU_OnPlayerJumpMagnet();
-	EU_OnPlayerBouncePad();
-	EU_OnPlayerInAirLand();
-	EU_OnPlayerInfo();
+	if (ReorderEvents) 
+	{
+		ReorderEvents();
+	}
+	else
+	{
+		EU_OnMapLoad();
+		EU_OnCharacterChanged();
+		EU_OnPlayerInWater();
+		EU_OnPlayerHealthUpdate();
+		EU_OnPlayerJumpMagnet();
+		EU_OnPlayerBouncePad();
+		EU_OnPlayerInAirLand();
+		EU_OnPlayerInfo();
+		EU_OnCutLogTick();
+	}
 }

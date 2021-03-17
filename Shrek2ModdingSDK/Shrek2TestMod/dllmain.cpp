@@ -23,9 +23,9 @@ void OnMapLoad(Shrek2Maps oldMap, Shrek2Maps newMap, std::string rawMap) {
 
 void OnCharacterChanged(std::string oldCharacter, std::string newCharacter)
 {
-	if (Shrek2Utils::DoesEqual(newCharacter, "fionaogre")) {
+	/*if (Shrek2Utils::DoesEqual(newCharacter, "fionaogre")) {
 		Game.LogToConsole("It was fiona all along!");
-	}
+	}*/
 
 	Game.LogToConsole("CHARACER CHANGE");
 
@@ -50,8 +50,8 @@ void OnCharacterChanged(std::string oldCharacter, std::string newCharacter)
 void OnPlayerInWaterEnter()
 {
 	Game.LogToConsole("Enter water");
-	Game.Events.OnCharacterChanged = NULL;
-	Game.Sounds.Play("Fanfare");
+	//Game.Events.OnCharacterChanged = NULL;
+	//Game.Sounds.Play("Fanfare");
 }
 
 void OnPlayerInWaterExit()
@@ -68,11 +68,12 @@ void OnTick()
 
 void RenderUI()
 {
-	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("PIB"), Shrek2Position(50, 50));
+	//Sleep(1000 / 5);
+	/*Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("PIB"), Shrek2Position(50, 50));
 	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("M64"), Shrek2Position(350, 200), 45);
 	Shrek2UI::RenderRectangle(Shrek2Rect(0, 0, 64, 64), Shrek2UI::GetColor(255, 255, 0));
 	Shrek2UI::RenderRectangle(Shrek2Rect(0, 64, 64, 64), Shrek2UI::GetColor(255, 0, 0));
-	Shrek2UI::RenderText(Shrek2Rect(50, 50, 200, 100), "Master_64 is a Shrekster!", Shrek2UI::GetColor(255, 0, 0), true);
+	Shrek2UI::RenderText(Shrek2Rect(50, 50, 200, 100), "Master_64 is a Shrekster!", Shrek2UI::GetColor(255, 0, 0), true);*/
 }
 
 void OnStart()
@@ -105,15 +106,35 @@ void OnCutLogTick(std::string line)
 	//std::cout << line << std::endl << std::endl;
 }
 
+void ReorderEvents()
+{
+	Game.Events.EU_OnMapLoad();
+	Game.Events.EU_OnCharacterChanged();
+	Game.Events.EU_OnPlayerInWater();
+	Game.Events.EU_OnPlayerHealthUpdate();
+	Game.Events.EU_OnPlayerJumpMagnet();
+	Game.Events.EU_OnPlayerBouncePad();
+	Game.Events.EU_OnPlayerInAirLand();
+	Game.Events.EU_OnPlayerInfo();
+	Game.Events.EU_OnCutLogTick();
+}
+
+void OnPlayerHealth(float oldHealth, float newHealth)
+{
+	Game.LogToConsole("Player health update");
+}
+
 DWORD WINAPI InitializationThread(HINSTANCE hModule)
 {
 	Game.Events.OnStart = OnStart;
-	Game.Events.OnMapLoad = OnMapLoad;
+	//Game.Events.OnMapLoad = OnMapLoad;
 	Game.Events.OnCharacterChanged = OnCharacterChanged;
-	Game.Events.OnTick = OnTick;
+	//Game.Events.OnTick = OnTick;
 	Game.Events.OnPlayerInWaterEnter = OnPlayerInWaterEnter;
-	Game.Events.OnPlayerInWaterExit = OnPlayerInWaterExit;
-	Game.Events.OnCutLogTick = OnCutLogTick;
+	//Game.Events.OnPlayerInWaterExit = OnPlayerInWaterExit;
+	//Game.Events.OnCutLogTick = OnCutLogTick;
+	//Game.Events.OnPlayerHealthUpdate = OnPlayerHealth;
+	Game.Events.ReorderEvents = ReorderEvents;
 
 	Game.Initialize("Shrek 2 Test Mod");
 
