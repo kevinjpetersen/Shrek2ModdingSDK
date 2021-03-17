@@ -726,3 +726,15 @@ bool Shrek2Pointers::SetAccelerationZ(float AccelerationZ) {
 float Shrek2Pointers::GetAccelerationZ() {
     return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x5B8);
 }
+
+float Shrek2Pointers::GetCamAngleX() {
+    return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x30, 0x34, 0x898, 0x1080);
+}
+
+float Shrek2Pointers::GetCamAngleY() {
+    return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x30, 0x34, 0x898, 0x1084);
+}
+
+float Shrek2Pointers::GetCamAngleZ() {
+    return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x30, 0x34, 0x898, 0x1088);
+}

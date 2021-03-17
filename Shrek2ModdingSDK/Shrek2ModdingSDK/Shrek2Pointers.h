@@ -311,5 +311,11 @@ public:
 
 	float GetAccelerationZ();
 	bool SetAccelerationZ(float AccelerationZ);
+
+	float GetCamAngleX();
+
+	float GetCamAngleY();
+
+	float GetCamAngleZ();
 };
 
