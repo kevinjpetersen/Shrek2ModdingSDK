@@ -7,9 +7,11 @@
 Shrek2 Game = Shrek2();
 
 Shrek2Maps NewMap;
-Shrek2Trigger trigger1 = Shrek2Trigger(-13367.20f, -454.49f, 150);
-bool insideTrigger = false;
-bool hasTriggered = false;
+Shrek2Trigger portal1 = Shrek2Trigger(0, 0, 0);
+Shrek2Trigger portal2 = Shrek2Trigger(0, 0, 0);
+
+bool enteredPortal1 = false;
+bool enteredPortal2 = false;
 
 void OnMapLoad(Shrek2Maps oldMap, Shrek2Maps newMap, std::string rawMap) {
 	NewMap = newMap;
@@ -78,37 +80,73 @@ void OnPlayerInWaterExit()
 void OnTick()
 {
 	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
-		Game.LogToConsole(
-			std::to_string(Game.Variables.GetPositionX()) + ", " +
-			std::to_string(Game.Variables.GetPositionY()) + ", " +
-			std::to_string(Game.Variables.GetPositionZ())
-		);
+		// Fire Portal - 1
+		Game.Delay(1).then([]() {
+			float x = Game.Variables.GetPositionX();
+			float y = Game.Variables.GetPositionY();
+			float z = Game.Variables.GetPositionZ();
+			Game.Functions.CC("teleport");
+
+			Game.Wait(1);
+
+			float nx = Game.Variables.GetPositionX();
+			float ny = Game.Variables.GetPositionY();
+
+			portal1 = Shrek2Trigger(nx, ny, 100);
+
+			Game.Variables.SetPositionX(x);
+			Game.Variables.SetPositionY(y);
+			Game.Variables.SetPositionZ(z);
+			});
+	}
+
+	if (Game.Input.OnKeyPress(Shrek2Input::H)) {
+		Game.Delay(1).then([]() {
+			// Fire Portal - 2
+			float x = Game.Variables.GetPositionX();
+			float y = Game.Variables.GetPositionY();
+			float z = Game.Variables.GetPositionZ();
+
+			Game.Functions.CC("teleport");
+
+			Game.Wait(1);
+
+			float nx = Game.Variables.GetPositionX();
+			float ny = Game.Variables.GetPositionY();
+
+			portal2 = Shrek2Trigger(nx, ny, 100);
+
+			Game.Variables.SetPositionX(x);
+			Game.Variables.SetPositionY(y);
+			Game.Variables.SetPositionZ(z);
+			});
 	}
 }
 
 void RenderUI()
 {
-	std::string t = insideTrigger ? "Yes" : "No";
+	/*std::string t = insideTrigger ? "Yes" : "No";
 
 	Shrek2UI::RenderText(
-		Shrek2Rect(10, Game.GetGameWindowHeight() / 2 - 90, 400, 100), 
-		("Inside Trigger 1: " + t).c_str(), 
-		Shrek2UI::GetColor(insideTrigger ? 0 : 255, insideTrigger ? 255 : 0, 0), 
+		Shrek2Rect(10, Game.GetGameWindowHeight() / 2 - 90, 400, 100),
+		("Inside Trigger 1: " + t).c_str(),
+		Shrek2UI::GetColor(insideTrigger ? 0 : 255, insideTrigger ? 255 : 0, 0),
 		true
 	);
 
 	Shrek2UI::RenderText(Shrek2Rect(0, 0, 400, 100), "Player Health: " + std::to_string((int)Shrek2Maps::Beanstalk_bonus), Shrek2UI::GetColor(255, 0, 0), true);
-	Shrek2UI::RenderRectangle(Shrek2Rect(10, Game.GetGameWindowHeight() / 2 - 64, 128, 128), Shrek2UI::GetColor(insideTrigger ? 0 : 255, insideTrigger ? 255 : 0, 0));
+	*/
+	//Shrek2UI::RenderRectangle(Shrek2Rect(10, Game.GetGameWindowHeight() / 2 - 64, 128, 128), Shrek2UI::GetColor(insideTrigger ? 0 : 255, insideTrigger ? 255 : 0, 0));
 	//Shrek2UI::RenderRectangle(Shrek2Rect(PlayerLocation.x, PlayerLocation.y, 10, 10), Shrek2UI::GetColor(255, 0, 0));
 
 
 
 	//Sleep(1000 / 5);
-	/*Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("PIB"), Shrek2Position(50, 50));
+	/*Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("PIB"), Shrek2Position(Game.GetGameWindowWidth() / 2, Game.GetGameWindowHeight() / 2));
 	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("M64"), Shrek2Position(350, 200), 45);
 	Shrek2UI::RenderRectangle(Shrek2Rect(0, 0, 64, 64), Shrek2UI::GetColor(255, 255, 0));
-	Shrek2UI::RenderRectangle(Shrek2Rect(0, 64, 64, 64), Shrek2UI::GetColor(255, 0, 0));
-	*/
+	Shrek2UI::RenderRectangle(Shrek2Rect(0, 64, 64, 64), Shrek2UI::GetColor(255, 0, 0));*/
+
 }
 
 void OnStart()
@@ -148,16 +186,28 @@ void OnPlayerHealth(float oldHealth, float newHealth)
 
 void OnPlayerMove(float x, float y, float z)
 {
-	insideTrigger = trigger1.IsInsideTrigger(x, y);
-	if (insideTrigger) {
-		if (!hasTriggered) {
-			hasTriggered = true;
-			Game.Sounds.Play("Fanfare");
-			Game.LogToConsole("Entered trigger 1");
+	bool insideTrigger1 = portal1.IsInsideTrigger(x, y);
+	bool insideTrigger2 = portal2.IsInsideTrigger(x, y);
+	if (insideTrigger1) {
+		if (!enteredPortal1) {
+			enteredPortal1 = true;
+			Game.Variables.SetPositionX(portal2.X);
+			Game.Variables.SetPositionY(portal2.Y);
 		}
 	}
 	else {
-		hasTriggered = false;
+		enteredPortal1 = false;
+	}
+
+	if (insideTrigger2) {
+		if (!enteredPortal2) {
+			enteredPortal2 = true;
+			Game.Variables.SetPositionX(portal1.X);
+			Game.Variables.SetPositionY(portal1.Y);
+		}
+	}
+	else {
+		enteredPortal2 = false;
 	}
 }
 
