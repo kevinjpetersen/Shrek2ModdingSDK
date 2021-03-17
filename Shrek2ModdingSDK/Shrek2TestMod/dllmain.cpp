@@ -2,10 +2,14 @@
 #include <string>
 #include "Shrek2ModdingSDK.h"
 #include "Shrek2DirectX.h"
+#include <algorithm> 
 
 Shrek2 Game = Shrek2();
 
 Shrek2Maps NewMap;
+Shrek2Trigger trigger1 = Shrek2Trigger(-13367.20f, -454.49f, 150);
+bool insideTrigger = false;
+bool hasTriggered = false;
 
 void OnMapLoad(Shrek2Maps oldMap, Shrek2Maps newMap, std::string rawMap) {
 	NewMap = newMap;
@@ -85,13 +89,25 @@ void OnTick()
 
 void RenderUI()
 {
-	Shrek2UI::RenderRectangle(Shrek2Rect(0, Game.GetGameWindowHeight() - 256, 256, 256), Shrek2UI::GetColor(255, 255, 0));
+	std::string t = insideTrigger ? "Yes" : "No";
+
+	Shrek2UI::RenderText(
+		Shrek2Rect(10, Game.GetGameWindowHeight() / 2 - 90, 400, 100), 
+		("Inside Trigger 1: " + t).c_str(), 
+		Shrek2UI::GetColor(insideTrigger ? 0 : 255, insideTrigger ? 255 : 0, 0), 
+		true
+	);
+	Shrek2UI::RenderRectangle(Shrek2Rect(10, Game.GetGameWindowHeight() / 2 - 64, 128, 128), Shrek2UI::GetColor(insideTrigger ? 0 : 255, insideTrigger ? 255 : 0, 0));
+	//Shrek2UI::RenderRectangle(Shrek2Rect(PlayerLocation.x, PlayerLocation.y, 10, 10), Shrek2UI::GetColor(255, 0, 0));
+
+
+
 	//Sleep(1000 / 5);
 	/*Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("PIB"), Shrek2Position(50, 50));
 	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("M64"), Shrek2Position(350, 200), 45);
 	Shrek2UI::RenderRectangle(Shrek2Rect(0, 0, 64, 64), Shrek2UI::GetColor(255, 255, 0));
 	Shrek2UI::RenderRectangle(Shrek2Rect(0, 64, 64, 64), Shrek2UI::GetColor(255, 0, 0));
-	Shrek2UI::RenderText(Shrek2Rect(50, 50, 200, 100), "Master_64 is a Shrekster!", Shrek2UI::GetColor(255, 0, 0), true);*/
+	*/
 }
 
 void OnStart()
@@ -129,12 +145,28 @@ void OnPlayerHealth(float oldHealth, float newHealth)
 	Game.LogToConsole("Player health update");
 }
 
+void OnPlayerMove(float x, float y, float z)
+{
+	insideTrigger = trigger1.IsInsideTrigger(x, y);
+	if (insideTrigger) {
+		if (!hasTriggered) {
+			hasTriggered = true;
+			Game.Sounds.Play("Fanfare");
+			Game.LogToConsole("Entered trigger 1");
+		}
+	}
+	else {
+		hasTriggered = false;
+	}
+}
+
 DWORD WINAPI InitializationThread(HINSTANCE hModule)
 {
 	Game.Events.OnStart = OnStart;
 	//Game.Events.OnMapLoad = OnMapLoad;
 	Game.Events.OnCharacterChanged = OnCharacterChanged;
 	Game.Events.OnTick = OnTick;
+	Game.Events.OnPlayerMove = OnPlayerMove;
 	Game.Events.OnPlayerInWaterEnter = OnPlayerInWaterEnter;
 	//Game.Events.OnPlayerInWaterExit = OnPlayerInWaterExit;
 	//Game.Events.OnCutLogTick = OnCutLogTick;

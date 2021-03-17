@@ -21,6 +21,7 @@
 #include "Shrek2Events.h"
 #include "Shrek2Functions.h"
 #include "Shrek2Sound.h"
+#include "Shrek2Trigger.h"
 
 using namespace Concurrency;
 #include "Shrek2.h"
