@@ -12,6 +12,7 @@ public:
 	Shrek2Functions Functions;
 	Shrek2Events Events = Shrek2Events();
 	Shrek2Sound Sounds;
+	Shrek2Input Input;
 	bool IsModRunning;
 	void SetDllHandle(HMODULE hModule);
 	task<void> Delay(unsigned int delayAmountInMs);

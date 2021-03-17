@@ -74,6 +74,9 @@ void OnPlayerInWaterExit()
 void OnTick()
 {
 	//Game.LogToConsole("Tick tock");
+	if (Game.Input.OnKeyPress(VK_NUMPAD6)) {
+		Game.LogToConsole("Numpad 6 pressed");
+	}
 }
 
 void RenderUI()
@@ -126,7 +129,7 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	Game.Events.OnStart = OnStart;
 	//Game.Events.OnMapLoad = OnMapLoad;
 	Game.Events.OnCharacterChanged = OnCharacterChanged;
-	//Game.Events.OnTick = OnTick;
+	Game.Events.OnTick = OnTick;
 	Game.Events.OnPlayerInWaterEnter = OnPlayerInWaterEnter;
 	//Game.Events.OnPlayerInWaterExit = OnPlayerInWaterExit;
 	//Game.Events.OnCutLogTick = OnCutLogTick;

@@ -166,6 +166,7 @@
   <ItemGroup>
     <ClInclude Include="Shrek2DirectX.h" />
     <ClInclude Include="Shrek2Events.h" />
+    <ClInclude Include="Shrek2Input.h" />
     <ClInclude Include="Shrek2Maps.h" />
     <ClInclude Include="Shrek2Functions.h" />
     <ClInclude Include="Shrek2ModdingSDK.h" />
@@ -183,6 +184,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Shrek2Events.cpp" />
+    <ClCompile Include="Shrek2Input.cpp" />
     <ClCompile Include="Shrek2Maps.cpp" />
     <ClCompile Include="Shrek2Functions.cpp" />
     <ClCompile Include="Shrek2Memory.cpp" />

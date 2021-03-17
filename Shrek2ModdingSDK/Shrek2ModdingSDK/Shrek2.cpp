@@ -17,6 +17,7 @@ void Shrek2::Initialize(std::string ModName)
 	Sounds = Shrek2Sound(Shrek2StaticVars::DllFolderPath);
 	Variables = Shrek2Pointers();
 	Functions = Shrek2Functions(DllName);
+	Input = Shrek2Input();
 
 	LogToConsole("DllName is: " + DllName);
 
