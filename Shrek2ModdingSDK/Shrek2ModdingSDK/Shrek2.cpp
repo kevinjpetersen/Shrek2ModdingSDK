@@ -50,6 +50,14 @@ void Shrek2::Initialize(std::string ModName)
 			continue;
 		}
 
+		if (Triggers.EnableTriggers)
+		{
+			float x = Variables.GetPositionX();
+			float y = Variables.GetPositionY();
+			float z = Variables.GetPositionZ();
+
+			Triggers.CheckTriggers(Shrek2Vector3(x, y, z));
+		}
 		Events.EventUpdates();
 		if(Events.OnTick) Events.OnTick();
 	}

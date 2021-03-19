@@ -2,18 +2,26 @@
 class Shrek2Trigger
 {
 public:
-	float X;
-	float Y;
-	int Size;
+	std::string Name;
+	Shrek2Vector3 Position;
+	Shrek2Vector3 Size;
+	bool Triggered = false;
+	bool TriggerOnce = false;
+	bool TriggeredOnceExit = false;
 
 	Shrek2Trigger() {}
-	Shrek2Trigger(float x, float y, int size)
+
+	Shrek2Trigger(std::string name, Shrek2Vector3 position, Shrek2Vector3 size, bool triggerOnce = false)
 	{
-		X = x;
-		Y = y;
+		Name = name;
+		Position = position;
 		Size = size;
+		TriggerOnce = triggerOnce;
 	}
 
-	bool IsInsideTrigger(float x, float y);
+	int CheckTrigger(Shrek2Vector3 valuePosition, Shrek2Vector3 valueSize, bool enableDebugging);
+	Shrek2Vector3 DistanceToTrigger(Shrek2Vector3 value);
+private:
+	bool IsInsideTrigger(Shrek2Vector3 valuePosition, Shrek2Vector3 valueSize);
 };
 

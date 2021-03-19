@@ -6,136 +6,30 @@
 
 Shrek2 Game = Shrek2();
 
-Shrek2Maps NewMap;
-Shrek2Trigger portal1 = Shrek2Trigger(0, 0, 0);
-Shrek2Trigger portal2 = Shrek2Trigger(0, 0, 0);
-
-bool enteredPortal1 = false;
-bool enteredPortal2 = false;
-
-void OnMapLoad(Shrek2Maps oldMap, Shrek2Maps newMap, std::string rawMap) {
-	NewMap = newMap;
-
-	Game.LogToConsole("Old map: " + Game.Functions.MapIdToString(static_cast<int>(oldMap)) +
-		" | New Map: " + Game.Functions.MapIdToString(static_cast<int>(newMap)));
-
-	if (newMap == Shrek2Maps::Shreks_Swamp) {
-		Game.LogToConsole("We're in SWAAAMP!");
-	}
-	else if (newMap == Shrek2Maps::The_Hunt_Part1) {
-		Game.LogToConsole("It's hunting time!");
-	}
-}
-
-void OnCharacterChanged(std::string oldCharacter, std::string newCharacter)
-{
-	/*if (Shrek2Utils::DoesEqual(newCharacter, "fionaogre")) {
-		Game.LogToConsole("It was fiona all along!");
-	}*/
-
-	Game.LogToConsole("CHARACER CHANGE");
-
-	//Game.LogToConsole("Old character: " + oldCharacter + " | New character: " + newCharacter);
-
-	//Game.Delay(1000).then([]() {
-	//	Game.Functions.CC("adminsay Hello 1");
-	//	Game.Wait(1000);
-	//	Game.Functions.CC("adminsay Hello 2");
-	//	Game.Wait(1000);
-	//	Game.Functions.CC("adminsay Hello 3");
-	//	Game.Wait(1000);
-	//	Game.Functions.CC("adminsay Hello 4");
-	//	Game.Wait(1000);
-	//	Game.Functions.CC("adminsay Hello 5");
-	//	Game.Wait(1000);
-	//	Game.Functions.CC("adminsay DONE");
-	//});
-	//Game.LogToConsole("KEEP RUNNING");
-}
-
-void OnPlayerInWaterEnter()
-{
-	Game.LogToConsole("Enter water");
-	//Game.Events.OnCharacterChanged = NULL;
-	//Game.Sounds.Play("Fanfare");
-	Game.Functions.DeleteSaveGame(1);
-	/*Game.Functions.DeleteSaveGame(1);
-	Game.Functions.DeleteSaveGame(2);
-	Game.Functions.DeleteSaveGame(3);
-	Game.Functions.DeleteSaveGame(4);
-	Game.Functions.DeleteSaveGame(5);
-	Game.Functions.DeleteSaveGame(6);
-	Game.Functions.DeleteSaveGame(7);
-	Game.Functions.DeleteSaveGame(8);
-	Game.Functions.DeleteSaveGame(9);*/
-}
-
-void OnPlayerInWaterExit()
-{
-	Game.LogToConsole("Exit wait");
-	Game.Events.OnCharacterChanged = OnCharacterChanged;
-	Game.Sounds.Stop("Fanfare");
-}
-
 void OnTick()
 {
 	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
-		// Fire Portal - 1
-		Game.Delay(1).then([]() {
-			float x = Game.Variables.GetPositionX();
-			float y = Game.Variables.GetPositionY();
-			float z = Game.Variables.GetPositionZ();
-			Game.Functions.CC("teleport");
+		float x = Game.Variables.GetPositionX();
+		float y = Game.Variables.GetPositionY();
+		float z = Game.Variables.GetPositionZ();
 
-			Game.Wait(1);
-
-			float nx = Game.Variables.GetPositionX();
-			float ny = Game.Variables.GetPositionY();
-
-			portal1 = Shrek2Trigger(nx, ny, 100);
-
-			Game.Variables.SetPositionX(x);
-			Game.Variables.SetPositionY(y);
-			Game.Variables.SetPositionZ(z);
-			});
-	}
-
-	if (Game.Input.OnKeyPress(Shrek2Input::H)) {
-		Game.Delay(1).then([]() {
-			// Fire Portal - 2
-			float x = Game.Variables.GetPositionX();
-			float y = Game.Variables.GetPositionY();
-			float z = Game.Variables.GetPositionZ();
-
-			Game.Functions.CC("teleport");
-
-			Game.Wait(1);
-
-			float nx = Game.Variables.GetPositionX();
-			float ny = Game.Variables.GetPositionY();
-
-			portal2 = Shrek2Trigger(nx, ny, 100);
-
-			Game.Variables.SetPositionX(x);
-			Game.Variables.SetPositionY(y);
-			Game.Variables.SetPositionZ(z);
-			});
+		Game.LogToConsole(std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z));
 	}
 }
 
 void RenderUI()
 {
-	/*std::string t = insideTrigger ? "Yes" : "No";
+	/*std::string t = trigger1.Triggered ? "Yes" : "No";
 
 	Shrek2UI::RenderText(
 		Shrek2Rect(10, Game.GetGameWindowHeight() / 2 - 90, 400, 100),
 		("Inside Trigger 1: " + t).c_str(),
-		Shrek2UI::GetColor(insideTrigger ? 0 : 255, insideTrigger ? 255 : 0, 0),
+		Shrek2UI::GetColor(0, 0, 255),
 		true
-	);
+	);*/
 
-	Shrek2UI::RenderText(Shrek2Rect(0, 0, 400, 100), "Player Health: " + std::to_string((int)Shrek2Maps::Beanstalk_bonus), Shrek2UI::GetColor(255, 0, 0), true);
-	*/
+	//Shrek2UI::RenderText(Shrek2Rect(0, 0, 400, 100), "Player Health: " + std::to_string((int)Shrek2Maps::Beanstalk_bonus), Shrek2UI::GetColor(255, 0, 0), true);
+	
 	//Shrek2UI::RenderRectangle(Shrek2Rect(10, Game.GetGameWindowHeight() / 2 - 64, 128, 128), Shrek2UI::GetColor(insideTrigger ? 0 : 255, insideTrigger ? 255 : 0, 0));
 	//Shrek2UI::RenderRectangle(Shrek2Rect(PlayerLocation.x, PlayerLocation.y, 10, 10), Shrek2UI::GetColor(255, 0, 0));
 
@@ -149,79 +43,40 @@ void RenderUI()
 
 }
 
+void OnTriggerEnter(Shrek2Trigger trigger)
+{
+	Game.LogToConsole(trigger.Name + " ENTER");
+}
+
+void OnTriggerExit(Shrek2Trigger trigger)
+{
+	Game.LogToConsole(trigger.Name + " EXIT");
+}
+
 void OnStart()
 {
-	Game.Sounds.AddSound("Sounds/fanfare.wav", "Fanfare");
+	//Game.Sounds.AddSound("Sounds/fanfare.wav", "Fanfare");
 	//Game.Sounds.AddSound("Sounds/allstars.wav", "Allstars");
 	//Game.Sounds.Play("Allstars");
-	Shrek2Textures::AddTexture("Images/pib.png", "PIB");
-	Shrek2Textures::AddTexture("Images/master64.jpg", "M64");
+	//Shrek2Textures::AddTexture("Images/pib.png", "PIB");
+	//Shrek2Textures::AddTexture("Images/master64.jpg", "M64");
 
 	Shrek2UI::GameWindowSize = Game.GameWindowSize;
 	Shrek2UI::RenderUI = RenderUI;
 	Shrek2UI::Initialize();
 }
 
-void OnCutLogTick(std::string line)
-{
-	if (Shrek2Utils::Contains(line, "kwherocontroller ShowMenu")) {
-		Game.LogToConsole("PAUSE MENU OPENED");
-	}
-	else if (Shrek2Utils::Contains(line, "GUIController::CloseMenu")) {
-		Game.LogToConsole("PAUSE MENU CLOSED");
-	}
-	else if (Shrek2Utils::Contains(line, "Saving into slot")) {
-		Game.LogToConsole("SAVING");
-	}
-	else if (Shrek2Utils::Contains(line, "Resetting GLevel: Level")) {
-		Game.LogToConsole("LOADING");
-	}
-	//std::cout << line << std::endl << std::endl;
-}
-
-void OnPlayerHealth(float oldHealth, float newHealth)
-{
-	Game.LogToConsole("Player health update");
-}
-
-void OnPlayerMove(float x, float y, float z)
-{
-	bool insideTrigger1 = portal1.IsInsideTrigger(x, y);
-	bool insideTrigger2 = portal2.IsInsideTrigger(x, y);
-	if (insideTrigger1) {
-		if (!enteredPortal1) {
-			enteredPortal1 = true;
-			Game.Variables.SetPositionX(portal2.X);
-			Game.Variables.SetPositionY(portal2.Y);
-		}
-	}
-	else {
-		enteredPortal1 = false;
-	}
-
-	if (insideTrigger2) {
-		if (!enteredPortal2) {
-			enteredPortal2 = true;
-			Game.Variables.SetPositionX(portal1.X);
-			Game.Variables.SetPositionY(portal1.Y);
-		}
-	}
-	else {
-		enteredPortal2 = false;
-	}
-}
-
 DWORD WINAPI InitializationThread(HINSTANCE hModule)
 {
 	Game.Events.OnStart = OnStart;
-	//Game.Events.OnMapLoad = OnMapLoad;
-	Game.Events.OnCharacterChanged = OnCharacterChanged;
 	Game.Events.OnTick = OnTick;
-	Game.Events.OnPlayerMove = OnPlayerMove;
-	Game.Events.OnPlayerInWaterEnter = OnPlayerInWaterEnter;
-	//Game.Events.OnPlayerInWaterExit = OnPlayerInWaterExit;
-	//Game.Events.OnCutLogTick = OnCutLogTick;
-	//Game.Events.OnPlayerHealthUpdate = OnPlayerHealth;
+	Game.Triggers.OnTriggerEnter = OnTriggerEnter;
+	Game.Triggers.OnTriggerExit = OnTriggerExit;
+
+	Game.Triggers.EnableDebugging = true;
+	Game.Triggers.AddTrigger(
+		Shrek2Trigger("Lillypad5", Shrek2Vector3(-13401.538086, -789.874084, -207.824005), Shrek2Vector3(2000, 100, 100))
+	);
 
 	Game.Initialize("Shrek 2 Test Mod");
 

@@ -180,8 +180,10 @@
     <ClInclude Include="Shrek2Texture.h" />
     <ClInclude Include="Shrek2Textures.h" />
     <ClInclude Include="Shrek2Trigger.h" />
+    <ClInclude Include="Shrek2Triggers.h" />
     <ClInclude Include="Shrek2UI.h" />
     <ClInclude Include="Shrek2Utils.h" />
+    <ClInclude Include="Shrek2Vector3.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Shrek2Events.cpp" />
@@ -198,8 +200,10 @@
     <ClCompile Include="Shrek2Texture.cpp" />
     <ClCompile Include="Shrek2Textures.cpp" />
     <ClCompile Include="Shrek2Trigger.cpp" />
+    <ClCompile Include="Shrek2Triggers.cpp" />
     <ClCompile Include="Shrek2UI.cpp" />
     <ClCompile Include="Shrek2Utils.cpp" />
+    <ClCompile Include="Shrek2Vector3.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
