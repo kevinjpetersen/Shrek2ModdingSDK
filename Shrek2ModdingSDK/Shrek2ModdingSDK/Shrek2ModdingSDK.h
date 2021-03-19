@@ -13,12 +13,12 @@
 #include <map>
 #include <string>
 #include <regex>
+#include "Shrek2Maps.h"
 #include "Shrek2Vector3.h"
 #include "Shrek2Trigger.h"
 #include "Shrek2Triggers.h"
 #include "Shrek2Input.h"
 #include "Shrek2StaticVars.h"
-#include "Shrek2Maps.h"
 #include "Shrek2Utils.h"
 #include "Shrek2Memory.h"
 #include "Shrek2Pointers.h"

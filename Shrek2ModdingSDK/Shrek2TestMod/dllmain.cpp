@@ -14,6 +14,12 @@ void OnTick()
 		float z = Game.Variables.GetPositionZ();
 
 		Game.LogToConsole(std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z));
+
+		Game.Triggers.ResetTrigger("Lillypad5");
+	}
+
+	if (Game.Input.OnKeyPress(Shrek2Input::H)) {
+		Game.Triggers.ResetAllTriggers();
 	}
 }
 
@@ -45,18 +51,29 @@ void RenderUI()
 
 void OnTriggerEnter(Shrek2Trigger trigger)
 {
-	Game.LogToConsole(trigger.Name + " ENTER");
+	if (Shrek2Utils::DoesEqual(trigger.Name, "Lillypad1"))
+	{
+		//Game.Sounds.Play("Allstars");
+		Game.Triggers.EnableTrigger("Lillypad5");
+		Game.Functions.CCS({ "fly", "adminsay To jump on the lillypad, wait you already jumped on it.." });
+	}
+
+	if (Shrek2Utils::DoesEqual(trigger.Name, "Lillypad5"))
+	{
+		//Game.Sounds.Play("Fanfare");
+		Game.Functions.CCS({"walk", "adminsay Omg you hit the 5th Lillypad! GOOD JOB!" });
+	}
 }
 
 void OnTriggerExit(Shrek2Trigger trigger)
 {
-	Game.LogToConsole(trigger.Name + " EXIT");
+
 }
 
 void OnStart()
 {
-	//Game.Sounds.AddSound("Sounds/fanfare.wav", "Fanfare");
-	//Game.Sounds.AddSound("Sounds/allstars.wav", "Allstars");
+	Game.Sounds.AddSound("Sounds/fanfare.wav", "Fanfare");
+	Game.Sounds.AddSound("Sounds/allstars.wav", "Allstars");
 	//Game.Sounds.Play("Allstars");
 	//Shrek2Textures::AddTexture("Images/pib.png", "PIB");
 	//Shrek2Textures::AddTexture("Images/master64.jpg", "M64");
@@ -74,9 +91,10 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	Game.Triggers.OnTriggerExit = OnTriggerExit;
 
 	Game.Triggers.EnableDebugging = true;
-	Game.Triggers.AddTrigger(
-		Shrek2Trigger("Lillypad5", Shrek2Vector3(-13401.538086, -789.874084, -207.824005), Shrek2Vector3(2000, 100, 100))
-	);
+	Game.Triggers.AddTriggers({
+		Shrek2Trigger("Lillypad5", Shrek2Vector3(-13401.538086, -789.874084, -207.824005), Shrek2Vector3(2000, 100, 1000), Shrek2Maps::Shreks_Swamp, true, false),
+		Shrek2Trigger("Lillypad1", Shrek2Vector3(-12877.945312, 371.631348, -207.824005), Shrek2Vector3(200, 200, 200), Shrek2Maps::Shreks_Swamp, true),
+	});
 
 	Game.Initialize("Shrek 2 Test Mod");
 

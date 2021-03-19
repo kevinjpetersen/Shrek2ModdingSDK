@@ -52,11 +52,13 @@ void Shrek2::Initialize(std::string ModName)
 
 		if (Triggers.EnableTriggers)
 		{
+			Shrek2Maps map = Shrek2Utils::MapStringToMap(Variables.GetCurrentMap());
+
 			float x = Variables.GetPositionX();
 			float y = Variables.GetPositionY();
 			float z = Variables.GetPositionZ();
 
-			Triggers.CheckTriggers(Shrek2Vector3(x, y, z));
+			Triggers.CheckTriggers(Shrek2Vector3(x, y, z), map);
 		}
 		Events.EventUpdates();
 		if(Events.OnTick) Events.OnTick();

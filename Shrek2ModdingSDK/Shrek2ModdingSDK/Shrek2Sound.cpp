@@ -19,6 +19,12 @@ void Shrek2Sound::Play(std::string alias)
 	mciSendString(("play " + alias).c_str(), NULL, 0, 0);
 }
 
+void Shrek2Sound::PlayLoop(std::string alias)
+{
+	mciSendString(AddedSounds[alias].c_str(), NULL, 0, 0);
+	mciSendString(("play " + alias + " repeat").c_str(), NULL, 0, 0);
+}
+
 void Shrek2Sound::Stop(std::string alias)
 {
 	mciSendString(("stop " + alias).c_str(), NULL, 0, 0);

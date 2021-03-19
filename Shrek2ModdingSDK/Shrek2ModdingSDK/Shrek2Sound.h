@@ -9,6 +9,7 @@ public:
 
 	void AddSound(std::string soundFile, std::string alias);
 	void Play(std::string alias);
+	void PlayLoop(std::string alias);
 	void Stop(std::string alias);
 private:
 	std::map<std::string, std::string> AddedSounds;
