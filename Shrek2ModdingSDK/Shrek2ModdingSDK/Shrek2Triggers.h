@@ -3,7 +3,7 @@ class Shrek2Triggers
 {
 public:
 	void AddTriggers(std::vector<Shrek2Trigger> triggers);
-	void CheckTriggers(Shrek2Vector3 position, Shrek2Maps map);
+	void CheckTriggers(Shrek2Vector3 position, Shrek2Maps map, Shrek2Vector3 currentSize);
 	void ResetAllTriggers();
 	void ResetTrigger(std::string name);
 	void EnableTrigger(std::string name);

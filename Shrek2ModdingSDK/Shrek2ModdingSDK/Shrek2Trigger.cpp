@@ -48,12 +48,12 @@ bool Shrek2Trigger::IsInsideTrigger(Shrek2Vector3 valuePosition, Shrek2Vector3 v
 	float aMinZ = Position.Z - (Size.Z / 2);
 	float aMaxZ = Position.Z + (Size.Z / 2);
 
-	float bMinX = valuePosition.X - (valueSize.X / 2);
-	float bMaxX = valuePosition.X + (valueSize.X / 2);
-	float bMinY = valuePosition.Y - (valueSize.Y / 2);
-	float bMaxY = valuePosition.Y + (valueSize.Y / 2);
-	float bMinZ = valuePosition.Z - (valueSize.Z / 2);
-	float bMaxZ = valuePosition.Z + (valueSize.Z / 2);
+	float bMinX = valuePosition.X - (valueSize.X);
+	float bMaxX = valuePosition.X + (valueSize.X);
+	float bMinY = valuePosition.Y - (valueSize.Y);
+	float bMaxY = valuePosition.Y + (valueSize.Y);
+	float bMinZ = valuePosition.Z - (valueSize.Z);
+	float bMaxZ = valuePosition.Z + (valueSize.Z);
 
 	return (aMinX <= bMaxX && aMaxX >= bMinX) &&
 		(aMinY <= bMaxY && aMaxY >= bMinY) &&

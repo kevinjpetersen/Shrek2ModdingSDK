@@ -58,7 +58,10 @@ void Shrek2::Initialize(std::string ModName)
 			float y = Variables.GetPositionY();
 			float z = Variables.GetPositionZ();
 
-			Triggers.CheckTriggers(Shrek2Vector3(x, y, z), map);
+			float colHeight = Variables.GetCollisionHeight();
+			float colRadius = Variables.GetCollisionRadius();
+
+			Triggers.CheckTriggers(Shrek2Vector3(x, y, z), map, Shrek2Vector3(colRadius, colRadius, colHeight));
 		}
 		Events.EventUpdates();
 		if(Events.OnTick) Events.OnTick();

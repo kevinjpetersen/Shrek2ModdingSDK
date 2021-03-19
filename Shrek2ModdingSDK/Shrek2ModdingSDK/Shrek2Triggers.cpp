@@ -6,7 +6,7 @@ void Shrek2Triggers::AddTriggers(std::vector<Shrek2Trigger> triggers)
 	Triggers = triggers;
 }
 
-void Shrek2Triggers::CheckTriggers(Shrek2Vector3 position, Shrek2Maps currentMap)
+void Shrek2Triggers::CheckTriggers(Shrek2Vector3 position, Shrek2Maps currentMap, Shrek2Vector3 currentSize)
 {
 	for (int i = 1; i <= Triggers.size(); i++)
 	{
@@ -16,7 +16,7 @@ void Shrek2Triggers::CheckTriggers(Shrek2Vector3 position, Shrek2Maps currentMap
 		if (trigger.TriggeredMap != currentMap) continue;
 		if (trigger.Triggered && trigger.TriggerOnce && trigger.TriggeredOnceExit) continue;
 
-		int triggered = trigger.CheckTrigger(position, Shrek2Vector3(100), EnableDebugging);
+		int triggered = trigger.CheckTrigger(position, currentSize, EnableDebugging);
 		if (triggered == 1) {
 			OnTriggerEnter(trigger);
 		}

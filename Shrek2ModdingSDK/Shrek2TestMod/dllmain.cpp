@@ -14,8 +14,6 @@ void OnTick()
 		float z = Game.Variables.GetPositionZ();
 
 		Game.LogToConsole(std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z));
-
-		Game.Triggers.ResetTrigger("Lillypad5");
 	}
 
 	if (Game.Input.OnKeyPress(Shrek2Input::H)) {
@@ -54,7 +52,8 @@ void OnTriggerEnter(Shrek2Trigger trigger)
 	if (Shrek2Utils::DoesEqual(trigger.Name, "Lillypad1"))
 	{
 		//Game.Sounds.Play("Allstars");
-		Game.Triggers.EnableTrigger("Lillypad5");
+		//Game.Triggers.DisableTrigger("Lillypad5");
+		//Game.Triggers.EnableTriggers = true;
 		Game.Functions.CCS({ "fly", "adminsay To jump on the lillypad, wait you already jumped on it.." });
 	}
 
@@ -92,7 +91,7 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 
 	Game.Triggers.EnableDebugging = true;
 	Game.Triggers.AddTriggers({
-		Shrek2Trigger("Lillypad5", Shrek2Vector3(-13401.538086, -789.874084, -207.824005), Shrek2Vector3(2000, 100, 1000), Shrek2Maps::Shreks_Swamp, true, false),
+		Shrek2Trigger("Lillypad5", Shrek2Vector3(-13401.538086, -789.874084, -207.824005), Shrek2Vector3(2000, 100, 1000), Shrek2Maps::Shreks_Swamp, true),
 		Shrek2Trigger("Lillypad1", Shrek2Vector3(-12877.945312, 371.631348, -207.824005), Shrek2Vector3(200, 200, 200), Shrek2Maps::Shreks_Swamp, true),
 	});
 
