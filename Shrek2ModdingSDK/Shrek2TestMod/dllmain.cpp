@@ -33,7 +33,7 @@ void OnTick()
 void RenderUI()
 {
 	//std::string t = trigger1.Triggered ? "Yes" : "No";
-
+	timer1.CurrentMilliseconds();
 	Shrek2UI::RenderText(
 		Shrek2Rect(10, Game.GetGameWindowHeight() / 2 - 90, 400, 100),
 		"Timer: " + timer1.GetTimeString(),
@@ -100,7 +100,7 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 
 	Game.Triggers.EnableDebugging = true;
 	Game.Triggers.AddTriggers({
-		Shrek2Trigger("Lillypad5", Shrek2Vector3(-13401.538086, -789.874084, -207.824005), Shrek2Vector3(2000, 100, 1000), Shrek2Maps::Shreks_Swamp, true),
+		Shrek2Trigger("Lillypad5", Shrek2Vector3(-13401.538086, -789.874084, -207.824005), Shrek2Vector3(2000, 100, 1000), {Shrek2Maps::The_Hunt_Part1, Shrek2Maps::The_Hunt_Part2}, true),
 		Shrek2Trigger("Lillypad1", Shrek2Vector3(-12877.945312, 371.631348, -207.824005), Shrek2Vector3(200, 200, 200), Shrek2Maps::Shreks_Swamp, true),
 	});
 

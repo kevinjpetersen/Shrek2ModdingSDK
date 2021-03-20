@@ -317,5 +317,11 @@ public:
 	float GetCamAngleY();
 
 	float GetCamAngleZ();
+
+	bool SetCameraBehavior_LockCameraLook();
+	bool SetCameraBehavior_LockCameraMovement();
+	bool SetCameraBehavior_LockCameraMovementAndLook();
+	bool SetCameraBehavior_Normal();
+	int GetCameraBehavior();
 };
 

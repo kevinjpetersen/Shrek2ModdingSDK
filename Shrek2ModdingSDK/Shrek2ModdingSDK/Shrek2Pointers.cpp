@@ -738,3 +738,28 @@ float Shrek2Pointers::GetCamAngleY() {
 float Shrek2Pointers::GetCamAngleZ() {
     return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x30, 0x34, 0x898, 0x1088);
 }
+
+bool Shrek2Pointers::SetCameraBehavior_LockCameraLook()
+{
+    return Shrek2Memory::WriteByte(3, "Engine.dll", 0x004DFFF8, 0x30, 0x34, 0x898, 0x1070);
+}
+
+bool Shrek2Pointers::SetCameraBehavior_LockCameraMovement()
+{
+    return Shrek2Memory::WriteByte(0, "Engine.dll", 0x004DFFF8, 0x30, 0x34, 0x898, 0x1070);
+}
+
+bool Shrek2Pointers::SetCameraBehavior_LockCameraMovementAndLook()
+{
+    return Shrek2Memory::WriteByte(1, "Engine.dll", 0x004DFFF8, 0x30, 0x34, 0x898, 0x1070);
+}
+
+bool Shrek2Pointers::SetCameraBehavior_Normal()
+{
+    return Shrek2Memory::WriteByte(2, "Engine.dll", 0x004DFFF8, 0x30, 0x34, 0x898, 0x1070);
+}
+
+int Shrek2Pointers::GetCameraBehavior()
+{
+    return Shrek2Memory::ReadByte("Engine.dll", 0x004DFFF8, 0x30, 0x34, 0x898, 0x1070);
+}
