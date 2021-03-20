@@ -13,7 +13,17 @@ void Shrek2Triggers::CheckTriggers(Shrek2Vector3 position, Shrek2Maps currentMap
 		auto trigger = Triggers[i - 1];
 
 		if (!trigger.Enabled) continue;
-		if (trigger.TriggeredMap != currentMap) continue;
+
+		bool supportsMap = false;
+		for (auto map : trigger.TriggeredMaps)
+		{
+			if (map == currentMap)
+			{
+				supportsMap = true;
+			}
+		}
+
+		if (supportsMap == false) continue;
 		if (trigger.Triggered && trigger.TriggerOnce && trigger.TriggeredOnceExit) continue;
 
 		int triggered = trigger.CheckTrigger(position, currentSize, EnableDebugging);

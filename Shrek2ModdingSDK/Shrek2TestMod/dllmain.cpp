@@ -6,9 +6,18 @@
 
 Shrek2 Game = Shrek2();
 
+Shrek2Timer timer1 = Shrek2Timer();
+
 void OnTick()
 {
 	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
+		if (timer1.IsTimerRunning()) {
+			timer1.Stop();
+		}
+		else {
+			timer1.Start();
+		}
+
 		float x = Game.Variables.GetPositionX();
 		float y = Game.Variables.GetPositionY();
 		float z = Game.Variables.GetPositionZ();
@@ -16,21 +25,21 @@ void OnTick()
 		Game.LogToConsole(std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z));
 	}
 
-	if (Game.Input.OnKeyPress(Shrek2Input::H)) {
-		Game.Triggers.ResetAllTriggers();
+	if (Game.Input.OnKeyPress(Shrek2Input::K)) {
+		timer1.Reset();
 	}
 }
 
 void RenderUI()
 {
-	/*std::string t = trigger1.Triggered ? "Yes" : "No";
+	//std::string t = trigger1.Triggered ? "Yes" : "No";
 
 	Shrek2UI::RenderText(
 		Shrek2Rect(10, Game.GetGameWindowHeight() / 2 - 90, 400, 100),
-		("Inside Trigger 1: " + t).c_str(),
-		Shrek2UI::GetColor(0, 0, 255),
+		"Timer: " + timer1.GetTimeString(),
+		Shrek2UI::GetColor(255, 255, 255),
 		true
-	);*/
+	);
 
 	//Shrek2UI::RenderText(Shrek2Rect(0, 0, 400, 100), "Player Health: " + std::to_string((int)Shrek2Maps::Beanstalk_bonus), Shrek2UI::GetColor(255, 0, 0), true);
 	

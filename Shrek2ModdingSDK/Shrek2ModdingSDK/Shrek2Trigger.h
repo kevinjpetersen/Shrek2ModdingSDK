@@ -8,7 +8,7 @@ public:
 	bool Triggered = false;
 	bool TriggerOnce = false;
 	bool TriggeredOnceExit = false;
-	Shrek2Maps TriggeredMap = Shrek2Maps::Unknown;
+	std::list<Shrek2Maps> TriggeredMaps;
 	bool Enabled = true;
 
 	Shrek2Trigger() {}
@@ -18,7 +18,17 @@ public:
 		Name = name;
 		Position = position;
 		Size = size;
-		TriggeredMap = triggeredMap;
+		TriggeredMaps.push_back(triggeredMap);
+		TriggerOnce = triggerOnce;
+		Enabled = enabled;
+	}
+
+	Shrek2Trigger(std::string name, Shrek2Vector3 position, Shrek2Vector3 size, std::list<Shrek2Maps> triggeredMaps, bool triggerOnce = false, bool enabled = true)
+	{
+		Name = name;
+		Position = position;
+		Size = size;
+		TriggeredMaps = triggeredMaps;
 		TriggerOnce = triggerOnce;
 		Enabled = enabled;
 	}

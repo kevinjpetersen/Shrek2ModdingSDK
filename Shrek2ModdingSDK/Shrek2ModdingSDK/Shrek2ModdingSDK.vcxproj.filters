@@ -75,6 +75,12 @@
     <ClInclude Include="Shrek2Triggers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Shrek2Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shrek2TimerLib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Shrek2Memory.cpp">
@@ -129,6 +135,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Shrek2Triggers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shrek2Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

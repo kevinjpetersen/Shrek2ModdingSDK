@@ -179,6 +179,8 @@
     <ClInclude Include="Shrek2StaticVars.h" />
     <ClInclude Include="Shrek2Texture.h" />
     <ClInclude Include="Shrek2Textures.h" />
+    <ClInclude Include="Shrek2Timer.h" />
+    <ClInclude Include="Shrek2TimerLib.h" />
     <ClInclude Include="Shrek2Trigger.h" />
     <ClInclude Include="Shrek2Triggers.h" />
     <ClInclude Include="Shrek2UI.h" />
@@ -199,6 +201,7 @@
     <ClCompile Include="Shrek2StaticVars.cpp" />
     <ClCompile Include="Shrek2Texture.cpp" />
     <ClCompile Include="Shrek2Textures.cpp" />
+    <ClCompile Include="Shrek2Timer.cpp" />
     <ClCompile Include="Shrek2Trigger.cpp" />
     <ClCompile Include="Shrek2Triggers.cpp" />
     <ClCompile Include="Shrek2UI.cpp" />
