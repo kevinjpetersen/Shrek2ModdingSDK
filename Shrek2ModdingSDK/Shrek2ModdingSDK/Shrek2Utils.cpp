@@ -92,6 +92,13 @@ RECT Shrek2Utils::GetWindowSize(HWND windowHandle)
 	return windowRect;
 }
 
+RECT Shrek2Utils::GetClientSize(HWND windowHandle)
+{
+	RECT clientRect;
+	GetClientRect(windowHandle, &clientRect);
+	return clientRect;
+}
+
 std::vector<std::string> Shrek2Utils::SplitString(const std::string& stringToSplit, const std::string& regexPattern)
 {
 	std::vector<std::string> result;

@@ -10,6 +10,8 @@ public:
 	void LogToConsole(std::string logMessage);
 	LONG GetGameWindowHeight();
 	LONG GetGameWindowWidth();
+	LONG GetGameClientHeight();
+	LONG GetGameClientWidth();
 	Shrek2Pointers Variables;
 	Shrek2Functions Functions;
 	Shrek2Events Events = Shrek2Events();
@@ -21,6 +23,7 @@ public:
 	task<void> Delay(unsigned int delayAmountInMs);
 	void Wait(unsigned int waitAmountInMs);
 	RECT GameWindowSize;
+	RECT GameClientSize;
 private:
 	bool IsMinimized = false;
 	bool IsFullscreen = false;

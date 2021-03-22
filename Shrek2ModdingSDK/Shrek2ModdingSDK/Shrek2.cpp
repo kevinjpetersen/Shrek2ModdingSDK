@@ -49,6 +49,7 @@ void Shrek2::Initialize(std::string ModName)
 		Sleep(1);
 
 		GameWindowSize = Shrek2Utils::GetWindowSize(WindowHandle);
+		GameClientSize = Shrek2Utils::GetClientSize(WindowHandle);
 		Shrek2UI::GameWindowSize = GameWindowSize;
 
 		tempIsMinimized = IsIconic(WindowHandle);
@@ -107,6 +108,16 @@ void Shrek2::LogToConsole(std::string logMessage)
 void Shrek2::SetDllHandle(HMODULE hModule)
 {
 	DllHandle = hModule;
+}
+
+LONG Shrek2::GetGameClientHeight()
+{
+	return GameClientSize.bottom - GameClientSize.top;
+}
+
+LONG Shrek2::GetGameClientWidth()
+{
+	return GameClientSize.right - GameClientSize.left;
 }
 
 void Shrek2::Wait(unsigned int waitAmountInMs)
