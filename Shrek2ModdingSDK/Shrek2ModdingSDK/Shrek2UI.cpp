@@ -129,7 +129,6 @@ HRESULT __stdcall Shrek2UI::hookedEndScene(IDirect3DDevice8* pDevice)
 
 		if (EqualRect(&GameWindowSize, &LastGameWindowSize) == false || IsResetNeeded) {
 			IsResetNeeded = false;
-			std::cout << "Resetting" << std::endl;
 			LastGameWindowSize = GameWindowSize;
 			pDevice->GetViewport(&Viewport);
 			Reset(pDevice);
