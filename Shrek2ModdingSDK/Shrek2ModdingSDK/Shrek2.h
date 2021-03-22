@@ -23,6 +23,7 @@ public:
 	RECT GameWindowSize;
 private:
 	bool IsMinimized = false;
+	bool IsFullscreen = false;
 	bool AddConsole;
 	HMODULE DllHandle;
 	HWND WindowHandle;

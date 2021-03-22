@@ -42,6 +42,7 @@ void Shrek2::Initialize(std::string ModName)
 	LogToConsole("Mod '" + ModName + "' loaded.");
 
 	bool tempIsMinimized = false;
+	QUERY_USER_NOTIFICATION_STATE pquns;
 
 	if(Events.OnStart) Events.OnStart();
 	while (IsModRunning) {
@@ -51,6 +52,18 @@ void Shrek2::Initialize(std::string ModName)
 		Shrek2UI::GameWindowSize = GameWindowSize;
 
 		tempIsMinimized = IsIconic(WindowHandle);
+
+		SHQueryUserNotificationState(&pquns);
+		if (pquns == QUNS_BUSY && !IsFullscreen)
+		{
+			IsFullscreen = true;
+			Shrek2UI::TriggerReset();
+		}
+		else if (pquns != QUNS_BUSY && IsFullscreen)
+		{
+			IsFullscreen = false;
+			Shrek2UI::TriggerReset();
+		}
 
 		if (tempIsMinimized && !IsMinimized) {
 			IsMinimized = true;
