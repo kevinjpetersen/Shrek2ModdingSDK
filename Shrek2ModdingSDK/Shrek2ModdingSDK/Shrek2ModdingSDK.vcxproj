@@ -185,6 +185,7 @@
     <ClInclude Include="Shrek2Triggers.h" />
     <ClInclude Include="Shrek2UI.h" />
     <ClInclude Include="Shrek2Utils.h" />
+    <ClInclude Include="Shrek2Vector2.h" />
     <ClInclude Include="Shrek2Vector3.h" />
   </ItemGroup>
   <ItemGroup>
@@ -206,6 +207,7 @@
     <ClCompile Include="Shrek2Triggers.cpp" />
     <ClCompile Include="Shrek2UI.cpp" />
     <ClCompile Include="Shrek2Utils.cpp" />
+    <ClCompile Include="Shrek2Vector2.cpp" />
     <ClCompile Include="Shrek2Vector3.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

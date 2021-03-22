@@ -19,6 +19,7 @@
 #include "Shrek2TimerLib.h"
 #include "Shrek2Timer.h"
 #include "Shrek2Maps.h"
+#include "Shrek2Vector2.h"
 #include "Shrek2Vector3.h"
 #include "Shrek2Trigger.h"
 #include "Shrek2Triggers.h"

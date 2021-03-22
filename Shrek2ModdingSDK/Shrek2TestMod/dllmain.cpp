@@ -65,7 +65,7 @@ void RenderUI()
 
 
 	//Sleep(1000 / 5);
-	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("PIB"), Shrek2Position(Game.GetGameWindowWidth() / 2 - 222, Game.GetGameWindowHeight() / 2 - 437), 0, Shrek2UI::GetColorAlpha(255, 255, 255, 150));
+	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("PIB"), Shrek2Position(Game.GetGameWindowWidth() / 2, Game.GetGameWindowHeight() / 2), Shrek2Vector2(0.3f, 0.3f), 90, Shrek2UI::GetColorAlpha(255, 255, 255, 150));
 	/*Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("M64"), Shrek2Position(350, 200), 45);
 	Shrek2UI::RenderRectangle(Shrek2Rect(0, 0, 64, 64), Shrek2UI::GetColor(255, 255, 0));
 	Shrek2UI::RenderRectangle(Shrek2Rect(0, 64, 64, 64), Shrek2UI::GetColor(255, 0, 0));*/
