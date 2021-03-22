@@ -66,8 +66,9 @@ void RenderUI()
 
 	//Sleep(1000 / 5);
 	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("PIB"), Shrek2Position(Game.GetGameWindowWidth() / 2, Game.GetGameWindowHeight() / 2), Shrek2Vector2(0.3f, 0.3f), 90, Shrek2UI::GetColorAlpha(255, 255, 255, 150));
-	/*Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("M64"), Shrek2Position(350, 200), 45);
-	Shrek2UI::RenderRectangle(Shrek2Rect(0, 0, 64, 64), Shrek2UI::GetColor(255, 255, 0));
+	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("M64"), Shrek2Position(0, 0), Shrek2Vector2(5, 5), 0, Shrek2UI::GetColorAlpha(255, 255, 255, 150));
+	//Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("M64"), Shrek2Position(350, 200), 45);
+	/*Shrek2UI::RenderRectangle(Shrek2Rect(0, 0, 64, 64), Shrek2UI::GetColor(255, 255, 0));
 	Shrek2UI::RenderRectangle(Shrek2Rect(0, 64, 64, 64), Shrek2UI::GetColor(255, 0, 0));*/
 
 }
@@ -100,7 +101,7 @@ void OnStart()
 	Game.Sounds.AddSound("Sounds/allstars.wav", "Allstars");
 	//Game.Sounds.Play("Allstars");
 	Shrek2Textures::AddTexture("Images/pib.png", "PIB");
-	//Shrek2Textures::AddTexture("Images/master64.jpg", "M64");
+	Shrek2Textures::AddTexture("Images/master64.jpg", "M64");
 
 	Shrek2UI::GameWindowSize = Game.GameWindowSize;
 	Shrek2UI::RenderUI = RenderUI;
