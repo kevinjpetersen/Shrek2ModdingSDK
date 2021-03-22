@@ -31,7 +31,7 @@ std::string Shrek2Timer::GetTimeString()
 	int secs = CurrentSeconds();
 	int mins = CurrentMinutes();
 
-	std::string milliseconds = (mils <= 9 ? "0" : "") + std::to_string(mils);
+	std::string milliseconds = (mils <= 9 ? "00" : (mils <= 99 ? "0" : "")) + std::to_string(mils);
 	std::string seconds = (secs <= 9 ? "0" : "") + std::to_string(secs);
 	std::string minutes = (mins <= 9 ? "0" : "") + std::to_string(mins);
 

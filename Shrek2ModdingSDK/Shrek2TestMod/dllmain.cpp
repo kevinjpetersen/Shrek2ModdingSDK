@@ -12,22 +12,38 @@ void OnTick()
 {
 	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
 		if (timer1.IsTimerRunning()) {
+			Game.LogToConsole(timer1.GetTimeString());
 			timer1.Stop();
+			Game.LogToConsole(timer1.GetTimeString());
 		}
 		else {
+			Game.LogToConsole(timer1.GetTimeString());
 			timer1.Start();
+			Game.LogToConsole(timer1.GetTimeString());
 		}
+	}
+	/*
 
 		float x = Game.Variables.GetPositionX();
 		float y = Game.Variables.GetPositionY();
 		float z = Game.Variables.GetPositionZ();
 
 		Game.LogToConsole(std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z));
-	}
+	}*/
 
-	if (Game.Input.OnKeyPress(Shrek2Input::K)) {
+	/*if (Game.Input.OnKeyPress(Shrek2Input::K)) {
 		timer1.Reset();
 	}
+
+	if (Game.Input.OnKeyPress(Shrek2Input::J)) {
+		Game.LogToConsole(timer1.GetTimeString());
+		timer1.Stop();
+		Game.Delay(1000).then([]() {
+			Game.LogToConsole(timer1.GetTimeString());
+			timer1.Start();
+			Game.LogToConsole(timer1.GetTimeString());
+		});
+	}*/
 }
 
 void RenderUI()
