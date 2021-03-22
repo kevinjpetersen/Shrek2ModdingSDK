@@ -88,6 +88,10 @@ D3DCOLOR Shrek2UI::GetColor(int r, int g, int b) {
 	return D3DCOLOR_ARGB(255, r, g, b);
 }
 
+D3DCOLOR Shrek2UI::GetColorAlpha(int r, int g, int b, int a) {
+	return D3DCOLOR_ARGB(a, r, g, b);
+}
+
 HRESULT __stdcall Shrek2UI::hookedEndScene(IDirect3DDevice8* pDevice)
 {
 	if (IsUIRunning) {

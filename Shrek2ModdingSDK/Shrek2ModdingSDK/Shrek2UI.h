@@ -17,6 +17,7 @@ namespace Shrek2UI
 	void TriggerReset();
 
 	D3DCOLOR GetColor(int r, int g, int b);
+	D3DCOLOR GetColorAlpha(int r, int g, int b, int a);
 
 	inline LPD3DXFONT shNormalFont = NULL;
 	inline HFONT hNormalFont;
