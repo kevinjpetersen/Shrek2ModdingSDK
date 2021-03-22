@@ -7,6 +7,12 @@ This repository consists of the Shrek 2 Modding SDK, used to create and play mod
 # How to Play Mods
 - Documentation is currently being developed
 
+# Prerequisite/requirements for using the SDK
+- Visual Studio 2019 or later
+- DirectX 8.1 installed (Reach out to me if you need this)
+- Basic C++ and Visual Studio knowledge
+- Detours
+
 # Official Mods
 - Coming Soon
 
