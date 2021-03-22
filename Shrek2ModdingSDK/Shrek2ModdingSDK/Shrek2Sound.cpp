@@ -15,14 +15,17 @@ void Shrek2Sound::AddSound(std::string soundFile, std::string alias)
 
 void Shrek2Sound::Play(std::string alias)
 {
+	Stop(alias);
 	mciSendString(AddedSounds[alias].c_str(), NULL, 0, 0);
 	mciSendString(("play " + alias).c_str(), NULL, 0, 0);
 }
 
 void Shrek2Sound::PlayLoop(std::string alias)
 {
+	// WIP
+	/*Stop(alias);
 	mciSendString(AddedSounds[alias].c_str(), NULL, 0, 0);
-	mciSendString(("play " + alias + " repeat").c_str(), NULL, 0, 0);
+	mciSendString(("play " + alias + " notify repeat").c_str(), NULL, 0, 0);*/
 }
 
 void Shrek2Sound::Stop(std::string alias)

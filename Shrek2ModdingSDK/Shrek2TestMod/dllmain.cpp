@@ -77,7 +77,7 @@ void OnTriggerEnter(Shrek2Trigger trigger)
 {
 	if (Shrek2Utils::DoesEqual(trigger.Name, "Lillypad1"))
 	{
-		//Game.Sounds.Play("Allstars");
+		Game.Sounds.Play("Fanfare");
 		//Game.Triggers.DisableTrigger("Lillypad5");
 		//Game.Triggers.EnableTriggers = true;
 		Game.Functions.CCS({ "fly", "adminsay To jump on the lillypad, wait you already jumped on it.." });
@@ -117,8 +117,8 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 
 	Game.Triggers.EnableDebugging = true;
 	Game.Triggers.AddTriggers({
-		Shrek2Trigger("Lillypad5", Shrek2Vector3(-13401.538086, -789.874084, -207.824005), Shrek2Vector3(2000, 100, 1000), {Shrek2Maps::The_Hunt_Part1, Shrek2Maps::The_Hunt_Part2}, true),
-		Shrek2Trigger("Lillypad1", Shrek2Vector3(-12877.945312, 371.631348, -207.824005), Shrek2Vector3(200, 200, 200), Shrek2Maps::Shreks_Swamp, true),
+		Shrek2Trigger("Lillypad5", Shrek2Vector3(-13401.538086, -789.874084, -207.824005), Shrek2Vector3(2000, 100, 1000), Shrek2Maps::Shreks_Swamp),
+		Shrek2Trigger("Lillypad1", Shrek2Vector3(-12877.945312, 371.631348, -207.824005), Shrek2Vector3(200, 200, 200), Shrek2Maps::Shreks_Swamp),
 	});
 
 	Game.Initialize("Shrek 2 Test Mod");
