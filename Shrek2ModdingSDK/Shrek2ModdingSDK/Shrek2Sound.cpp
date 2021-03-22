@@ -1,3 +1,7 @@
+/*
+	Copyright (c) 2021 Kevin J. Petersen https://github.com/kevinjpetersen/
+*/
+
 #include "Shrek2ModdingSDK.h"
 
 void Shrek2Sound::AddSound(std::string soundFile, std::string alias)

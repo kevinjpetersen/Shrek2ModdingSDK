@@ -1,3 +1,7 @@
+/*
+	Copyright (c) 2021 Kevin J. Petersen https://github.com/kevinjpetersen/
+*/
+
 #include "Shrek2ModdingSDK.h"
 
 bool Shrek2Memory::WriteFloat(float fValue, LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {

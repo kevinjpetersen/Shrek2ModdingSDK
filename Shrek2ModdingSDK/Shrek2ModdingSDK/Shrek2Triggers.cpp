@@ -1,3 +1,7 @@
+/*
+	Copyright (c) 2021 Kevin J. Petersen https://github.com/kevinjpetersen/
+*/
+
 #include "Shrek2ModdingSDK.h"
 
 void Shrek2Triggers::AddTriggers(std::vector<Shrek2Trigger> triggers)

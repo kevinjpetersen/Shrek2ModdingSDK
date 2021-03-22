@@ -1,3 +1,7 @@
+/*
+	Copyright (c) 2021 Kevin J. Petersen https://github.com/kevinjpetersen/
+*/
+
 namespace Shrek2UI
 {
 	void Reset(IDirect3DDevice8* pDevice);

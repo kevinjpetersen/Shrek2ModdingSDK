@@ -1,3 +1,7 @@
+/*
+	Copyright (c) 2021 Kevin J. Petersen https://github.com/kevinjpetersen/
+*/
+
 #include "Shrek2ModdingSDK.h"
 
 std::string Shrek2Utils::FloatToLPCSTR(float fValue) {

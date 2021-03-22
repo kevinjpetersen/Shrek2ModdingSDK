@@ -1,3 +1,7 @@
+/*
+	Copyright (c) 2021 Kevin J. Petersen https://github.com/kevinjpetersen/
+*/
+
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "pch.h"
 #include <iostream>

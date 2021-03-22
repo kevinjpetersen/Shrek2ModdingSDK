@@ -1,3 +1,7 @@
+/*
+	Copyright (c) 2021 Kevin J. Petersen https://github.com/kevinjpetersen/
+*/
+
 #pragma once
 #ifndef SH_INCLUDES
 #define SH_INCLUDES

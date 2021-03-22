@@ -1,3 +1,7 @@
+/*
+	Copyright (c) 2021 Kevin J. Petersen https://github.com/kevinjpetersen/
+*/
+
 // Shrek2ModExecutor.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 #include <windows.h>
