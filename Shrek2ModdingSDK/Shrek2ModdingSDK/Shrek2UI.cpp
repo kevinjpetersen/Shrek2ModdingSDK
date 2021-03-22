@@ -79,6 +79,11 @@ void Shrek2UI::StopUI() {
 	if (pEndScene) DetourRemove((PBYTE)pEndScene, (PBYTE)hookedEndScene);
 }
 
+void Shrek2UI::TriggerReset()
+{
+	IsResetNeeded = true;
+}
+
 D3DCOLOR Shrek2UI::GetColor(int r, int g, int b) {
 	return D3DCOLOR_ARGB(255, r, g, b);
 }
@@ -97,10 +102,11 @@ HRESULT __stdcall Shrek2UI::hookedEndScene(IDirect3DDevice8* pDevice)
 		InitializeSprite(pDevice);
 		Shrek2Textures::InitializeTextures(pDevice);
 
-		if (EqualRect(&GameWindowSize, &LastGameWindowSize) == false) {
+		if (EqualRect(&GameWindowSize, &LastGameWindowSize) == false || IsResetNeeded) {
+			IsResetNeeded = false;
+			std::cout << "Resetting" << std::endl;
 			LastGameWindowSize = GameWindowSize;
 			pDevice->GetViewport(&Viewport);
-
 			Reset(pDevice);
 			Shrek2Textures::ReleaseTextures();
 			Shrek2Textures::InitializeTextures(pDevice);

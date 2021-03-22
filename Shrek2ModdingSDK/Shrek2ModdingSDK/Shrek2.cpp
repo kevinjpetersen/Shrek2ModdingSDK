@@ -1,4 +1,5 @@
 #include "Shrek2ModdingSDK.h"
+#include "Shrek2DirectX.h"
 
 void Shrek2::Initialize(std::string ModName)
 {
@@ -40,11 +41,25 @@ void Shrek2::Initialize(std::string ModName)
 
 	LogToConsole("Mod '" + ModName + "' loaded.");
 
+	bool tempIsMinimized = false;
+
 	if(Events.OnStart) Events.OnStart();
 	while (IsModRunning) {
 		Sleep(1);
 
 		GameWindowSize = Shrek2Utils::GetWindowSize(WindowHandle);
+		Shrek2UI::GameWindowSize = GameWindowSize;
+
+		tempIsMinimized = IsIconic(WindowHandle);
+
+		if (tempIsMinimized && !IsMinimized) {
+			IsMinimized = true;
+		}
+		else if (!tempIsMinimized && IsMinimized)
+		{
+			IsMinimized = false;
+			Shrek2UI::TriggerReset();
+		}
 
 		if (Shrek2::WindowHandle != GetForegroundWindow()) {
 			continue;

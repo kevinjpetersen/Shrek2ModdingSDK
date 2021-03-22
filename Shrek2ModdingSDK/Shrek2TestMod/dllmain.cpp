@@ -49,7 +49,7 @@ void OnTick()
 void RenderUI()
 {
 	//std::string t = trigger1.Triggered ? "Yes" : "No";
-	timer1.CurrentMilliseconds();
+	//timer1.CurrentMilliseconds();
 	Shrek2UI::RenderText(
 		Shrek2Rect(10, Game.GetGameWindowHeight() / 2 - 90, 400, 100),
 		"Timer: " + timer1.GetTimeString(),
@@ -65,8 +65,8 @@ void RenderUI()
 
 
 	//Sleep(1000 / 5);
-	/*Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("PIB"), Shrek2Position(Game.GetGameWindowWidth() / 2, Game.GetGameWindowHeight() / 2));
-	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("M64"), Shrek2Position(350, 200), 45);
+	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("PIB"), Shrek2Position(Game.GetGameWindowWidth() / 2 - 222, Game.GetGameWindowHeight() / 2 - 437));
+	/*Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("M64"), Shrek2Position(350, 200), 45);
 	Shrek2UI::RenderRectangle(Shrek2Rect(0, 0, 64, 64), Shrek2UI::GetColor(255, 255, 0));
 	Shrek2UI::RenderRectangle(Shrek2Rect(0, 64, 64, 64), Shrek2UI::GetColor(255, 0, 0));*/
 
@@ -99,7 +99,7 @@ void OnStart()
 	Game.Sounds.AddSound("Sounds/fanfare.wav", "Fanfare");
 	Game.Sounds.AddSound("Sounds/allstars.wav", "Allstars");
 	//Game.Sounds.Play("Allstars");
-	//Shrek2Textures::AddTexture("Images/pib.png", "PIB");
+	Shrek2Textures::AddTexture("Images/pib.png", "PIB");
 	//Shrek2Textures::AddTexture("Images/master64.jpg", "M64");
 
 	Shrek2UI::GameWindowSize = Game.GameWindowSize;

@@ -12,6 +12,10 @@ namespace Shrek2UI
 	void StopUI();
 	inline bool IsUIRunning = false;
 
+	inline bool IsResetNeeded = false;
+
+	void TriggerReset();
+
 	D3DCOLOR GetColor(int r, int g, int b);
 
 	inline LPD3DXFONT shNormalFont = NULL;

@@ -22,6 +22,7 @@ public:
 	void Wait(unsigned int waitAmountInMs);
 	RECT GameWindowSize;
 private:
+	bool IsMinimized = false;
 	bool AddConsole;
 	HMODULE DllHandle;
 	HWND WindowHandle;

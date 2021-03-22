@@ -61,5 +61,6 @@ void Shrek2Textures::ReleaseTextures()
 				D3D_RELEASE(t.Texture);
 			}
 		}
+		InitializedTextures = false;
 	}
 }
