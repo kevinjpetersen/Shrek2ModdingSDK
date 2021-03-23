@@ -9,6 +9,7 @@ namespace Shrek2ModManager.Utils
     public class Settings
     {
         public string GameExeLocation { get; set; }
+        public string GameFolderLocation { get; set; }
         public Languages Language { get; set; } = Languages.English;
         public WindowModes WindowMode { get; set; } = WindowModes.Fullscreen;
 

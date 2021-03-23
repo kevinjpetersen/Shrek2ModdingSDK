@@ -13,12 +13,11 @@ namespace Shrek2ModManager.Utils
 {
     public class SH2WorkshopFileHandler
     {
-        private const string PublicMapFolder = "Shrek2WorkshopMaps";
-        private const string MapFolder = "Maps";
         private const string ModsFolder = "Mods";
-        private const string UploadFolder = "Upload";
+        private const string ModsInstalledFolder = "Shrek 2 Mods";
 
-        private const string MapDownloadUrlPrefix = "https://shrek2workshop.ams3.digitaloceanspaces.com/Maps";
+        private const string ModDownloadUrlPrefix = "https://shrek2modding.fra1.digitaloceanspaces.com/Mods";
+        private const string InternalDownloadUrlPrefix = "https://shrek2modding.fra1.digitaloceanspaces.com/Internal";
 
         public static bool SaveSettings(Settings settings)
         {
@@ -49,50 +48,36 @@ namespace Shrek2ModManager.Utils
             }
         }
 
-        public static bool IsMapDownloaded(string mapId)
-        {
-            if (Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), MapFolder)) == false) return false;
-            return File.Exists(Path.Combine(Directory.GetCurrentDirectory(), MapFolder, $"{mapId}.zip"));
-        }
-
         public static bool IsModDownloaded(string modId)
         {
             if (Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), ModsFolder)) == false) return false;
             return File.Exists(Path.Combine(Directory.GetCurrentDirectory(), ModsFolder, $"{modId}.zip"));
         }
 
-        public static bool IsMapInstalled(string mapId)
+        public static bool IsModInstalled(string modId)
         {
-            if (Directory.Exists(Path.Combine(GetHarddrivePath(), PublicMapFolder)) == false) return false;
-            return File.Exists(Path.Combine(GetHarddrivePath(), PublicMapFolder, $"{mapId}.unr"));
+            var settings = GetSettings();
+
+            if (string.IsNullOrWhiteSpace(settings.GameFolderLocation)) return false;
+
+            return Directory.Exists(Path.Combine(settings.GameFolderLocation, ModsInstalledFolder, modId));
         }
 
-        public static string GetMapPath(string mapId)
-        {
-            if (File.Exists(Path.Combine(GetHarddrivePath(), PublicMapFolder, $"{mapId}.unr")) == false) return null;
-            return Path.Combine(GetHarddrivePath(), PublicMapFolder, $"{mapId}.unr");
-        }
-
-        public static string GetHarddrivePath()
-        {
-            return Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.System));
-        }
-
-        public static async Task<bool> DownloadMap(string mapId, Action<object, DownloadProgressChangedEventArgs> downloadProgress)
+        public static async Task<bool> DownloadMod(string modId, Action<object, DownloadProgressChangedEventArgs> downloadProgress)
         {
             try
             {
-                if (IsMapDownloaded(mapId)) return true;
+                if (IsModDownloaded(modId)) return true;
 
-                if (Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), MapFolder)) == false)
+                if (Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), ModsFolder)) == false)
                 {
-                    Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), MapFolder));
+                    Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), ModsFolder));
                 }
 
                 using (var client = new WebClient())
                 {
                     client.DownloadProgressChanged += (s, d) => downloadProgress(s, d);
-                    await client.DownloadFileTaskAsync($"{MapDownloadUrlPrefix}/{mapId}.zip", Path.Combine(Directory.GetCurrentDirectory(), MapFolder, $"{mapId}.zip"));
+                    await client.DownloadFileTaskAsync($"{ModDownloadUrlPrefix}/{modId}.zip", Path.Combine(Directory.GetCurrentDirectory(), ModsFolder, $"{modId}.zip"));
                     return true;
                 }
             }
@@ -102,23 +87,27 @@ namespace Shrek2ModManager.Utils
             }
         }
 
-        public static bool ExtractMapFile(string mapId)
+        public static bool ExtractModFile(string modId)
         {
             try
             {
-                if (Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), MapFolder)) == false) return false;
-                if (Directory.Exists(Path.Combine(GetHarddrivePath(), PublicMapFolder)) == false)
+                var settings = GetSettings();
+
+                if (string.IsNullOrWhiteSpace(settings.GameFolderLocation)) return false;
+
+                if (Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), ModsFolder)) == false) return false;
+                if (Directory.Exists(Path.Combine(settings.GameFolderLocation, ModsInstalledFolder)) == false)
                 {
-                    Directory.CreateDirectory(Path.Combine(GetHarddrivePath(), PublicMapFolder));
+                    Directory.CreateDirectory(Path.Combine(settings.GameFolderLocation, ModsInstalledFolder));
                 }
 
-                var packagedFilePath = Path.Combine(Directory.GetCurrentDirectory(), MapFolder, $"{mapId}.zip");
+                var packagedFilePath = Path.Combine(Directory.GetCurrentDirectory(), ModsFolder, $"{modId}.zip");
                 if (File.Exists(packagedFilePath) == false) return false;
 
                 using (FileStream fs = new FileStream(packagedFilePath, FileMode.Open))
                 using (ZipArchive arch = new ZipArchive(fs, ZipArchiveMode.Read))
                 {
-                    arch.ExtractToDirectory(Path.Combine(GetHarddrivePath(), PublicMapFolder));
+                    arch.ExtractToDirectory(Path.Combine(settings.GameFolderLocation, ModsInstalledFolder));
                 }
 
                 return true;
@@ -126,31 +115,6 @@ namespace Shrek2ModManager.Utils
             catch
             {
                 return false;
-            }
-        }
-
-        public static string PackageMapFile(string filePath, string mapId)
-        {
-            try
-            {
-                if (Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), UploadFolder)) == false)
-                {
-                    Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), UploadFolder));
-                }
-
-                var packagedFilePath = Path.Combine(Directory.GetCurrentDirectory(), UploadFolder, $"{mapId}.zip");
-
-                using (FileStream fs = new FileStream(packagedFilePath, FileMode.Create))
-                using (ZipArchive arch = new ZipArchive(fs, ZipArchiveMode.Create))
-                {
-                    arch.CreateEntryFromFile(filePath, $"{mapId}.unr");
-                }
-
-                return packagedFilePath;
-            }
-            catch
-            {
-                return null;
             }
         }
     }

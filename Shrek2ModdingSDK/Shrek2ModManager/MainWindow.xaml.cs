@@ -23,10 +23,10 @@ namespace Shrek2ModManager
     /// </summary>
     public partial class MainWindow : Window
     {
-        //public ModWindow ModWindow { get; set; }
+        public ModWindow ModWindow { get; set; }
         public SettingsWindow SettingsWindow { get; set; }
 
-        //public List<Mod> Mods { get; set; } = new List<Mod>();
+        public List<Mod> Mods { get; set; } = new List<Mod>();
 
         public static Settings Settings { get; set; }
 
@@ -58,13 +58,13 @@ namespace Shrek2ModManager
 
             Settings = SH2WorkshopFileHandler.GetSettings();
 
-            //Maps = await SH2WorkshopSDK.GetMaps();
-            //Maps = Maps.OrderByDescending(p => DateTimeOffset.ParseExact(p.MapCreated, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)).ToList();
+            Mods = Mod.GetMods();
+            Mods = Mods.OrderByDescending(p => p.ID).ToList();
 
-            //PopulateMaps(Popular_Maps_Panel, false);
-            //PopulateMaps(Maps_Panel, true);
+            PopulateMaps(Popular_Maps_Panel, false);
+            PopulateMaps(Maps_Panel, true);
 
-            //PopulatePagination(Maps_Pagination_Panel);
+            PopulatePagination(Maps_Pagination_Panel);
         }
 
         private void Overview_Button_ManageMods_MouseUp(object sender, MouseButtonEventArgs e)

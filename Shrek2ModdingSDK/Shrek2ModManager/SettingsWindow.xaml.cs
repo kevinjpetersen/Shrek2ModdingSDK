@@ -81,6 +81,7 @@ namespace Shrek2ModManager
                     }
 
                     NewSettings.GameExeLocation = openFileDialog.FileName;
+                    NewSettings.GameFolderLocation = System.IO.Path.GetDirectoryName(openFileDialog.FileName);
                     Settings_GameFolder.Text = openFileDialog.FileName;
                 }
             }
