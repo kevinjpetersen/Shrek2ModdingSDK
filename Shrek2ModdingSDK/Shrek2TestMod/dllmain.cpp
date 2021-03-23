@@ -32,10 +32,14 @@ void RenderUI()
 		Shrek2UI::GetColorAlpha(255, 255, 255, 255),
 		true
 	);
+
+	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("M64"), Shrek2Position(0, 0), Shrek2Vector2(0.3f, 0.3f), 0, Shrek2UI::GetColorAlpha(255, 255, 255, 150));
 }
 
 void OnStart()
 {
+	Shrek2Textures::AddTexture("Images/master64.jpg", "M64");
+
 	Shrek2UI::GameWindowSize = Game.GameWindowSize;
 	Shrek2UI::RenderUI = RenderUI;
 	Shrek2UI::Initialize();
