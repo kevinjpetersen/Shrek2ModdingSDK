@@ -7,12 +7,12 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Shrek2ModManager")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Shrek 2 Mod Manager")]
+[assembly: AssemblyDescription("Shrek 2 Mod Manager is used to install and manage Shrek 2 mods fast and easy!")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Shrek2ModManager")]
-[assembly: AssemblyCopyright("Copyright ©  2021")]
+[assembly: AssemblyCompany("KevinJPetersen")]
+[assembly: AssemblyProduct("Shrek 2 Mod Manager")]
+[assembly: AssemblyCopyright("Copyright © 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -53,3 +53,4 @@ using System.Windows;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: Guid("96095544-af72-4e06-b419-921460995873")]
