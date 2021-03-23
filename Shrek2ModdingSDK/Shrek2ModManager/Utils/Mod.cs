@@ -21,6 +21,8 @@ namespace Shrek2ModManager.Utils
         {
             try
             {
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 var json = new WebClient().DownloadString("https://shrek2modding.fra1.digitaloceanspaces.com/mods.json");
                 if (string.IsNullOrWhiteSpace(json)) return new List<Mod>();
                 return JsonConvert.DeserializeObject<List<Mod>>(json);

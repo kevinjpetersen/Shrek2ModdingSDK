@@ -27,6 +27,7 @@ namespace Shrek2ModManager
         public SettingsWindow SettingsWindow { get; set; }
 
         public List<Mod> Mods { get; set; } = new List<Mod>();
+        public int MapsPageNumber { get; set; }
 
         public static Settings Settings { get; set; }
 
@@ -43,6 +44,8 @@ namespace Shrek2ModManager
 
         private async void Window_Loaded(object sender, RoutedEventArgs rea)
         {
+            MapsPageNumber = 0;
+
             Nav_Button_Overview.Click += async (s, e) => await SelectNavItem(0);
             Nav_Button_Mods.Click += async (s, e) => await SelectNavItem(1);
 
@@ -140,15 +143,15 @@ namespace Shrek2ModManager
 
         private void SwitchPage(int i)
         {
-            //MapsPageNumber = i;
-            //PopulateMaps(Maps_Panel, true);
+            MapsPageNumber = i;
+            PopulateMaps(Maps_Panel, true);
         }
-        /*
+        
         private void PopulatePagination(StackPanel panel)
         {
             panel.Children.Clear();
 
-            var maxPages = (Maps.Count / 10) + (Maps.Count % 10 > 0 ? 1 : 0);
+            var maxPages = (Mods.Count / 10) + (Mods.Count % 10 > 0 ? 1 : 0);
             for (int i = 1; i <= maxPages; i++)
             {
                 var button = new Button()
@@ -180,9 +183,9 @@ namespace Shrek2ModManager
                 panel.Children.Add(button);
             }
         }
-        */
+        
 
-        /*
+        
         private void PopulateMaps(StackPanel panel, bool hasTwoRows)
         {
             panel.Children.Clear();
@@ -197,11 +200,11 @@ namespace Shrek2ModManager
                 Orientation = Orientation.Horizontal
             };
 
-            foreach (var map in Maps.Skip(10 * MapsPageNumber).Take(5))
+            foreach (var map in Mods.Skip(10 * MapsPageNumber).Take(5))
             {
                 var card = new MaterialDesignThemes.Wpf.Card()
                 {
-                    Margin = new Thickness(map == Maps.Skip(10 * MapsPageNumber).First() ? 0 : 10, 10, map == Maps.Skip(10 * MapsPageNumber).Take(5).Last() ? 0 : 10, 10),
+                    Margin = new Thickness(map == Mods.Skip(10 * MapsPageNumber).First() ? 0 : 10, 10, map == Mods.Skip(10 * MapsPageNumber).Take(5).Last() ? 0 : 10, 10),
                     Width = 156,
                     Height = 200
                 };
@@ -222,7 +225,7 @@ namespace Shrek2ModManager
                         if (child is StackPanel)
                         {
                             ((child as StackPanel).Children[0] as TextBlock).Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_White);
-                            ((child as StackPanel).Children[1] as Image).Source = new BitmapImage(new Uri(@"/Shrek2Workshop;component/images/tick_white.png", UriKind.Relative));
+                            ((child as StackPanel).Children[1] as Image).Source = new BitmapImage(new Uri(@"Resources/embed_tick_white.png", UriKind.Relative));
                         }
                     }
                 };
@@ -239,27 +242,27 @@ namespace Shrek2ModManager
                         if (child is StackPanel)
                         {
                             ((child as StackPanel).Children[0] as TextBlock).Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Green);
-                            ((child as StackPanel).Children[1] as Image).Source = new BitmapImage(new Uri(@"/Shrek2Workshop;component/images/tick.png", UriKind.Relative));
+                            ((child as StackPanel).Children[1] as Image).Source = new BitmapImage(new Uri(@"Resources/embed_tick.png", UriKind.Relative));
                         }
                     }
                 };
 
                 cardPanel.MouseUp += (s, e) =>
                 {
-                    if (MapWindow != null)
+                    if (ModWindow != null)
                     {
-                        MapWindow.Focus();
+                        ModWindow.Focus();
                         return;
                     }
 
-                    MapWindow = new MapWindow(map);
-                    MapWindow.Closed += (a, b) => MapWindow = null;
-                    MapWindow.Show();
+                    ModWindow = new ModWindow(map);
+                    ModWindow.Closed += (a, b) => ModWindow = null;
+                    ModWindow.Show();
                 };
 
                 cardPanel.Children.Add(new Image()
                 {
-                    Source = new BitmapImage(new Uri(Uri.IsWellFormedUriString(map.ImageUrl, UriKind.Absolute) ? map.ImageUrl : "https://www.hbo.com/content/dam/hbodata/movies/s/shrek-2/article/shrek-2-1920.jpg/_jcr_content/renditions/cq5dam.web.1200.675.jpeg")),
+                    Source = new BitmapImage(new Uri("https://shrek2modding.fra1.digitaloceanspaces.com/Internal/defaultmodimage.jpeg")),
                     Height = 80,
                     Width = 156,
                     Stretch = Stretch.UniformToFill
@@ -294,7 +297,7 @@ namespace Shrek2ModManager
                     Height = 15,
                     Width = 15,
                     VerticalAlignment = VerticalAlignment.Top,
-                    Source = new BitmapImage(new Uri(@"/Shrek2Workshop;component/images/tick.png", UriKind.Relative)),
+                    Source = new BitmapImage(new Uri(@"Resources/embed_tick.png", UriKind.Relative)),
                     Margin = new Thickness(0, 2, 5, 0)
                 });
 
@@ -319,11 +322,11 @@ namespace Shrek2ModManager
 
             if (hasTwoRows)
             {
-                foreach (var map in Maps.Skip(10 * MapsPageNumber).Skip(5).Take(5))
+                foreach (var map in Mods.Skip(10 * MapsPageNumber).Skip(5).Take(5))
                 {
                     var card = new MaterialDesignThemes.Wpf.Card()
                     {
-                        Margin = new Thickness(map == Maps.Skip(10 * MapsPageNumber).Skip(5).First() ? 0 : 10, 10, map == Maps.Skip(10 * MapsPageNumber).Skip(5).Take(5).Last() ? 0 : 10, 10),
+                        Margin = new Thickness(map == Mods.Skip(10 * MapsPageNumber).Skip(5).First() ? 0 : 10, 10, map == Mods.Skip(10 * MapsPageNumber).Skip(5).Take(5).Last() ? 0 : 10, 10),
                         Width = 156,
                         Height = 200
                     };
@@ -344,7 +347,7 @@ namespace Shrek2ModManager
                             if (child is StackPanel)
                             {
                                 ((child as StackPanel).Children[0] as TextBlock).Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_White);
-                                ((child as StackPanel).Children[1] as Image).Source = new BitmapImage(new Uri(@"/Shrek2Workshop;component/images/tick_white.png", UriKind.Relative));
+                                ((child as StackPanel).Children[1] as Image).Source = new BitmapImage(new Uri(@"Resources/embed_tick_white.png", UriKind.Relative));
                             }
                         }
                     };
@@ -361,27 +364,27 @@ namespace Shrek2ModManager
                             if (child is StackPanel)
                             {
                                 ((child as StackPanel).Children[0] as TextBlock).Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Green);
-                                ((child as StackPanel).Children[1] as Image).Source = new BitmapImage(new Uri(@"/Shrek2Workshop;component/images/tick.png", UriKind.Relative));
+                                ((child as StackPanel).Children[1] as Image).Source = new BitmapImage(new Uri(@"Resources/embed_tick.png", UriKind.Relative));
                             }
                         }
                     };
 
                     cardPanel.MouseUp += (s, e) =>
                     {
-                        //if (MapWindow != null)
-                        //{
-                        //    MapWindow.Focus();
-                        //    return;
-                        //}
+                        if (ModWindow != null)
+                        {
+                            ModWindow.Focus();
+                            return;
+                        }
 
-                        //MapWindow = new MapWindow(map);
-                        //MapWindow.Closed += (a, b) => MapWindow = null;
-                        //MapWindow.Show();
+                        ModWindow = new ModWindow(map);
+                        ModWindow.Closed += (a, b) => ModWindow = null;
+                        ModWindow.Show();
                     };
 
                     cardPanel.Children.Add(new Image()
                     {
-                        Source = new BitmapImage(new Uri(Uri.IsWellFormedUriString(map.ImageUrl, UriKind.Absolute) ? map.ImageUrl : "https://www.hbo.com/content/dam/hbodata/movies/s/shrek-2/article/shrek-2-1920.jpg/_jcr_content/renditions/cq5dam.web.1200.675.jpeg")),
+                        Source = new BitmapImage(new Uri("https://shrek2modding.fra1.digitaloceanspaces.com/Internal/defaultmodimage.jpeg")),
                         Height = 80,
                         Width = 156,
                         Stretch = Stretch.UniformToFill
@@ -416,7 +419,7 @@ namespace Shrek2ModManager
                         Height = 15,
                         Width = 15,
                         VerticalAlignment = VerticalAlignment.Top,
-                        Source = new BitmapImage(new Uri(@"/Shrek2Workshop;component/images/tick.png", UriKind.Relative)),
+                        Source = new BitmapImage(new Uri(@"Resources/embed_tick.png", UriKind.Relative)),
                         Margin = new Thickness(0, 2, 5, 0)
                     });
 
@@ -440,30 +443,30 @@ namespace Shrek2ModManager
                 panel.Children.Add(rowPanel2);
             }
         }
-        */
+        
         private async Task RefreshMaps()
         {
-            //Maps = await SH2WorkshopSDK.GetMaps();
-            //Maps = Maps.OrderByDescending(p => DateTimeOffset.ParseExact(p.MapCreated, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)).ToList();
+            Mods = Mod.GetMods();
+            Mods = Mods.OrderByDescending(p => p.ID).ToList();
 
-            //PopulateMaps(Popular_Maps_Panel, false);
-            //PopulateMaps(Maps_Panel, true);
-            //PopulatePagination(Maps_Pagination_Panel);
-            //PopulateMaps(Mods_Panel, true);
+            PopulateMaps(Popular_Maps_Panel, false);
+            PopulateMaps(Maps_Panel, true);
+            PopulatePagination(Maps_Pagination_Panel);
+            PopulateMaps(Mods_Panel, true);
         }
 
         private async Task SelectNavItem(int item)
         {
             if (item == 0)
             {
-                //MapsPageNumber = 0;
+                MapsPageNumber = 0;
                 Nav_Button_Overview.Background = Shrek2Colors.GetBrushFromHex(Shrek2Colors.NavColor_Selected);
                 Nav_Button_Mods.Background = Shrek2Colors.GetBrushFromHex(Shrek2Colors.NavColor_Normal);
 
                 Content_Panel_Overview.Visibility = Visibility.Visible;
                 Content_Panel_Mods.Visibility = Visibility.Collapsed;
 
-                //await RefreshMaps();
+                await RefreshMaps();
             }
             else if (item == 1)
             {
@@ -473,7 +476,7 @@ namespace Shrek2ModManager
                 Content_Panel_Overview.Visibility = Visibility.Collapsed;
                 Content_Panel_Mods.Visibility = Visibility.Visible;
 
-                //await RefreshMaps();
+                await RefreshMaps();
             }
         }
     }
