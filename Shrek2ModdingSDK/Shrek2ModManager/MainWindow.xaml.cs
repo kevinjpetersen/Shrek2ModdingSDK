@@ -101,7 +101,7 @@ namespace Shrek2ModManager
             {
                 if (string.IsNullOrWhiteSpace(Settings.GameFolderLocation))
                 {
-                    MessageBox.Show("You have not setup the Shrek 2 Game.exe in the Settings! You need to set it up before you can play maps directly!");
+                    MessageBox.Show("You have not setup the Shrek 2 Game.exe in the Settings! You need to set it up before you can play mods directly!");
                     return;
                 }
 
