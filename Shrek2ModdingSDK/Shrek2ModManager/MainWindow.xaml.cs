@@ -61,6 +61,14 @@ namespace Shrek2ModManager
 
             Settings = SH2WorkshopFileHandler.GetSettings();
 
+            if(SH2WorkshopFileHandler.IsInternalModFilesInstalled())
+            {
+                Overview_Button_PlayGame_Text.Text = "Play Shrek 2 Modded";
+            } else
+            {
+                Overview_Button_PlayGame_Text.Text = "Install Shrek 2 Modded";
+            }
+
             Mods = Mod.GetMods();
             Mods = Mods.OrderByDescending(p => p.ID).ToList();
 
@@ -87,16 +95,41 @@ namespace Shrek2ModManager
             }
         }
 
-        private void Overview_Button_PlayGame_MouseUp(object sender, MouseButtonEventArgs e)
+        private async void Overview_Button_PlayGame_MouseUp(object sender, MouseButtonEventArgs e)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(Settings.GameExeLocation))
+                if (string.IsNullOrWhiteSpace(Settings.GameFolderLocation))
                 {
                     MessageBox.Show("You have not setup the Shrek 2 Game.exe in the Settings! You need to set it up before you can play maps directly!");
                     return;
                 }
-                Process.Start(Settings.GameExeLocation, Settings.WindowMode == Settings.WindowModes.WindowMode ? "-windowed" : "");
+
+                if(SH2WorkshopFileHandler.IsInternalModFilesInstalled())
+                {
+                    Process.Start(System.IO.Path.Combine(Settings.GameFolderLocation, "Shrek 2 Modded.exe"), Settings.WindowMode == Settings.WindowModes.WindowMode ? "-windowed" : "");
+                } else
+                {
+                    Overview_Button_PlayGame_Text.Text = "Downloading..";
+                    bool downloaded = await SH2WorkshopFileHandler.DownloadInternalModFiles((ea, ex) =>
+                    {
+
+                    });
+
+                    if(downloaded)
+                    {
+                        Overview_Button_PlayGame_Text.Text = "Installing..";
+
+                        bool installed = SH2WorkshopFileHandler.ExtractInternalModFiles();
+                        if(installed)
+                        {
+                            Overview_Button_PlayGame_Text.Text = "Play Shrek 2 Modded";
+                            return;
+                        }
+                    }
+                    Overview_Button_PlayGame_Text.Text = "Failed to install. Try again!";
+                }
+
             }
             catch
             {

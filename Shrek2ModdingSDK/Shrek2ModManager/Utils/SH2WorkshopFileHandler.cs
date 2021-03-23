@@ -54,6 +54,111 @@ namespace Shrek2ModManager.Utils
             return File.Exists(Path.Combine(Directory.GetCurrentDirectory(), ModsFolder, $"{modId}.zip"));
         }
 
+        public static bool IsInternalModFilesInstalled()
+        {
+            var settings = GetSettings();
+
+            if (string.IsNullOrWhiteSpace(settings.GameFolderLocation)) return false;
+
+            if (File.Exists(Path.Combine(settings.GameFolderLocation, "Shrek 2 Modded.exe")) == false) return false;
+            if (File.Exists(Path.Combine(settings.GameFolderLocation, "Shrek 2 Modded.int")) == false) return false;
+            if (File.Exists(Path.Combine(settings.GameFolderLocation, "Shrek2ModLoader.dll")) == false) return false;
+
+            return true;
+        }
+
+        public static List<string> GetInstalledMods()
+        {
+            try
+            {
+                var settings = GetSettings();
+
+                if (string.IsNullOrWhiteSpace(settings.GameFolderLocation)) return new List<string>();
+
+                var installedModsFolder = Path.Combine(settings.GameFolderLocation, ModsInstalledFolder);
+
+                if (Directory.Exists(installedModsFolder) == false) return new List<string>();
+
+                var folders = Directory.EnumerateDirectories(installedModsFolder);
+
+                var installedMods = new List<string>();
+
+                foreach (var folder in folders)
+                {
+                    var files = Directory.GetFiles(folder);
+                    bool foundMod = false;
+                    foreach (var file in files)
+                    {
+                        if (foundMod) continue;
+                        if (Path.GetExtension(file) == ".dll")
+                        {
+                            installedMods.Add(Path.GetFileNameWithoutExtension(file));
+                            foundMod = true;
+                        }
+                    }
+                }
+
+                return installedMods;
+            }
+            catch
+            {
+                return new List<string>();
+            }
+        }
+
+        public static bool HandleDefUserChanges()
+        {
+            try
+            {
+                var settings = GetSettings();
+
+                if (string.IsNullOrWhiteSpace(settings.GameFolderLocation)) return false;
+
+                var backupFilePath = Path.Combine(settings.GameFolderLocation, "Backup_DefUser.ini");
+                var realFilePath = Path.Combine(settings.GameFolderLocation, "DefUser.ini");
+
+                if (File.Exists(backupFilePath) == false)
+                {
+                    File.Copy(realFilePath, backupFilePath);
+                }
+
+                var lines = File.ReadAllLines(realFilePath);
+
+                var installedMods = GetInstalledMods();
+
+                string execString = "";
+                int x = 1;
+                foreach (var installedMod in installedMods)
+                {
+                    if (x == installedMods.Count)
+                    {
+                        execString += "exec " + installedMod.Replace(" ", "");
+                    }
+                    else
+                    {
+                        execString += "exec " + installedMod.Replace(" ", "") + " | ";
+                    }
+
+                    x++;
+                }
+
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    if (lines[i].Contains("F24="))
+                    {
+                        lines[i] = "F24=" + execString;
+                    }
+                }
+
+                File.WriteAllLines(realFilePath, lines);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public static bool IsModInstalled(string modId)
         {
             var settings = GetSettings();
@@ -61,6 +166,48 @@ namespace Shrek2ModManager.Utils
             if (string.IsNullOrWhiteSpace(settings.GameFolderLocation)) return false;
 
             return Directory.Exists(Path.Combine(settings.GameFolderLocation, ModsInstalledFolder, modId));
+        }
+
+        public static async Task<bool> DownloadInternalModFiles(Action<object, DownloadProgressChangedEventArgs> downloadProgress)
+        {
+            try
+            {
+                if (IsInternalModFilesInstalled()) return true;
+
+                using (var client = new WebClient())
+                {
+                    client.DownloadProgressChanged += (s, d) => downloadProgress(s, d);
+                    await client.DownloadFileTaskAsync($"{InternalDownloadUrlPrefix}/InternalModFiles.zip", Path.Combine(Directory.GetCurrentDirectory(), $"InternalModFiles.zip"));
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool UninstallMod(string modId)
+        {
+            try
+            {
+                var settings = GetSettings();
+
+                if (string.IsNullOrWhiteSpace(settings.GameFolderLocation)) return false;
+                if (IsModInstalled(modId) == false) return false;
+
+                var modPath = Path.Combine(settings.GameFolderLocation, ModsInstalledFolder, modId);
+                Directory.Delete(modPath, true);
+
+                bool zipFileExist = File.Exists(Path.Combine(Directory.GetCurrentDirectory(), ModsFolder, $"{modId}.zip"));
+                if (zipFileExist) File.Delete(Path.Combine(Directory.GetCurrentDirectory(), ModsFolder, $"{modId}.zip"));
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public static async Task<bool> DownloadMod(string modId, Action<object, DownloadProgressChangedEventArgs> downloadProgress)
@@ -80,6 +227,33 @@ namespace Shrek2ModManager.Utils
                     await client.DownloadFileTaskAsync($"{ModDownloadUrlPrefix}/{modId}.zip", Path.Combine(Directory.GetCurrentDirectory(), ModsFolder, $"{modId}.zip"));
                     return true;
                 }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool ExtractInternalModFiles()
+        {
+            try
+            {
+                if (IsInternalModFilesInstalled()) return true;
+
+                var settings = GetSettings();
+
+                if (string.IsNullOrWhiteSpace(settings.GameFolderLocation)) return false;
+
+                var packagedFilePath = Path.Combine(Directory.GetCurrentDirectory(), $"InternalModFiles.zip");
+                if (File.Exists(packagedFilePath) == false) return false;
+
+                using (FileStream fs = new FileStream(packagedFilePath, FileMode.Open))
+                using (ZipArchive arch = new ZipArchive(fs, ZipArchiveMode.Read))
+                {
+                    arch.ExtractToDirectory(settings.GameFolderLocation);
+                }
+
+                return true;
             }
             catch
             {

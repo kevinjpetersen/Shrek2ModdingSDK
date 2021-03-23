@@ -5,9 +5,16 @@
 #include "Shrek2ModdingSDK.h"
 #include "Shrek2DirectX.h"
 
-void Shrek2::Initialize(std::string ModName)
+void Shrek2::Initialize(std::string ModName, bool ShowConsoleByDefault = true)
 {
-	Shrek2::AddConsole = AddConsole;
+	Shrek2::AddConsole = ShowConsoleByDefault;
+	if (ShowConsoleByDefault)
+	{
+		ShowConsole();
+	}
+	else {
+		HideConsole();
+	}
 
 	char dllPath[MAX_PATH];
 	GetModuleFileName(DllHandle, dllPath, MAX_PATH);

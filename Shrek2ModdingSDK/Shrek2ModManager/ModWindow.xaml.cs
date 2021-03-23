@@ -45,10 +45,10 @@ namespace Shrek2ModManager
         {
             Button_DownloadPlayMap.Click += Button_DownloadPlayMap_Click;
 
-            if (SH2WorkshopFileHandler.IsModDownloaded(Mod.InternalName))
+            if (SH2WorkshopFileHandler.IsModInstalled(Mod.InternalName))
             {
                 Downloaded = true;
-                Button_DownloadPlayMap.Content = "Mod already installed";
+                Button_DownloadPlayMap.Content = "Uninstall Mod";
                 return;
             }
             Downloaded = false;
@@ -66,6 +66,14 @@ namespace Shrek2ModManager
                     MessageBox.Show("You have not setup the Shrek 2 Game.exe in the Settings! You need to set it up before you can play mods directly!");
                     return;
                 }
+
+                bool uninstalled = SH2WorkshopFileHandler.UninstallMod(Mod.InternalName);
+                if(uninstalled)
+                {
+                    SH2WorkshopFileHandler.HandleDefUserChanges();
+                    Button_DownloadPlayMap.Content = "Install Mod";
+                    Downloaded = false;
+                }
             }
             else
             {
@@ -79,9 +87,12 @@ namespace Shrek2ModManager
                     SH2WorkshopFileHandler.ExtractModFile(Mod.InternalName);
                     if (SH2WorkshopFileHandler.IsModInstalled(Mod.InternalName))
                     {
-                        Button_DownloadPlayMap.Content = "Mod installed";
+                        Button_DownloadPlayMap.Content = "Uninstall Mod";
+                        Downloaded = true;
                     }
                 }
+
+                SH2WorkshopFileHandler.HandleDefUserChanges();
                 Progress_DownloadMap.Visibility = Visibility.Hidden;
                 IsDownloading = false;
             }

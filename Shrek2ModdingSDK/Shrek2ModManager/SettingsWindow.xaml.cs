@@ -33,6 +33,7 @@ namespace Shrek2ModManager
         {
             NewSettings = new Settings();
             NewSettings.GameExeLocation = MainWindow.Settings.GameExeLocation;
+            NewSettings.GameFolderLocation = MainWindow.Settings.GameFolderLocation;
             NewSettings.Language = MainWindow.Settings.Language;
             NewSettings.WindowMode = MainWindow.Settings.WindowMode;
 

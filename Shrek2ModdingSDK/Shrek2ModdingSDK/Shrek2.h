@@ -7,7 +7,7 @@ class Shrek2
 {
 public:
 	void InitializeEvents();
-	void Initialize(std::string ModName);
+	void Initialize(std::string ModName, bool ShowConsoleByDefault);
 	void ShowConsole();
 	void HideConsole();
 	bool IsConsoleVisible();

@@ -114,7 +114,7 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 
 	AllocConsole();
 	freopen_s(&fp, "CONOUT$", "w", stdout);
-	//HideConsole();
+	HideConsole();
 
 	LogToConsole("Waiting for Shrek 2 to open..");
 	bool findWindow = true;

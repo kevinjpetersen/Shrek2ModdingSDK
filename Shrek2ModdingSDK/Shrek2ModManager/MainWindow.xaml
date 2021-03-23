@@ -51,7 +51,7 @@
                                     <ImageBrush ImageSource="pack://siteoforigin:,,,/Resources/playshrek2_image.jpg" Stretch="UniformToFill" />
                                 </StackPanel.Background>
                                 <Border BorderBrush="{x:Null}" Height="120">
-                                    <TextBlock VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignHeadline4TextBlock}" FontWeight="Bold">Play Shrek 2 Modded</TextBlock>
+                                    <TextBlock x:Name="Overview_Button_PlayGame_Text" VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignHeadline4TextBlock}" FontWeight="Bold">Play Shrek 2 Modded</TextBlock>
                                 </Border>
                             </StackPanel>
                         </materialDesign:Card>
