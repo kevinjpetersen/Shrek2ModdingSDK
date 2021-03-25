@@ -164,6 +164,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="json.hpp" />
+    <ClInclude Include="Shrek2Config.h" />
     <ClInclude Include="Shrek2DirectX.h" />
     <ClInclude Include="Shrek2Events.h" />
     <ClInclude Include="Shrek2Input.h" />
@@ -189,6 +191,7 @@
     <ClInclude Include="Shrek2Vector3.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Shrek2Config.cpp" />
     <ClCompile Include="Shrek2Events.cpp" />
     <ClCompile Include="Shrek2Input.cpp" />
     <ClCompile Include="Shrek2Maps.cpp" />

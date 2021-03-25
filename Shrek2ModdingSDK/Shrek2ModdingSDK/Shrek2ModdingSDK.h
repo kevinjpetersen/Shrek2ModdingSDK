@@ -14,12 +14,18 @@
 #include <ppl.h>
 #include <ppltasks.h>
 #include <agents.h>
+#include <streambuf>
 #include <map>
 #include <string>
 #include <regex>
 #include <chrono>
 #include <ctime>
 #include <cmath>
+#include "json.hpp"
+
+using json = nlohmann::json;
+
+#include "Shrek2Config.h"
 #include "Shrek2TimerLib.h"
 #include "Shrek2Timer.h"
 #include "Shrek2Maps.h"

@@ -38,7 +38,13 @@ void RenderUI()
 
 void OnStart()
 {
+	Game.Config.Load();
+
 	Shrek2Textures::AddTexture("Images/master64.jpg", "M64");
+
+	Game.LogToConsole(Game.Config.GetString("TitleScreen"));
+	Game.LogToConsole(Game.Config.GetBool("ShowLogo") ? "Show Logo" : "Dont Show Logo");
+	Game.LogToConsole("Difficulty: " + std::to_string(Game.Config.GetInt("Difficulty")));
 
 	Shrek2UI::GameWindowSize = Game.GameWindowSize;
 	Shrek2UI::RenderUI = RenderUI;
@@ -50,7 +56,7 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	Game.Events.OnStart = OnStart;
 	Game.Events.OnTick = OnTick;
 
-	Game.Initialize("Shrek 2 Test Mod", false);
+	Game.Initialize("Shrek 2 Test Mod", true);
 
 	FreeLibraryAndExitThread(hModule, 0);
 	return 0;
