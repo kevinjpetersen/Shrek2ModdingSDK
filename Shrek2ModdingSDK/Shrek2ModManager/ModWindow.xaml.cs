@@ -28,15 +28,15 @@ namespace Shrek2ModManager
         {
             InitializeComponent();
             this.Mod = mod;
-            Title = $"{Mod.Name} | By {Mod.Author}";
+            Title = $"{Mod.Name} | By {Mod.Username}";
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Map_Title.Text = Mod.Name;
-            Map_Author.Text = $"By {Mod.Author}";
+            Map_Author.Text = $"By {Mod.Username}";
             Map_Desc.Text = Mod.Description;
-            Map_Verified.Visibility = Mod.Verified ? Visibility.Visible : Visibility.Hidden;
+            Map_Verified.Visibility = Mod.Verified == 1 ? Visibility.Visible : Visibility.Hidden;
             IsDownloading = false;
             HandleMapStatus();
         }
@@ -45,7 +45,7 @@ namespace Shrek2ModManager
         {
             Button_DownloadPlayMap.Click += Button_DownloadPlayMap_Click;
 
-            if (SH2WorkshopFileHandler.IsModInstalled(Mod.InternalName))
+            if (SH2WorkshopFileHandler.IsModInstalled(Mod.ModGUID))
             {
                 Downloaded = true;
                 Button_DownloadPlayMap.Content = "Uninstall Mod";
@@ -67,7 +67,7 @@ namespace Shrek2ModManager
                     return;
                 }
 
-                bool uninstalled = SH2WorkshopFileHandler.UninstallMod(Mod.InternalName);
+                bool uninstalled = SH2WorkshopFileHandler.UninstallMod(Mod.ModGUID);
                 if(uninstalled)
                 {
                     SH2WorkshopFileHandler.HandleDefUserChanges();
@@ -81,11 +81,11 @@ namespace Shrek2ModManager
                 IsDownloading = true;
                 Progress_DownloadMap.Value = 0;
                 Progress_DownloadMap.Visibility = Visibility.Visible;
-                Downloaded = await SH2WorkshopFileHandler.DownloadMod(Mod.InternalName, DownloadProgress);
+                Downloaded = await SH2WorkshopFileHandler.DownloadMod(Mod.ModGUID, DownloadProgress);
                 if (Downloaded)
                 {
-                    SH2WorkshopFileHandler.ExtractModFile(Mod.InternalName);
-                    if (SH2WorkshopFileHandler.IsModInstalled(Mod.InternalName))
+                    SH2WorkshopFileHandler.ExtractModFile(Mod.ModGUID);
+                    if (SH2WorkshopFileHandler.IsModInstalled(Mod.ModGUID))
                     {
                         Button_DownloadPlayMap.Content = "Uninstall Mod";
                         Downloaded = true;

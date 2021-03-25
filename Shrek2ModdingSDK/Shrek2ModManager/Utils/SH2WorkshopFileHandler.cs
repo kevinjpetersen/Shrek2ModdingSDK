@@ -18,6 +18,7 @@ namespace Shrek2ModManager.Utils
 
         private const string ModDownloadUrlPrefix = "https://shrek2modding.fra1.digitaloceanspaces.com/Mods";
         private const string InternalDownloadUrlPrefix = "https://shrek2modding.fra1.digitaloceanspaces.com/Internal";
+        public const string ThumbnailDownloadUrlPrefix = "https://shrek2modding.fra1.digitaloceanspaces.com/Thumbnails";
 
         public static bool SaveSettings(Settings settings)
         {
@@ -275,13 +276,18 @@ namespace Shrek2ModManager.Utils
                     Directory.CreateDirectory(Path.Combine(settings.GameFolderLocation, ModsInstalledFolder));
                 }
 
+                if(Directory.Exists(Path.Combine(settings.GameFolderLocation, ModsInstalledFolder, modId)) == false)
+                {
+                    Directory.CreateDirectory(Path.Combine(settings.GameFolderLocation, ModsInstalledFolder, modId));
+                }
+
                 var packagedFilePath = Path.Combine(Directory.GetCurrentDirectory(), ModsFolder, $"{modId}.zip");
                 if (File.Exists(packagedFilePath) == false) return false;
 
                 using (FileStream fs = new FileStream(packagedFilePath, FileMode.Open))
                 using (ZipArchive arch = new ZipArchive(fs, ZipArchiveMode.Read))
                 {
-                    arch.ExtractToDirectory(Path.Combine(settings.GameFolderLocation, ModsInstalledFolder));
+                    arch.ExtractToDirectory(Path.Combine(settings.GameFolderLocation, ModsInstalledFolder, modId));
                 }
 
                 return true;

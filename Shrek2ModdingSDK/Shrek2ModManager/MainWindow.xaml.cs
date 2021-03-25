@@ -70,7 +70,6 @@ namespace Shrek2ModManager
             }
 
             Mods = Mod.GetMods();
-            Mods = Mods.OrderByDescending(p => p.ID).ToList();
 
             PopulateMaps(Popular_Maps_Panel, false);
             PopulateMaps(Maps_Panel, true);
@@ -295,7 +294,7 @@ namespace Shrek2ModManager
 
                 cardPanel.Children.Add(new Image()
                 {
-                    Source = new BitmapImage(new Uri("https://shrek2modding.fra1.digitaloceanspaces.com/Internal/defaultmodimage.jpeg")),
+                    Source = new BitmapImage(new Uri(map.HasThumbnail == 1 ? $"{SH2WorkshopFileHandler.ThumbnailDownloadUrlPrefix}/{map.ModGUID}.png" : "https://shrek2modding.fra1.digitaloceanspaces.com/Internal/defaultmodimage.jpeg")),
                     Height = 80,
                     Width = 156,
                     Stretch = Stretch.UniformToFill
@@ -318,7 +317,7 @@ namespace Shrek2ModManager
                 authorPanel.Children.Add(new TextBlock()
                 {
                     Style = (Style)FindResource("MaterialDesignSubtitle2TextBlock"),
-                    Text = $"By {map.Author}",
+                    Text = $"By {map.Username}",
                     Margin = new Thickness(10, 0, 5, 5),
                     TextTrimming = TextTrimming.CharacterEllipsis,
                     FontWeight = FontWeights.Normal,
@@ -326,7 +325,7 @@ namespace Shrek2ModManager
                 });
                 authorPanel.Children.Add(new Image()
                 {
-                    Visibility = map.Verified ? Visibility.Visible : Visibility.Hidden,
+                    Visibility = map.Verified == 1 ? Visibility.Visible : Visibility.Hidden,
                     Height = 15,
                     Width = 15,
                     VerticalAlignment = VerticalAlignment.Top,
@@ -417,7 +416,7 @@ namespace Shrek2ModManager
 
                     cardPanel.Children.Add(new Image()
                     {
-                        Source = new BitmapImage(new Uri("https://shrek2modding.fra1.digitaloceanspaces.com/Internal/defaultmodimage.jpeg")),
+                        Source = new BitmapImage(new Uri(map.HasThumbnail == 1 ? $"{SH2WorkshopFileHandler.ThumbnailDownloadUrlPrefix}/{map.ModGUID}.png" : "https://shrek2modding.fra1.digitaloceanspaces.com/Internal/defaultmodimage.jpeg")),
                         Height = 80,
                         Width = 156,
                         Stretch = Stretch.UniformToFill
@@ -440,7 +439,7 @@ namespace Shrek2ModManager
                     authorPanel.Children.Add(new TextBlock()
                     {
                         Style = (Style)FindResource("MaterialDesignSubtitle2TextBlock"),
-                        Text = $"By {map.Author}",
+                        Text = $"By {map.Username}",
                         Margin = new Thickness(10, 0, 5, 5),
                         TextTrimming = TextTrimming.CharacterEllipsis,
                         FontWeight = FontWeights.Normal,
@@ -448,7 +447,7 @@ namespace Shrek2ModManager
                     });
                     authorPanel.Children.Add(new Image()
                     {
-                        Visibility = map.Verified ? Visibility.Visible : Visibility.Hidden,
+                        Visibility = map.Verified == 1 ? Visibility.Visible : Visibility.Hidden,
                         Height = 15,
                         Width = 15,
                         VerticalAlignment = VerticalAlignment.Top,
@@ -480,7 +479,6 @@ namespace Shrek2ModManager
         private async Task RefreshMaps()
         {
             Mods = Mod.GetMods();
-            Mods = Mods.OrderByDescending(p => p.ID).ToList();
 
             PopulateMaps(Popular_Maps_Panel, false);
             PopulateMaps(Maps_Panel, true);
