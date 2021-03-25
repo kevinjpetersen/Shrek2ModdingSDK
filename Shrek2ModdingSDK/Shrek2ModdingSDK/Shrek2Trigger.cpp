@@ -63,8 +63,3 @@ bool Shrek2Trigger::IsInsideTrigger(Shrek2Vector3 valuePosition, Shrek2Vector3 v
 		(aMinY <= bMaxY && aMaxY >= bMinY) &&
 		(aMinZ <= bMaxZ && aMaxZ >= bMinZ);
 }
-
-Shrek2Vector3 DistanceToTrigger(Shrek2Vector3 value)
-{
-
-}
