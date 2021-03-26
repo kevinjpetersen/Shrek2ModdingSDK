@@ -25,6 +25,7 @@ namespace Shrek2ModManager
     {
         public ModWindow ModWindow { get; set; }
         public SettingsWindow SettingsWindow { get; set; }
+        public ManageModsWindow ManageModsWindow { get; set; }
 
         public List<Mod> Mods { get; set; } = new List<Mod>();
         public int MapsPageNumber { get; set; }
@@ -79,19 +80,18 @@ namespace Shrek2ModManager
 
         private void Overview_Button_ManageMods_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            try
+            if (ManageModsWindow != null)
             {
-                //if (string.IsNullOrWhiteSpace(Settings.UE2EditorExeLocation))
-                //{
-                //    MessageBox.Show("You have not setup the UE2 UnrealEd.exe in the Settings! You need to set it up before you can open the editor from here!");
-                //    return;
-                //}
-                //Process.Start(Settings.UE2EditorExeLocation);
+                ManageModsWindow.Focus();
+                return;
             }
-            catch
-            {
 
-            }
+            ManageModsWindow = new ManageModsWindow(Mods);
+            ManageModsWindow.Closed += (a, b) =>
+            {
+                ManageModsWindow = null;
+            };
+            ManageModsWindow.Show();
         }
 
         private async void Overview_Button_PlayGame_MouseUp(object sender, MouseButtonEventArgs e)

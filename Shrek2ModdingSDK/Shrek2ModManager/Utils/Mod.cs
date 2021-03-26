@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -32,6 +33,36 @@ namespace Shrek2ModManager.Utils
                 var json = new WebClient().DownloadString("https://shrek2mods.com/api/mod/getmods");
                 if (string.IsNullOrWhiteSpace(json)) return new List<Mod>();
                 return JsonConvert.DeserializeObject<List<Mod>>(json);
+            }
+            catch
+            {
+                return new List<Mod>();
+            }
+        }
+
+        public static List<Mod> GetInstalledMods(List<Mod> modList)
+        {
+            try
+            {
+                var settings = SH2WorkshopFileHandler.GetSettings();
+
+                if (string.IsNullOrWhiteSpace(settings.GameFolderLocation)) return new List<Mod>();
+
+                if (Directory.Exists(Path.Combine(settings.GameFolderLocation, SH2WorkshopFileHandler.ModsInstalledFolder)) == false) return new List<Mod>();
+                var modGuids = Directory.GetDirectories(Path.Combine(settings.GameFolderLocation, SH2WorkshopFileHandler.ModsInstalledFolder));
+
+                var installedMods = new List<Mod>();
+                foreach(var mgPath in modGuids)
+                {
+                    var mg = Path.GetFileName(mgPath);
+                    if(modList.Any(p => p.ModGUID == mg))
+                    {
+                        var mod = modList.FirstOrDefault(p => p.ModGUID == mg);
+                        if (mod == null) continue;
+                        installedMods.Add(mod);
+                    }
+                }
+                return installedMods;
             }
             catch
             {

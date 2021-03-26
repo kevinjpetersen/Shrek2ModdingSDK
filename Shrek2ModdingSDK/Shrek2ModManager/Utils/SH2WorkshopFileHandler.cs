@@ -14,7 +14,7 @@ namespace Shrek2ModManager.Utils
     public class SH2WorkshopFileHandler
     {
         private const string ModsFolder = "Mods";
-        private const string ModsInstalledFolder = "Shrek 2 Mods";
+        public const string ModsInstalledFolder = "Shrek 2 Mods";
 
         private const string ModDownloadUrlPrefix = "https://shrek2modding.fra1.digitaloceanspaces.com/Mods";
         private const string InternalDownloadUrlPrefix = "https://shrek2modding.fra1.digitaloceanspaces.com/Internal";
@@ -158,6 +158,16 @@ namespace Shrek2ModManager.Utils
             {
                 return false;
             }
+        }
+
+        public static bool IsModConfigable(string modId)
+        {
+            var settings = GetSettings();
+
+            if (string.IsNullOrWhiteSpace(settings.GameFolderLocation)) return false;
+
+            if (Directory.Exists(Path.Combine(settings.GameFolderLocation, ModsInstalledFolder, modId)) == false) return false;
+            return File.Exists(Path.Combine(settings.GameFolderLocation, ModsInstalledFolder, modId, "config.json"));
         }
 
         public static bool IsModInstalled(string modId)
