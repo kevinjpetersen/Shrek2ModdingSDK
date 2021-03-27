@@ -6,6 +6,12 @@
 class Shrek2
 {
 public:
+	inline static Shrek2* Instance;
+
+	Shrek2() {
+		if (!Instance) Instance = this;
+	}
+
 	void InitializeEvents();
 	void Initialize(std::string ModName, bool ShowConsoleByDefault);
 	void ShowConsole();

@@ -218,6 +218,5 @@ void Shrek2Events::EventUpdates()
 		EU_OnPlayerBouncePad();
 		EU_OnPlayerInAirLand();
 		EU_OnPlayerInfo();
-		EU_OnCutLogTick();
 	}
 }

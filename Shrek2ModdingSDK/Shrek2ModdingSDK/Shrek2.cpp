@@ -5,6 +5,19 @@
 #include "Shrek2ModdingSDK.h"
 #include "Shrek2DirectX.h"
 
+DWORD WINAPI CutLogThread(HINSTANCE hModule)
+{
+	Shrek2& Game = *Shrek2::Instance;
+
+	while (Game.IsModRunning) {
+		Sleep(1);
+		Game.Events.EU_OnCutLogTick();
+	}
+
+	ExitThread(0);
+}
+
+
 void Shrek2::Initialize(std::string ModName, bool ShowConsoleByDefault = true)
 {
 	Shrek2::AddConsole = ShowConsoleByDefault;
@@ -56,7 +69,9 @@ void Shrek2::Initialize(std::string ModName, bool ShowConsoleByDefault = true)
 	bool tempIsMinimized = false;
 	QUERY_USER_NOTIFICATION_STATE pquns;
 
-	if(Events.OnStart) Events.OnStart();
+	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)CutLogThread, NULL, 0, NULL);
+
+	if (Events.OnStart) Events.OnStart();
 	while (IsModRunning) {
 		Sleep(1);
 
@@ -90,7 +105,7 @@ void Shrek2::Initialize(std::string ModName, bool ShowConsoleByDefault = true)
 		if (Shrek2::WindowHandle != GetForegroundWindow()) {
 			continue;
 		}
-
+		
 		if (Triggers.EnableTriggers)
 		{
 			Shrek2Maps map = Shrek2Utils::MapStringToMap(Variables.GetCurrentMap());
@@ -105,7 +120,7 @@ void Shrek2::Initialize(std::string ModName, bool ShowConsoleByDefault = true)
 			Triggers.CheckTriggers(Shrek2Vector3(x, y, z), map, Shrek2Vector3(colRadius, colRadius, colHeight));
 		}
 		Events.EventUpdates();
-		if(Events.OnTick) Events.OnTick();
+		if (Events.OnTick) Events.OnTick();
 	}
 
 	LogToConsole("Mod '" + ModName + "' unloaded.");
