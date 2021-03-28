@@ -4,7 +4,15 @@
 
 #include "Shrek2ModdingSDK.h"
 
-int Shrek2Trigger::CheckTrigger(Shrek2Vector3 valuePosition, Shrek2Vector3 valueSize, bool enableDebugging)
+bool Shrek2Trigger::IsPositionZero()
+{
+	if (Position.X != 0) return false;
+	if (Position.Y != 0) return false;
+	if (Position.Z != 0) return false;
+	return true;
+}
+
+int Shrek2Trigger::CheckTrigger(std::string name, Shrek2Vector3 valuePosition, Shrek2Vector3 valueSize, bool enableDebugging)
 {
 	bool insideTrigger = IsInsideTrigger(valuePosition, valueSize);
 
@@ -15,7 +23,7 @@ int Shrek2Trigger::CheckTrigger(Shrek2Vector3 valuePosition, Shrek2Vector3 value
 			Triggered = true;
 			if (enableDebugging)
 			{
-				std::cout << "Triggered entered '" + Name + "' | Type: " + (TriggerOnce ? "TRIGGER_ONCE" : "TRIGGER_EVERY_TIME") << std::endl;
+				std::cout << "Triggered entered '" + name + "' | Type: " + (TriggerOnce ? "TRIGGER_ONCE" : "TRIGGER_EVERY_TIME") << std::endl;
 			}
 			return 1;
 		}
@@ -26,7 +34,7 @@ int Shrek2Trigger::CheckTrigger(Shrek2Vector3 valuePosition, Shrek2Vector3 value
 		{
 			if (enableDebugging)
 			{
-				std::cout << "Triggered exited '" + Name + "' | Type: " + (TriggerOnce ? "TRIGGER_ONCE" : "TRIGGER_EVERY_TIME") << std::endl;
+				std::cout << "Triggered exited '" + name + "' | Type: " + (TriggerOnce ? "TRIGGER_ONCE" : "TRIGGER_EVERY_TIME") << std::endl;
 			}
 			if (!TriggerOnce)
 			{

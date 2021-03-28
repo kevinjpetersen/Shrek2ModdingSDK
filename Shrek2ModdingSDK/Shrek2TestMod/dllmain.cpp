@@ -12,14 +12,55 @@ Shrek2 Game = Shrek2();
 
 Shrek2Timer timer1 = Shrek2Timer();
 
+bool allowTiming = false;
+
 void OnTick()
 {
 	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
-		if (timer1.IsTimerRunning()) {
-			timer1.Stop();
+		Game.Triggers.OverwriteTrigger("Location1", Shrek2Trigger(Game.Variables.GetPosition(), Shrek2Vector3(100)));
+	}
+
+	if (Game.Input.OnKeyPress(Shrek2Input::H)) {
+		Game.Triggers.OverwriteTrigger("Location2", Shrek2Trigger(Game.Variables.GetPosition(), Shrek2Vector3(100)));
+	}
+
+	if (Game.Input.OnKeyPress(Shrek2Input::J)) {
+		allowTiming = !allowTiming;
+		Game.LogToConsole("Allow timing: " + std::to_string(allowTiming));
+	}
+}
+
+void OnTriggerEnter(std::string name, Shrek2Trigger trigger)
+{
+	Game.LogToConsole(name);
+
+	if (Shrek2Utils::DoesEqual(name, "Location1")) {
+		auto trigger = Game.Triggers.GetTrigger("Location2");
+		
+		if (!trigger.IsPositionZero()) {
+			if (allowTiming) {
+				if (timer1.IsTimerRunning()) {
+					timer1.Stop();
+				}
+				else {
+					timer1.Start();
+				}
+			}
 		}
-		else {
-			timer1.Start();
+	}
+
+	if (Shrek2Utils::DoesEqual(name, "Location2")) {
+		auto trigger = Game.Triggers.GetTrigger("Location1");
+
+		if (!trigger.IsPositionZero()) {
+			if (allowTiming) {
+				if (timer1.IsTimerRunning()) {
+					timer1.Stop();
+				}
+				else {
+					timer1.Start();
+				}
+			}
 		}
 	}
 }
@@ -27,41 +68,35 @@ void OnTick()
 void RenderUI()
 {
 	Shrek2UI::RenderText(
-		Shrek2Rect(10, Game.GetGameWindowHeight() / 2 - 90, 400, 100),
-		"Timer: " + timer1.GetTimeString(),
+		Shrek2Rect(10, Game.GetGameClientHeight() / 2 - 90, 400, 100),
+		"Allow timing: " + std::to_string(allowTiming),
 		Shrek2UI::GetColorAlpha(255, 255, 255, 255),
 		true
 	);
 
-	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("M64"), Shrek2Position(0, 0), Shrek2Vector2(0.3f, 0.3f), 0, Shrek2UI::GetColorAlpha(255, 255, 255, 150));
+	Shrek2UI::RenderText(
+		Shrek2Rect(10, Game.GetGameClientHeight() / 2 - 50, 400, 100),
+		"Time: " + timer1.GetTimeString(),
+		Shrek2UI::GetColorAlpha(255, 255, 255, 255),
+		true
+	);
 }
 
 void OnStart()
 {
-	//Game.Config.Load();
-	timer1.Start();
-
-	Shrek2Textures::AddTexture("Images/master64.jpg", "M64");
-
-	/*Game.LogToConsole(Game.Config.GetString("TitleScreen"));
-	Game.LogToConsole(Game.Config.GetBool("ShowLogo") ? "Show Logo" : "Dont Show Logo");
-	Game.LogToConsole("Difficulty: " + std::to_string(Game.Config.GetInt("Difficulty")));*/
-
 	Shrek2UI::GameWindowSize = Game.GameWindowSize;
 	Shrek2UI::RenderUI = RenderUI;
 	Shrek2UI::Initialize();
 }
 
-void OnCutLogTick(std::string line)
-{
-	Game.LogToConsole(timer1.GetTimeString());
-}
-
 DWORD WINAPI InitializationThread(HINSTANCE hModule)
 {
+	Game.Triggers.AddTrigger("Location1", Shrek2Trigger(Shrek2Vector3(0, 0, 0), Shrek2Vector3(100)));
+	Game.Triggers.AddTrigger("Location2", Shrek2Trigger(Shrek2Vector3(0, 0, 0), Shrek2Vector3(100)));
+	
 	Game.Events.OnStart = OnStart;
 	Game.Events.OnTick = OnTick;
-	Game.Events.OnCutLogTick = OnCutLogTick;
+	Game.Triggers.OnTriggerEnter = OnTriggerEnter;
 
 	Game.Initialize("Shrek 2 Test Mod", true);
 

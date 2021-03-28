@@ -6,7 +6,6 @@
 class Shrek2Trigger
 {
 public:
-	std::string Name;
 	Shrek2Vector3 Position;
 	Shrek2Vector3 Size;
 	bool Triggered = false;
@@ -15,11 +14,20 @@ public:
 	std::list<Shrek2Maps> TriggeredMaps;
 	bool Enabled = true;
 
+	bool IsPositionZero();
+
 	Shrek2Trigger() {}
 
-	Shrek2Trigger(std::string name, Shrek2Vector3 position, Shrek2Vector3 size, Shrek2Maps triggeredMap, bool triggerOnce = false, bool enabled = true)
+	Shrek2Trigger(Shrek2Vector3 position, Shrek2Vector3 size, bool triggerOnce = false, bool enabled = true)
 	{
-		Name = name;
+		Position = position;
+		Size = size;
+		TriggerOnce = triggerOnce;
+		Enabled = enabled;
+	}
+
+	Shrek2Trigger(Shrek2Vector3 position, Shrek2Vector3 size, Shrek2Maps triggeredMap, bool triggerOnce = false, bool enabled = true)
+	{
 		Position = position;
 		Size = size;
 		TriggeredMaps.push_back(triggeredMap);
@@ -27,9 +35,8 @@ public:
 		Enabled = enabled;
 	}
 
-	Shrek2Trigger(std::string name, Shrek2Vector3 position, Shrek2Vector3 size, std::list<Shrek2Maps> triggeredMaps, bool triggerOnce = false, bool enabled = true)
+	Shrek2Trigger(Shrek2Vector3 position, Shrek2Vector3 size, std::list<Shrek2Maps> triggeredMaps, bool triggerOnce = false, bool enabled = true)
 	{
-		Name = name;
 		Position = position;
 		Size = size;
 		TriggeredMaps = triggeredMaps;
@@ -37,8 +44,7 @@ public:
 		Enabled = enabled;
 	}
 
-	int CheckTrigger(Shrek2Vector3 valuePosition, Shrek2Vector3 valueSize, bool enableDebugging);
-	Shrek2Vector3 DistanceToTrigger(Shrek2Vector3 value);
+	int CheckTrigger(std::string name, Shrek2Vector3 valuePosition, Shrek2Vector3 valueSize, bool enableDebugging);
 private:
 	bool IsInsideTrigger(Shrek2Vector3 valuePosition, Shrek2Vector3 valueSize);
 };

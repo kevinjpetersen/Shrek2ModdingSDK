@@ -32,6 +32,17 @@ float Shrek2Pointers::GetPositionZ() {
     return Shrek2Memory::ReadFloat("Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x158);
 }
 
+bool Shrek2Pointers::SetPosition(Shrek2Vector3 position) {
+    bool success = true;
+    success = SetPositionX(position.X);
+    success = SetPositionY(position.Y);
+    success = SetPositionZ(position.Z);
+    return success;
+}
+Shrek2Vector3 Shrek2Pointers::GetPosition() {
+    return Shrek2Vector3(GetPositionX(), GetPositionY(), GetPositionZ());
+}
+
 bool Shrek2Pointers::SetVelocityX(float VelocityX) {
     return Shrek2Memory::WriteFloat(VelocityX, "Engine.dll", 0x004DFFF8, 0x68, 0x9C, 0x664, 0x168);
 }

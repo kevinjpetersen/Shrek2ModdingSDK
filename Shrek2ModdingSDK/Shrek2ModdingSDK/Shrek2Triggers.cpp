@@ -4,84 +4,99 @@
 
 #include "Shrek2ModdingSDK.h"
 
-void Shrek2Triggers::AddTriggers(std::vector<Shrek2Trigger> triggers)
+Shrek2Trigger Shrek2Triggers::GetTrigger(std::string name)
 {
-	OriginalTriggers = triggers;
-	Triggers = triggers;
+	if (TriggerExist(name) == false) return Shrek2Trigger();
+	return Triggers[name];
+}
+
+void Shrek2Triggers::OverwriteTrigger(std::string name, Shrek2Trigger trigger)
+{
+	if (TriggerExist(name) == false) return;
+	Triggers[name] = trigger;
+}
+
+void Shrek2Triggers::AddTrigger(std::string name, Shrek2Trigger trigger)
+{
+	if (TriggerExist(name)) return;
+	Triggers.insert(std::pair<std::string, Shrek2Trigger>(name, trigger));
+}
+
+void Shrek2Triggers::RemoveTrigger(std::string name)
+{
+	if (TriggerExist(name) == false) return;
+	Triggers.erase(name);
 }
 
 void Shrek2Triggers::CheckTriggers(Shrek2Vector3 position, Shrek2Maps currentMap, Shrek2Vector3 currentSize)
 {
-	for (int i = 1; i <= Triggers.size(); i++)
+	for (auto& trigger : Triggers)
 	{
-		auto trigger = Triggers[i - 1];
-
-		if (!trigger.Enabled) continue;
+		if (!trigger.second.Enabled) continue;
 
 		bool supportsMap = false;
-		for (auto map : trigger.TriggeredMaps)
+
+		if (trigger.second.TriggeredMaps.size() > 0)
 		{
-			if (map == currentMap)
+			for (auto map : trigger.second.TriggeredMaps)
 			{
-				supportsMap = true;
+				if (map == currentMap)
+				{
+					supportsMap = true;
+				}
 			}
+		}
+		else {
+			supportsMap = true;
 		}
 
 		if (supportsMap == false) continue;
-		if (trigger.Triggered && trigger.TriggerOnce && trigger.TriggeredOnceExit) continue;
+		if (trigger.second.Triggered && trigger.second.TriggerOnce && trigger.second.TriggeredOnceExit) continue;
 
-		int triggered = trigger.CheckTrigger(position, currentSize, EnableDebugging);
+		int triggered = trigger.second.CheckTrigger(trigger.first, position, currentSize, EnableDebugging);
 		if (triggered == 1) {
-			OnTriggerEnter(trigger);
+			if(OnTriggerEnter) OnTriggerEnter(trigger.first, trigger.second);
 		}
 		else if (triggered == 0) {
-			OnTriggerExit(trigger);
+			if(OnTriggerExit) OnTriggerExit(trigger.first, trigger.second);
 		}
-		Triggers[i - 1] = trigger;
 	}
 }
 
 void Shrek2Triggers::ResetAllTriggers()
 {
-	Triggers = OriginalTriggers;
+	for (auto& trigger : Triggers)
+	{
+		trigger.second.Triggered = false;
+		trigger.second.TriggeredOnceExit = false;
+		return;
+	}
 }
 
 void Shrek2Triggers::ResetTrigger(std::string name)
 {
-	for (int i = 1; i <= Triggers.size(); i++)
-	{
-		auto trigger = Triggers[i - 1];
-		if (Shrek2Utils::DoesEqual(trigger.Name, name) == false) continue;
+	if (TriggerExist(name) == false) return;
 
-		trigger.Triggered = false;
-		trigger.TriggeredOnceExit = false;
-		Triggers[i - 1] = trigger;
-		return;
-	}
+	Triggers[name].Triggered = false;
+	Triggers[name].TriggeredOnceExit = false;
 }
 
 void Shrek2Triggers::EnableTrigger(std::string name)
 {
-	for (int i = 1; i <= Triggers.size(); i++)
-	{
-		auto trigger = Triggers[i - 1];
-		if (Shrek2Utils::DoesEqual(trigger.Name, name) == false) continue;
+	if (TriggerExist(name) == false) return;
 
-		trigger.Enabled = true;
-		Triggers[i - 1] = trigger;
-		return;
-	}
+	Triggers[name].Enabled = true;
 }
 
 void Shrek2Triggers::DisableTrigger(std::string name)
 {
-	for (int i = 1; i <= Triggers.size(); i++)
-	{
-		auto trigger = Triggers[i - 1];
-		if (Shrek2Utils::DoesEqual(trigger.Name, name) == false) continue;
+	if (TriggerExist(name) == false) return;
 
-		trigger.Enabled = false;
-		Triggers[i - 1] = trigger;
-		return;
-	}
+	Triggers[name].Enabled = false;
 }
+
+bool Shrek2Triggers::TriggerExist(std::string name)
+{
+	return Triggers.count(name) > 0;
+}
+

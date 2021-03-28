@@ -18,6 +18,9 @@ public:
 	float GetPositionZ();
 	bool SetPositionZ(float PositionZ);
 
+	Shrek2Vector3 GetPosition();
+	bool SetPosition(Shrek2Vector3 position);
+
 	float GetVelocityX();
 	bool SetVelocityX(float VelocityX);
 
