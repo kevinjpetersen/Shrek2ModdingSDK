@@ -6,7 +6,6 @@
 #include <string>
 #include "Shrek2ModdingSDK.h"
 #include "Shrek2DirectX.h"
-#include <algorithm> 
 
 Shrek2 Game = Shrek2();
 
