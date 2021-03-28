@@ -6,60 +6,80 @@
 #include <string>
 #include "Shrek2ModdingSDK.h"
 #include "Shrek2DirectX.h"
+#include "Entity.h"
 
 Shrek2 Game = Shrek2();
 
-Shrek2Timer timer1 = Shrek2Timer();
-
-bool allowTiming = false;
+std::vector<Entity*> LoadEntities(uintptr_t ptr)
+{
+	int failCounter = 0;
+	std::vector<Entity*> entities;
+	for (int i = 0; i < 9999; ++i)
+	{
+		uintptr_t pointer = *(uintptr_t*)(ptr + (i * 4));
+		if (pointer)
+		{
+			failCounter = 0;
+			Entity* entity = (Entity*)pointer;
+			entities.push_back(entity);
+		}
+		else {
+			failCounter++;
+		}
+		if (failCounter > 5)
+			return entities;
+	}
+	return entities;
+}
 
 void OnTick()
 {
 	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
-		Game.Triggers.OverwriteTrigger("Location1", Shrek2Trigger(Game.Variables.GetPosition(), Shrek2Vector3(100)));
-	}
+		system("CLS");
 
-	if (Game.Input.OnKeyPress(Shrek2Input::H)) {
-		Game.Triggers.OverwriteTrigger("Location2", Shrek2Trigger(Game.Variables.GetPosition(), Shrek2Vector3(100)));
-	}
+		DWORD addr = Shrek2Memory::GetAddr("Engine.dll", 0x004E85F0, 0x18C, 0x334, 0x30, 0xAB8);
+		if (addr)
+		{
+			auto entities = LoadEntities(addr);
+			if (entities.size() > 0)
+			{
+				for (Entity* ent : entities)
+				{
+					std::string name1 = "Unknown 1";
+					std::string name2 = "Unknown 2";
 
-	if (Game.Input.OnKeyPress(Shrek2Input::J)) {
-		allowTiming = !allowTiming;
-		Game.LogToConsole("Allow timing: " + std::to_string(allowTiming));
-	}
-}
+					if (ent->Name1) {
+						std::wstring str = reinterpret_cast<wchar_t*>(ent->Name1);
+						
+						if (!str.empty())
+						{
+							name1 = Shrek2Utils::WS2String(str);
+						}
 
-void OnTriggerEnter(std::string name, Shrek2Trigger trigger)
-{
-	Game.LogToConsole(name);
+						std::cout << "Name 1: " << name1 << std::endl;
+						//std::cout << "Name 2: " << name2 << std::endl;
+						std::cout << "X: " << ent->Position.x << ", Y: " << ent->Position.y << ", Z: " << ent->Position.z << std::endl;
+						std::cout << "----" << std::endl;
+					}
 
-	if (Shrek2Utils::DoesEqual(name, "Location1")) {
-		auto trigger = Game.Triggers.GetTrigger("Location2");
-		
-		if (!trigger.IsPositionZero()) {
-			if (allowTiming) {
-				if (timer1.IsTimerRunning()) {
-					timer1.Stop();
+					/*if (ent->Name2) {
+						std::wstring str = reinterpret_cast<wchar_t*>(ent->Name2);
+
+						if (!str.empty())
+						{
+							name2 = Shrek2Utils::WS2String(str);
+						}
+					}*/
+
+					
 				}
-				else {
-					timer1.Start();
-				}
+			}
+			else {
+				Game.LogToConsole("No entities found in this level.");
 			}
 		}
-	}
-
-	if (Shrek2Utils::DoesEqual(name, "Location2")) {
-		auto trigger = Game.Triggers.GetTrigger("Location1");
-
-		if (!trigger.IsPositionZero()) {
-			if (allowTiming) {
-				if (timer1.IsTimerRunning()) {
-					timer1.Stop();
-				}
-				else {
-					timer1.Start();
-				}
-			}
+		else {
+			Game.LogToConsole("Pointer doesn't point to anything!");
 		}
 	}
 }
@@ -68,14 +88,7 @@ void RenderUI()
 {
 	Shrek2UI::RenderText(
 		Shrek2Rect(10, Game.GetGameClientHeight() / 2 - 90, 400, 100),
-		"Allow timing: " + std::to_string(allowTiming),
-		Shrek2UI::GetColorAlpha(255, 255, 255, 255),
-		true
-	);
-
-	Shrek2UI::RenderText(
-		Shrek2Rect(10, Game.GetGameClientHeight() / 2 - 50, 400, 100),
-		"Time: " + timer1.GetTimeString(),
+		"Test Text",
 		Shrek2UI::GetColorAlpha(255, 255, 255, 255),
 		true
 	);
@@ -90,12 +103,8 @@ void OnStart()
 
 DWORD WINAPI InitializationThread(HINSTANCE hModule)
 {
-	Game.Triggers.AddTrigger("Location1", Shrek2Trigger(Shrek2Vector3(0, 0, 0), Shrek2Vector3(100)));
-	Game.Triggers.AddTrigger("Location2", Shrek2Trigger(Shrek2Vector3(0, 0, 0), Shrek2Vector3(100)));
-	
 	Game.Events.OnStart = OnStart;
 	Game.Events.OnTick = OnTick;
-	Game.Triggers.OnTriggerEnter = OnTriggerEnter;
 
 	Game.Initialize("Shrek 2 Test Mod", true);
 

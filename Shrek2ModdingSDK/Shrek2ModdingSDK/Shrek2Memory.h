@@ -19,7 +19,6 @@ public:
 	static bool ReadBool(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4);
 	static std::string ReadText(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4);
 	static char* ReadChar(LPCSTR shModule, DWORD baseAddress, DWORD offset1);
-private:
 	static DWORD GetAddr(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4);
 	static DWORD GetAddr(LPCSTR shModule, DWORD baseAddress, DWORD offset1);
 };
