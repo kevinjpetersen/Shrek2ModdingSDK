@@ -67,7 +67,7 @@ namespace Shrek2ModManager
                     return;
                 }
 
-                bool uninstalled = SH2WorkshopFileHandler.UninstallMod(Mod.ModGUID);
+                bool uninstalled = SH2WorkshopFileHandler.UninstallMod(Mod);
                 if(uninstalled)
                 {
                     SH2WorkshopFileHandler.HandleDefUserChanges();
@@ -81,7 +81,7 @@ namespace Shrek2ModManager
                 IsDownloading = true;
                 Progress_DownloadMap.Value = 0;
                 Progress_DownloadMap.Visibility = Visibility.Visible;
-                Downloaded = await SH2WorkshopFileHandler.DownloadMod(Mod.ModGUID, DownloadProgress);
+                Downloaded = await SH2WorkshopFileHandler.DownloadMod(Mod, DownloadProgress);
                 if (Downloaded)
                 {
                     SH2WorkshopFileHandler.ExtractModFile(Mod.ModGUID);
@@ -90,6 +90,10 @@ namespace Shrek2ModManager
                         Button_DownloadPlayMap.Content = "Uninstall Mod";
                         Downloaded = true;
                     }
+                }
+                else
+                {
+                    MessageBox.Show($"Failed to download '{Mod.Name}'. Try again later!");
                 }
 
                 SH2WorkshopFileHandler.HandleDefUserChanges();

@@ -23,6 +23,9 @@ namespace Shrek2ModManager.Utils
         public string ModGUID { get; set; }
         public DateTime? Created { get; set; }
         public DateTime? Modified { get; set; }
+        public int VersionNumber { get; set; }
+        public string VersionText { get; set; }
+        public int RunType { get; set; }
 
         public static List<Mod> GetMods()
         {

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -198,20 +199,22 @@ namespace Shrek2ModManager.Utils
             }
         }
 
-        public static bool UninstallMod(string modId)
+        public static bool UninstallMod(Mod mod)
         {
             try
             {
                 var settings = GetSettings();
 
                 if (string.IsNullOrWhiteSpace(settings.GameFolderLocation)) return false;
-                if (IsModInstalled(modId) == false) return false;
+                if (IsModInstalled(mod.ModGUID) == false) return false;
 
-                var modPath = Path.Combine(settings.GameFolderLocation, ModsInstalledFolder, modId);
+                var modPath = Path.Combine(settings.GameFolderLocation, ModsInstalledFolder, mod.ModGUID);
                 Directory.Delete(modPath, true);
 
-                bool zipFileExist = File.Exists(Path.Combine(Directory.GetCurrentDirectory(), ModsFolder, $"{modId}.zip"));
-                if (zipFileExist) File.Delete(Path.Combine(Directory.GetCurrentDirectory(), ModsFolder, $"{modId}.zip"));
+                bool zipFileExist = File.Exists(Path.Combine(Directory.GetCurrentDirectory(), ModsFolder, $"{mod.ModGUID}.zip"));
+                if (zipFileExist) File.Delete(Path.Combine(Directory.GetCurrentDirectory(), ModsFolder, $"{mod.ModGUID}.zip"));
+
+                RemoveModFromInstalledJson(mod);
 
                 return true;
             }
@@ -221,11 +224,79 @@ namespace Shrek2ModManager.Utils
             }
         }
 
-        public static async Task<bool> DownloadMod(string modId, Action<object, DownloadProgressChangedEventArgs> downloadProgress)
+        public static bool AddOrUpdateModToInstalledJson(Mod mod)
         {
             try
             {
-                if (IsModDownloaded(modId)) return true;
+                var installedJsonPath = Path.Combine(Directory.GetCurrentDirectory(), "installed_mods.json");
+                if (File.Exists(installedJsonPath) == false)
+                {
+                    var mods = new List<Mod>() { mod };
+                    File.WriteAllText(installedJsonPath, JsonConvert.SerializeObject(mods));
+                    return true;
+                }
+                var installedMods = JsonConvert.DeserializeObject<List<Mod>>(File.ReadAllText(installedJsonPath));
+                if(installedMods == null)
+                {
+                    installedMods = new List<Mod>();
+                }
+
+                if(installedMods.Any(p => p.ModGUID == mod.ModGUID))
+                {
+                    for(int i = 0; i < installedMods.Count; i++)
+                    {
+                        var m = installedMods[i];
+                        if(m.ModGUID == mod.ModGUID)
+                        {
+                            installedMods[i] = mod;
+                        }
+                    }
+                } else
+                {
+                    installedMods.Add(mod);
+                }
+
+                File.WriteAllText(installedJsonPath, JsonConvert.SerializeObject(installedMods));
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool RemoveModFromInstalledJson(Mod mod)
+        {
+            try
+            {
+                var installedJsonPath = Path.Combine(Directory.GetCurrentDirectory(), "installed_mods.json");
+                if (File.Exists(installedJsonPath) == false)
+                {
+                    return true;
+                }
+                var installedMods = JsonConvert.DeserializeObject<List<Mod>>(File.ReadAllText(installedJsonPath));
+                if (installedMods == null)
+                {
+                    return true;
+                }
+                installedMods.RemoveAll(p => p.ModGUID == mod.ModGUID);
+
+                File.WriteAllText(installedJsonPath, JsonConvert.SerializeObject(installedMods));
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static async Task<bool> DownloadMod(Mod mod, Action<object, DownloadProgressChangedEventArgs> downloadProgress)
+        {
+            try
+            {
+                if (IsModDownloaded(mod.ModGUID)) return true;
 
                 if (Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), ModsFolder)) == false)
                 {
@@ -235,8 +306,18 @@ namespace Shrek2ModManager.Utils
                 using (var client = new WebClient())
                 {
                     client.DownloadProgressChanged += (s, d) => downloadProgress(s, d);
-                    await client.DownloadFileTaskAsync($"{ModDownloadUrlPrefix}/{modId}.zip", Path.Combine(Directory.GetCurrentDirectory(), ModsFolder, $"{modId}.zip"));
-                    return true;
+                    await client.DownloadFileTaskAsync($"{ModDownloadUrlPrefix}/{mod.ModGUID}.zip", Path.Combine(Directory.GetCurrentDirectory(), ModsFolder, $"{mod.ModGUID}.zip"));
+
+                    if(AddOrUpdateModToInstalledJson(mod))
+                    {
+                        return true;
+                    }
+
+                    if(File.Exists(Path.Combine(Directory.GetCurrentDirectory(), ModsFolder, $"{mod.ModGUID}.zip")))
+                    {
+                        File.Delete(Path.Combine(Directory.GetCurrentDirectory(), ModsFolder, $"{mod.ModGUID}.zip"));
+                    }
+                    return false;
                 }
             }
             catch
