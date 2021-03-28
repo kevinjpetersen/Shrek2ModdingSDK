@@ -32,12 +32,88 @@ std::vector<Entity*> LoadEntities(uintptr_t ptr)
 	return entities;
 }
 
+void ExecuteEntity(Entity* ent)
+{
+	std::string name1 = "";
+	std::string name2 = "";
+
+	MEMORY_BASIC_INFORMATION mbi0;
+	VirtualQuery(ent, &mbi0, sizeof(mbi0));
+
+	if (mbi0.Protect & PAGE_READWRITE)
+	{
+
+		MEMORY_BASIC_INFORMATION mbi1;
+		VirtualQuery(ent->Name1, &mbi1, sizeof(mbi1));
+
+		if (mbi1.Protect == PAGE_READWRITE)
+		{
+			if (ent->Name1 != nullptr) {
+				std::wstring str = reinterpret_cast<wchar_t*>(ent->Name1);
+
+				if (!str.empty())
+				{
+					name1 = Shrek2Utils::WS2String(str);
+				}
+			}
+		}
+
+		MEMORY_BASIC_INFORMATION mbi2;
+		VirtualQuery(ent->Name2, &mbi2, sizeof(mbi2));
+
+		if (mbi2.Protect == PAGE_READWRITE)
+		{
+			if (ent->Name2 != nullptr) {
+				std::wstring str = reinterpret_cast<wchar_t*>(ent->Name2);
+
+				if (!str.empty())
+				{
+					name2 = Shrek2Utils::WS2String(str);
+				}
+			}
+		}
+	}
+
+	if (!name1.empty() || !name2.empty()) {
+		bool hasName = false;
+		if (!name1.empty())
+		{
+			if (!Shrek2Utils::Contains(name1, "?"))
+			{
+				std::cout << "Name 1: " << name1 << std::endl;
+				hasName = true;
+			}
+		}
+		if (!name2.empty())
+		{
+			if (!Shrek2Utils::Contains(name2, "?"))
+			{
+				std::cout << "Name 2: " << name2 << std::endl;
+				hasName = true;
+			}
+		}
+
+		if (hasName)
+		{
+			std::cout << "X: " << ent->Position.x << ", Y: " << ent->Position.y << ", Z: " << ent->Position.z << std::endl;
+			std::cout << "----" << std::endl;
+		}
+	}
+}
+
+void ExecuteEntitySafely(Entity* ent) {
+	__try {
+		ExecuteEntity(ent);
+	}
+	__except (EXCEPTION_EXECUTE_HANDLER) {}
+}
+
 void OnTick()
 {
 	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
 		system("CLS");
 
-		DWORD addr = Shrek2Memory::GetAddr("Engine.dll", 0x004E85F0, 0x18C, 0x334, 0x30, 0xAB8);
+		DWORD addr = Shrek2Memory::GetAddr("Engine.dll", 0x004E85F0, 0x18C, 0x334, 0x30, 0x88);
 		if (addr)
 		{
 			auto entities = LoadEntities(addr);
@@ -47,43 +123,7 @@ void OnTick()
 
 				for (Entity* ent : entities)
 				{
-					std::string name1 = "";
-					std::string name2 = "";
-
-					if (ent->Name1) {
-						std::wstring str = reinterpret_cast<wchar_t*>(ent->Name1);
-
-						if (!str.empty())
-						{
-							name1 = Shrek2Utils::WS2String(str);
-						}
-					}
-
-					if (ent->Name2) {
-
-						MEMORY_BASIC_INFORMATION mbi;
-						VirtualQuery(ent->Name2, &mbi, sizeof(mbi));
-						
-
-						if (!(mbi.Protect & PAGE_GUARD | PAGE_NOACCESS))
-						{
-							Game.LogToConsole("Blablabla");
-
-							std::wstring str = reinterpret_cast<wchar_t*>(ent->Name2);
-
-							if (!str.empty())
-							{
-								name2 = Shrek2Utils::WS2String(str);
-							}
-						}
-					}
-
-					if (!name1.empty()) {
-						std::cout << "Name 1: " << name1 << std::endl;
-						//std::cout << "Name 2: " << name2 << std::endl;
-						std::cout << "X: " << ent->Position.x << ", Y: " << ent->Position.y << ", Z: " << ent->Position.z << std::endl;
-						std::cout << "----" << std::endl;
-					}
+					ExecuteEntitySafely(ent);
 				}
 			}
 			else {
