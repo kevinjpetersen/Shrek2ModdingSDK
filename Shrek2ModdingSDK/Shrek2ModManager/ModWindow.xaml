@@ -26,6 +26,7 @@
                     <TextBlock x:Name="Map_Author" Style="{DynamicResource MaterialDesignSubtitle1TextBlock}" TextWrapping="WrapWithOverflow" Foreground="#65a338" Margin="0,0,0,5">...</TextBlock>
                     <Image Visibility="Hidden" x:Name="Map_Verified" Source="pack://siteoforigin:,,,/Resources/tick.png" VerticalAlignment="Top" Height="15" Width="15" Margin="5,2,5,0"/>
                 </StackPanel>
+                <TextBlock x:Name="Map_Version" Style="{DynamicResource MaterialDesignBody1TextBlock}" Margin="0,0,0,15"></TextBlock>
                 <TextBlock x:Name="Map_Desc" Style="{DynamicResource MaterialDesignBody1TextBlock}" TextWrapping="WrapWithOverflow">...</TextBlock>
                 <StackPanel Background="#b7cba8" Orientation="Horizontal" Margin="0,5,0,0" x:Name="Map_Tags">
                 </StackPanel>

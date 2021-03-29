@@ -316,6 +316,38 @@ namespace Shrek2ModManager.Utils
             }
         }
 
+        public static async Task<bool> UpdateMod(Mod mod, Action<object, DownloadProgressChangedEventArgs> downloadProgress)
+        {
+            try
+            {
+                if (Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), ModsFolder)) == false)
+                {
+                    Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), ModsFolder));
+                }
+
+                using (var client = new WebClient())
+                {
+                    client.DownloadProgressChanged += (s, d) => downloadProgress(s, d);
+                    await client.DownloadFileTaskAsync($"{ModDownloadUrlPrefix}/{mod.ModGUID}.zip", Path.Combine(Directory.GetCurrentDirectory(), ModsFolder, $"{mod.ModGUID}.zip"));
+
+                    if (AddOrUpdateModToInstalledJson(mod))
+                    {
+                        return true;
+                    }
+
+                    if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), ModsFolder, $"{mod.ModGUID}.zip")))
+                    {
+                        File.Delete(Path.Combine(Directory.GetCurrentDirectory(), ModsFolder, $"{mod.ModGUID}.zip"));
+                    }
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public static async Task<bool> DownloadMod(Mod mod, Action<object, DownloadProgressChangedEventArgs> downloadProgress)
         {
             try
@@ -402,7 +434,7 @@ namespace Shrek2ModManager.Utils
                 using (FileStream fs = new FileStream(packagedFilePath, FileMode.Open))
                 using (ZipArchive arch = new ZipArchive(fs, ZipArchiveMode.Read))
                 {
-                    arch.ExtractToDirectory(Path.Combine(settings.GameFolderLocation, ModsInstalledFolder, modId));
+                    arch.ExtractToDirectory(Path.Combine(settings.GameFolderLocation, ModsInstalledFolder, modId), true);
                 }
 
                 return true;

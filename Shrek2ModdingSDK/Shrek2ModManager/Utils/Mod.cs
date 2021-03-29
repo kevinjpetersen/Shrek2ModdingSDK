@@ -23,14 +23,15 @@ namespace Shrek2ModManager.Utils
             public Brush InstalledButtonColor { get; set; }
             public string Description { get; set; }
             public Mod Mod { get; set; }
+            public bool UpdateAvailable { get; set; }
 
             public static List<VisualMod> ToVisualMods(List<Mod> mods)
             {
                 var installedMods = SH2WorkshopFileHandler.GetInstalledModObjects();
-                return mods.Select(p => new VisualMod(p, installedMods.Any(i => i.ModGUID == p.ModGUID))).ToList();
+                return mods.Select(p => new VisualMod(p, installedMods.Any(i => i.ModGUID == p.ModGUID), installedMods.Any(i => i.ModGUID == p.ModGUID && i.VersionNumber < p.VersionNumber))).ToList();
             }
 
-            public VisualMod(Mod mod, bool isInstalled)
+            public VisualMod(Mod mod, bool isInstalled, bool updateAvailable)
             {
                 Name = mod.Name;
                 Author = $"By {mod.Username}";
@@ -40,6 +41,13 @@ namespace Shrek2ModManager.Utils
                 InstalledButtonColor = isInstalled ? Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Red) : Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Green);
                 Description = mod.Description;
                 Mod = mod;
+
+                if(updateAvailable)
+                {
+                    IsInstalled = "Update";
+                    InstalledButtonColor = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Orange);
+                    UpdateAvailable = true;
+                }
             }
         }
 

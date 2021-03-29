@@ -40,6 +40,7 @@ namespace Shrek2ModManager
             Map_Author.Text = $"By {Mod.Username}";
             Map_Desc.Text = Mod.Description;
             Map_Verified.Visibility = Mod.Verified == 1 ? Visibility.Visible : Visibility.Hidden;
+            Map_Version.Text = $"Version: {Mod.VersionText} ({Mod.VersionNumber})";
             IsDownloading = false;
         }
     }

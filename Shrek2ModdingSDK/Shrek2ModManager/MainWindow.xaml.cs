@@ -66,23 +66,56 @@ namespace Shrek2ModManager
 
             if (SH2WorkshopFileHandler.IsModInstalled(Mod.ModGUID))
             {
-                if (string.IsNullOrWhiteSpace(Settings.GameFolderLocation))
+                if(dataObject.UpdateAvailable)
                 {
-                    MessageBox.Show("You have not setup the Shrek 2 Game.exe in the Settings! You need to set it up before you can play mods directly!");
-                    return;
-                }
+                    if (string.IsNullOrWhiteSpace(Settings.GameFolderLocation))
+                    {
+                        MessageBox.Show("You have not setup the Shrek 2 Game.exe in the Settings! You need to set it up before you can play mods directly!");
+                        return;
+                    }
 
-                bool uninstalled = SH2WorkshopFileHandler.UninstallMod(Mod);
-                if (uninstalled)
-                {
+                    IsDownloading = true;
+                    var Downloaded = await SH2WorkshopFileHandler.UpdateMod(Mod, (s, p) =>
+                    {
+                        btn.Content = $"{p.ProgressPercentage}%";
+                    });
+
+                    if (Downloaded)
+                    {
+                        SH2WorkshopFileHandler.ExtractModFile(Mod.ModGUID);
+                        if (SH2WorkshopFileHandler.IsModInstalled(Mod.ModGUID))
+                        {
+                            Downloaded = true;
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Failed to download '{Mod.Name}'. Try again later!");
+                    }
+
                     SH2WorkshopFileHandler.HandleDefUserChanges();
                     RefreshMods();
+                    IsDownloading = false;
+                } else
+                {
+                    if (string.IsNullOrWhiteSpace(Settings.GameFolderLocation))
+                    {
+                        MessageBox.Show("You have not setup the Shrek 2 Game.exe in the Settings! You need to set it up before you can play mods directly!");
+                        return;
+                    }
+
+                    bool uninstalled = SH2WorkshopFileHandler.UninstallMod(Mod);
+                    if (uninstalled)
+                    {
+                        SH2WorkshopFileHandler.HandleDefUserChanges();
+                        RefreshMods();
+                    }
+                    IsDownloading = false;
                 }
-                IsDownloading = false;
             }
             else
             {
-                // Download Mod
+                // Update Mod
                 IsDownloading = true;
                 var Downloaded = await SH2WorkshopFileHandler.DownloadMod(Mod, (s, p) =>
                 {
@@ -99,7 +132,7 @@ namespace Shrek2ModManager
                 }
                 else
                 {
-                    MessageBox.Show($"Failed to download '{Mod.Name}'. Try again later!");
+                    MessageBox.Show($"Failed to update '{Mod.Name}'. Try again later!");
                 }
 
                 SH2WorkshopFileHandler.HandleDefUserChanges();
