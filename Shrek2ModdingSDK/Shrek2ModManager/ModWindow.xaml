@@ -29,10 +29,6 @@
                 <TextBlock x:Name="Map_Desc" Style="{DynamicResource MaterialDesignBody1TextBlock}" TextWrapping="WrapWithOverflow">...</TextBlock>
                 <StackPanel Background="#b7cba8" Orientation="Horizontal" Margin="0,5,0,0" x:Name="Map_Tags">
                 </StackPanel>
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="0,25,0,25">
-                    <Button x:Name="Button_DownloadPlayMap" Style="{DynamicResource MaterialDesignRaisedButton}" Background="#65a338" BorderThickness="0" Content="Download Map" />
-                    <ProgressBar x:Name="Progress_DownloadMap" Visibility="Hidden" Margin="0,10,0,0" Width="250" Height="20" Background="#b7cba8" Value="0" Foreground="#65a338" Style="{DynamicResource MaterialDesignLinearProgressBar}" BorderThickness="0"/>
-                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Grid>

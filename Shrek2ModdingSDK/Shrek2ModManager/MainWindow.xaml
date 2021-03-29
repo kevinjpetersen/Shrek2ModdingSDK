@@ -76,17 +76,16 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <materialDesign:Card x:Name="ModItem" MouseEnter="ModItem_MouseEnter" MouseLeave="ModItem_MouseLeave" Cursor="Hand"  Margin="2,10,10,10" Height="280" Width="202" MouseLeftButtonUp="Card_MouseLeftButtonUp">
-                                    <Border BorderThickness="{Binding IsInstalled}" BorderBrush="#65a338">
-                                        <StackPanel Width="202" Height="280" x:Name="ModItem_Panel">
-                                            <Image Source="{Binding Image}" Height="120" Width="202" Stretch="UniformToFill" />
-                                            <TextBlock TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="Black" Margin="10, 5, 10, 0" x:Name="ModItem_Name" Text="{Binding Name}" Style="{DynamicResource MaterialDesignBody1TextBlock}"></TextBlock>
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Foreground="#65a338" Margin="10, 0, 5, 5" TextTrimming="CharacterEllipsis" FontWeight="Normal" x:Name="ModItem_Author" Text="{Binding Author}" Style="{DynamicResource MaterialDesignSubtitle2TextBlock}"></TextBlock>
-                                                <Image Visibility="{Binding ImageVisibility}" Height="15" Width="15" VerticalAlignment="Top" Margin="0,2,5,0" x:Name="ModItem_AuthorTick" Source="pack://siteoforigin:,,,/Resources/tick.png" />
-                                            </StackPanel>
-                                            <TextBlock Style="{DynamicResource MaterialDesignBody1TextBlock}" Margin="10,0,10,0" FontSize="12" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" MaxHeight="85" Foreground="Black" x:Name="ModItem_Desc" Text="{Binding Description}"></TextBlock>
+                                    <StackPanel Width="202" Height="280" x:Name="ModItem_Panel">
+                                        <Image Source="{Binding Image}" Height="120" Width="202" Stretch="UniformToFill" />
+                                        <TextBlock TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="Black" Margin="10, 5, 10, 0" x:Name="ModItem_Name" Text="{Binding Name}" Style="{DynamicResource MaterialDesignBody1TextBlock}"></TextBlock>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Foreground="#65a338" Margin="10, 0, 5, 5" TextTrimming="CharacterEllipsis" FontWeight="Normal" x:Name="ModItem_Author" Text="{Binding Author}" Style="{DynamicResource MaterialDesignSubtitle2TextBlock}"></TextBlock>
+                                            <Image Visibility="{Binding ImageVisibility}" Height="15" Width="15" VerticalAlignment="Top" Margin="0,2,5,0" x:Name="ModItem_AuthorTick" Source="pack://siteoforigin:,,,/Resources/tick.png" />
                                         </StackPanel>
-                                    </Border>
+                                        <TextBlock Style="{DynamicResource MaterialDesignBody1TextBlock}" Margin="10,0,10,0" FontSize="12" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" Height="60" Foreground="Black" x:Name="ModItem_Desc" Text="{Binding Description}"></TextBlock>
+                                        <Button x:Name="InstallButton" Click="InstallButton_Click" Margin="10,0,10,0" BorderThickness="0" Background="{Binding InstalledButtonColor}" Content="{Binding IsInstalled}"></Button>
+                                    </StackPanel>
                                 </materialDesign:Card>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -130,18 +129,17 @@
                         <ItemsControl x:Name="AllModsList" Margin="0,0,10,0">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <materialDesign:Card x:Name="ModItem" MouseEnter="ModItem_MouseEnter" MouseLeave="ModItem_MouseLeave" Cursor="Hand"  Margin="2,10,10,10" Height="280" Width="197" MouseLeftButtonUp="Card_MouseLeftButtonUp">
-                                        <Border BorderThickness="{Binding IsInstalled}" BorderBrush="#65a338">
-                                            <StackPanel Width="197" Height="280" x:Name="ModItem_Panel">
-                                                <Image Source="{Binding Image}" Height="120" Width="197" Stretch="UniformToFill" />
-                                                <TextBlock TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="Black" Margin="10, 5, 10, 0" x:Name="ModItem_Name" Text="{Binding Name}" Style="{DynamicResource MaterialDesignBody1TextBlock}"></TextBlock>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Foreground="#65a338" Margin="10, 0, 5, 5" TextTrimming="CharacterEllipsis" FontWeight="Normal" x:Name="ModItem_Author" Text="{Binding Author}" Style="{DynamicResource MaterialDesignSubtitle2TextBlock}"></TextBlock>
-                                                    <Image Visibility="{Binding ImageVisibility}" Height="15" Width="15" VerticalAlignment="Top" Margin="0,2,5,0" x:Name="ModItem_AuthorTick" Source="pack://siteoforigin:,,,/Resources/tick.png" />
-                                                </StackPanel>
-                                                <TextBlock Style="{DynamicResource MaterialDesignBody1TextBlock}" Margin="10,0,10,0" FontSize="12" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" MaxHeight="85" Foreground="Black" x:Name="ModItem_Desc" Text="{Binding Description}"></TextBlock>
+                                    <materialDesign:Card x:Name="ModItem" MouseEnter="ModItem_MouseEnter" MouseLeave="ModItem_MouseLeave" Cursor="Hand"  Margin="2,10,10,10" Height="280" Width="202" MouseLeftButtonUp="Card_MouseLeftButtonUp">
+                                        <StackPanel Width="202" Height="280" x:Name="ModItem_Panel">
+                                            <Image Source="{Binding Image}" Height="120" Width="202" Stretch="UniformToFill" />
+                                            <TextBlock TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="Black" Margin="10, 5, 10, 0" x:Name="ModItem_Name" Text="{Binding Name}" Style="{DynamicResource MaterialDesignBody1TextBlock}"></TextBlock>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Foreground="#65a338" Margin="10, 0, 5, 5" TextTrimming="CharacterEllipsis" FontWeight="Normal" x:Name="ModItem_Author" Text="{Binding Author}" Style="{DynamicResource MaterialDesignSubtitle2TextBlock}"></TextBlock>
+                                                <Image Visibility="{Binding ImageVisibility}" Height="15" Width="15" VerticalAlignment="Top" Margin="0,2,5,0" x:Name="ModItem_AuthorTick" Source="pack://siteoforigin:,,,/Resources/tick.png" />
                                             </StackPanel>
-                                        </Border>
+                                            <TextBlock Style="{DynamicResource MaterialDesignBody1TextBlock}" Margin="10,0,10,0" FontSize="12" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" Height="60" Foreground="Black" x:Name="ModItem_Desc" Text="{Binding Description}"></TextBlock>
+                                            <Button x:Name="InstallButton" Click="InstallButton_Click" Margin="10,0,10,0" BorderThickness="0" Background="{Binding InstalledButtonColor}" Content="{Binding IsInstalled}"></Button>
+                                        </StackPanel>
                                     </materialDesign:Card>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>

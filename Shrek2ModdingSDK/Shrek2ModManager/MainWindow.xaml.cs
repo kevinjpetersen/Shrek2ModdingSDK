@@ -28,9 +28,11 @@ namespace Shrek2ModManager
         public ManageModsWindow ManageModsWindow { get; set; }
 
         public List<Mod> Mods { get; set; } = new List<Mod>();
-        public int MapsPageNumber { get; set; }
 
         public static Settings Settings { get; set; }
+
+        public int CurrentPage { get; set; } = 0;
+        public bool IsDownloading { get; set; } = false;
 
         public MainWindow()
         {
@@ -48,9 +50,76 @@ namespace Shrek2ModManager
                 return;
             }
 
-            ModWindow = new ModWindow(dataObject.Mod);
+            ModWindow = new ModWindow(dataObject.Mod, RefreshMods);
             ModWindow.Closed += (a, b) => ModWindow = null;
             ModWindow.Show();
+        }
+
+        private async void InstallButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            var dataObject = btn.DataContext as Mod.VisualMod;
+
+            if (IsDownloading) return;
+
+            var Mod = dataObject.Mod;
+
+            if (SH2WorkshopFileHandler.IsModInstalled(Mod.ModGUID))
+            {
+                if (string.IsNullOrWhiteSpace(Settings.GameFolderLocation))
+                {
+                    MessageBox.Show("You have not setup the Shrek 2 Game.exe in the Settings! You need to set it up before you can play mods directly!");
+                    return;
+                }
+
+                bool uninstalled = SH2WorkshopFileHandler.UninstallMod(Mod);
+                if (uninstalled)
+                {
+                    SH2WorkshopFileHandler.HandleDefUserChanges();
+                    RefreshMods();
+                }
+                IsDownloading = false;
+            }
+            else
+            {
+                // Download Mod
+                IsDownloading = true;
+                var Downloaded = await SH2WorkshopFileHandler.DownloadMod(Mod, (s, p) =>
+                {
+                    btn.Content = $"{p.ProgressPercentage}%";
+                });
+
+                if (Downloaded)
+                {
+                    SH2WorkshopFileHandler.ExtractModFile(Mod.ModGUID);
+                    if (SH2WorkshopFileHandler.IsModInstalled(Mod.ModGUID))
+                    {
+                        Downloaded = true;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show($"Failed to download '{Mod.Name}'. Try again later!");
+                }
+
+                SH2WorkshopFileHandler.HandleDefUserChanges();
+                RefreshMods();
+                IsDownloading = false;
+            }
+        }
+
+        public void RefreshMods()
+        {
+            if(CurrentPage == 0)
+            {
+                Mods = Mod.GetMods();
+                OverviewModsList.ItemsSource = Mod.VisualMod.ToVisualMods(Mods.Take(4).ToList());
+            }
+            else if(CurrentPage == 1)
+            {
+                Mods = Mod.GetMods();
+                AllModsList.ItemsSource = Mod.VisualMod.ToVisualMods(Mods);
+            }
         }
 
         protected override void OnClosed(EventArgs e)
@@ -61,8 +130,6 @@ namespace Shrek2ModManager
 
         private void Window_Loaded(object sender, RoutedEventArgs rea)
         {
-            MapsPageNumber = 0;
-
             Nav_Button_Overview.Click += (s, e) => SelectNavItem(0);
             Nav_Button_Mods.Click += (s, e) => SelectNavItem(1);
 
@@ -189,7 +256,7 @@ namespace Shrek2ModManager
         {
             if (item == 0)
             {
-                MapsPageNumber = 0;
+                CurrentPage = 0;
                 Nav_Button_Overview.Background = Shrek2Colors.GetBrushFromHex(Shrek2Colors.NavColor_Selected);
                 Nav_Button_Mods.Background = Shrek2Colors.GetBrushFromHex(Shrek2Colors.NavColor_Normal);
 
@@ -201,6 +268,7 @@ namespace Shrek2ModManager
             }
             else if (item == 1)
             {
+                CurrentPage = 1;
                 Nav_Button_Overview.Background = Shrek2Colors.GetBrushFromHex(Shrek2Colors.NavColor_Normal);
                 Nav_Button_Mods.Background = Shrek2Colors.GetBrushFromHex(Shrek2Colors.NavColor_Selected);
 
@@ -216,16 +284,16 @@ namespace Shrek2ModManager
         {
             MaterialDesignThemes.Wpf.Card card = (MaterialDesignThemes.Wpf.Card)sender;
             var ModItem_Panel = FindElementByName<StackPanel>(card, "ModItem_Panel");
-            var ModItem_Name = FindElementByName<TextBlock>(card, "ModItem_Name");
-            var ModItem_Author = FindElementByName<TextBlock>(card, "ModItem_Author");
-            var ModItem_AuthorTick = FindElementByName<Image>(card, "ModItem_AuthorTick");
-            var ModItem_Desc = FindElementByName<TextBlock>(card, "ModItem_Desc");
+            //var ModItem_Name = FindElementByName<TextBlock>(card, "ModItem_Name");
+            //var ModItem_Author = FindElementByName<TextBlock>(card, "ModItem_Author");
+            //var ModItem_AuthorTick = FindElementByName<Image>(card, "ModItem_AuthorTick");
+            //var ModItem_Desc = FindElementByName<TextBlock>(card, "ModItem_Desc");
 
-            ModItem_Panel.Background = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Green);
-            ModItem_Name.Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_White);
-            ModItem_Author.Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_White);
-            ModItem_AuthorTick.Source = new BitmapImage(new Uri(@"Resources/embed_tick_white.png", UriKind.Relative));
-            ModItem_Desc.Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_White);
+            ModItem_Panel.Background = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_WhiteIsh);
+            //ModItem_Name.Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_White);
+            //ModItem_Author.Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_White);
+            //ModItem_AuthorTick.Source = new BitmapImage(new Uri(@"Resources/embed_tick_white.png", UriKind.Relative));
+            //ModItem_Desc.Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_White);
 
         }
 
@@ -233,16 +301,16 @@ namespace Shrek2ModManager
         {
             MaterialDesignThemes.Wpf.Card card = (MaterialDesignThemes.Wpf.Card)sender;
             var ModItem_Panel = FindElementByName<StackPanel>(card, "ModItem_Panel");
-            var ModItem_Name = FindElementByName<TextBlock>(card, "ModItem_Name");
-            var ModItem_Author = FindElementByName<TextBlock>(card, "ModItem_Author");
-            var ModItem_AuthorTick = FindElementByName<Image>(card, "ModItem_AuthorTick");
-            var ModItem_Desc = FindElementByName<TextBlock>(card, "ModItem_Desc");
+            //var ModItem_Name = FindElementByName<TextBlock>(card, "ModItem_Name");
+            //var ModItem_Author = FindElementByName<TextBlock>(card, "ModItem_Author");
+            //var ModItem_AuthorTick = FindElementByName<Image>(card, "ModItem_AuthorTick");
+            //var ModItem_Desc = FindElementByName<TextBlock>(card, "ModItem_Desc");
 
             ModItem_Panel.Background = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_White);
-            ModItem_Name.Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Black);
-            ModItem_Author.Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Green);
-            ModItem_AuthorTick.Source = new BitmapImage(new Uri(@"Resources/embed_tick.png", UriKind.Relative));
-            ModItem_Desc.Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Black);
+            //ModItem_Name.Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Black);
+            //ModItem_Author.Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Green);
+            //ModItem_AuthorTick.Source = new BitmapImage(new Uri(@"Resources/embed_tick.png", UriKind.Relative));
+            //ModItem_Desc.Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Black);
         }
 
         public T FindElementByName<T>(FrameworkElement element, string sChildName) where T : FrameworkElement
@@ -269,5 +337,7 @@ namespace Shrek2ModManager
             }
             return childElement;
         }
+
+        
     }
 }

@@ -24,11 +24,14 @@ namespace Shrek2ModManager
         public bool Downloaded { get; set; } = false;
         public bool IsDownloading { get; set; } = false;
 
-        public ModWindow(Mod mod)
+        public Action RefreshMods { get; set; }
+
+        public ModWindow(Mod mod, Action refreshMods)
         {
             InitializeComponent();
             this.Mod = mod;
             Title = $"{Mod.Name} | By {Mod.Username}";
+            RefreshMods = refreshMods;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -38,73 +41,6 @@ namespace Shrek2ModManager
             Map_Desc.Text = Mod.Description;
             Map_Verified.Visibility = Mod.Verified == 1 ? Visibility.Visible : Visibility.Hidden;
             IsDownloading = false;
-            HandleMapStatus();
-        }
-
-        private void HandleMapStatus()
-        {
-            Button_DownloadPlayMap.Click += Button_DownloadPlayMap_Click;
-
-            if (SH2WorkshopFileHandler.IsModInstalled(Mod.ModGUID))
-            {
-                Downloaded = true;
-                Button_DownloadPlayMap.Content = "Uninstall Mod";
-                return;
-            }
-            Downloaded = false;
-            Button_DownloadPlayMap.Content = "Install Mod";
-        }
-
-        private async void Button_DownloadPlayMap_Click(object sender, RoutedEventArgs e)
-        {
-            if (IsDownloading) return;
-
-            if (Downloaded)
-            {
-                if (string.IsNullOrWhiteSpace(MainWindow.Settings.GameFolderLocation))
-                {
-                    MessageBox.Show("You have not setup the Shrek 2 Game.exe in the Settings! You need to set it up before you can play mods directly!");
-                    return;
-                }
-
-                bool uninstalled = SH2WorkshopFileHandler.UninstallMod(Mod);
-                if(uninstalled)
-                {
-                    SH2WorkshopFileHandler.HandleDefUserChanges();
-                    Button_DownloadPlayMap.Content = "Install Mod";
-                    Downloaded = false;
-                }
-            }
-            else
-            {
-                // Download Mod
-                IsDownloading = true;
-                Progress_DownloadMap.Value = 0;
-                Progress_DownloadMap.Visibility = Visibility.Visible;
-                Downloaded = await SH2WorkshopFileHandler.DownloadMod(Mod, DownloadProgress);
-                if (Downloaded)
-                {
-                    SH2WorkshopFileHandler.ExtractModFile(Mod.ModGUID);
-                    if (SH2WorkshopFileHandler.IsModInstalled(Mod.ModGUID))
-                    {
-                        Button_DownloadPlayMap.Content = "Uninstall Mod";
-                        Downloaded = true;
-                    }
-                }
-                else
-                {
-                    MessageBox.Show($"Failed to download '{Mod.Name}'. Try again later!");
-                }
-
-                SH2WorkshopFileHandler.HandleDefUserChanges();
-                Progress_DownloadMap.Visibility = Visibility.Hidden;
-                IsDownloading = false;
-            }
-        }
-
-        private void DownloadProgress(object sender, System.Net.DownloadProgressChangedEventArgs args)
-        {
-            Progress_DownloadMap.Value = args.ProgressPercentage;
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Shrek2ModManager.Utils
 {
@@ -18,7 +19,8 @@ namespace Shrek2ModManager.Utils
             public string Author { get; set; }
             public string Image { get; set; }
             public Visibility ImageVisibility { get; set; }
-            public int IsInstalled { get; set; }
+            public string IsInstalled { get; set; }
+            public Brush InstalledButtonColor { get; set; }
             public string Description { get; set; }
             public Mod Mod { get; set; }
 
@@ -34,7 +36,8 @@ namespace Shrek2ModManager.Utils
                 Author = $"By {mod.Username}";
                 Image = mod.HasThumbnail == 1 ? $"{SH2WorkshopFileHandler.ThumbnailDownloadUrlPrefix}/{mod.ModGUID}.png" : "https://shrek2modding.fra1.digitaloceanspaces.com/Internal/defaultmodimage.jpeg";
                 ImageVisibility = mod.Verified == 1 ? Visibility.Visible : Visibility.Hidden;
-                IsInstalled = isInstalled ? 3 : 0;
+                IsInstalled = isInstalled ? "Uninstall" : "Install";
+                InstalledButtonColor = isInstalled ? Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Red) : Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Green);
                 Description = mod.Description;
                 Mod = mod;
             }
