@@ -13,7 +13,7 @@ public:
 	};
 
 	bool OnKeyPress(Keys key);
-	bool EnableConsoleProtection = false;
+	bool EnableConsoleProtection = true;
 private:
 	void ClearKeyInputBuffer();
 	int KeyToVKey(Keys key);

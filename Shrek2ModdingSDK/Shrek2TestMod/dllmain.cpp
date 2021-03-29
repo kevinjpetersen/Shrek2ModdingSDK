@@ -179,7 +179,6 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	Game.Events.OnStart = OnStart;
 	Game.Events.OnTick = OnTick;
 
-	Game.Input.EnableConsoleProtection = true;
 	Game.Initialize("Shrek 2 Test Mod", true);
 
 	FreeLibraryAndExitThread(hModule, 0);
