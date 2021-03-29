@@ -69,46 +69,33 @@
                         </materialDesign:Card>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Margin="10,40,10,10">
+                <StackPanel Margin="10,0,0,10">
                     <TextBlock Style="{DynamicResource MaterialDesignHeadline5TextBlock}" Foreground="Gray" FontWeight="Bold">New Mods</TextBlock>
-                    <StackPanel x:Name="Popular_Maps_Panel" Orientation="Horizontal" Margin="0,0,0,0">
 
-                    </StackPanel>
-                </StackPanel>
-            </StackPanel>
-
-            <!-- Maps -->
-            <StackPanel x:Name="Content_Panel_Maps" Visibility="Collapsed">
-                <StackPanel Orientation="Horizontal" Margin="10">
-                    <TextBox x:Name="Maps_Search_Text" Width="200" Padding="0" 
-                             materialDesign:TextFieldAssist.HasClearButton="True" 
-                             materialDesign:TextFieldAssist.UnderlineBrush="#65a338"
-                             materialDesign:HintAssist.Hint="Search for Maps"
-                             materialDesign:HintAssist.Foreground="Black"
-                             materialDesign:TextFieldAssist.TextBoxViewMargin="0"
-                             materialDesign:HintAssist.IsFloating="True"
-                             />
-                    <ComboBox x:Name="Maps_Search_Sorting" Width="200" Margin="10,0,0,0" 
-                              SelectedIndex="0"
-                              materialDesign:HintAssist.IsFloating="True" 
-                              materialDesign:TextFieldAssist.HasClearButton="True" 
-                              materialDesign:TextFieldAssist.UnderlineBrush="#65a338"
-                              materialDesign:HintAssist.Foreground="Black"
-                              materialDesign:HintAssist.Hint="Sorting">
-                        <ComboBoxItem Tag="1" Content="Newest" />
-                        <ComboBoxItem Tag="2" Content="Most Popular" />
-                        <ComboBoxItem Tag="3" Content="Most Viewed" />
-                    </ComboBox>
-                </StackPanel>
-                <StackPanel Margin="10">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{DynamicResource MaterialDesignHeadline5TextBlock}" HorizontalAlignment="Left" Foreground="Gray" FontWeight="Bold">Maps</TextBlock>
-                    </StackPanel>
-                    <StackPanel x:Name="Maps_Panel" Height="450" Orientation="Vertical" Margin="0,0,0,0">
-
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel x:Name="Maps_Pagination_Panel" Orientation="Horizontal" Margin="10,10,10,0" HorizontalAlignment="Center">
+                    <ItemsControl Width="Auto" x:Name="OverviewModsList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <materialDesign:Card x:Name="ModItem" MouseEnter="ModItem_MouseEnter" MouseLeave="ModItem_MouseLeave" Cursor="Hand"  Margin="2,10,10,10" Height="280" Width="202" MouseLeftButtonUp="Card_MouseLeftButtonUp">
+                                    <Border BorderThickness="{Binding IsInstalled}" BorderBrush="#65a338">
+                                        <StackPanel Width="202" Height="280" x:Name="ModItem_Panel">
+                                            <Image Source="{Binding Image}" Height="120" Width="202" Stretch="UniformToFill" />
+                                            <TextBlock TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="Black" Margin="10, 5, 10, 0" x:Name="ModItem_Name" Text="{Binding Name}" Style="{DynamicResource MaterialDesignBody1TextBlock}"></TextBlock>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Foreground="#65a338" Margin="10, 0, 5, 5" TextTrimming="CharacterEllipsis" FontWeight="Normal" x:Name="ModItem_Author" Text="{Binding Author}" Style="{DynamicResource MaterialDesignSubtitle2TextBlock}"></TextBlock>
+                                                <Image Visibility="{Binding ImageVisibility}" Height="15" Width="15" VerticalAlignment="Top" Margin="0,2,5,0" x:Name="ModItem_AuthorTick" Source="pack://siteoforigin:,,,/Resources/tick.png" />
+                                            </StackPanel>
+                                            <TextBlock Style="{DynamicResource MaterialDesignBody1TextBlock}" Margin="10,0,10,0" FontSize="12" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" MaxHeight="85" Foreground="Black" x:Name="ModItem_Desc" Text="{Binding Description}"></TextBlock>
+                                        </StackPanel>
+                                    </Border>
+                                </materialDesign:Card>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Width="880" Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
 
                 </StackPanel>
             </StackPanel>
@@ -137,13 +124,34 @@
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Margin="10">
-                    <TextBlock Style="{DynamicResource MaterialDesignHeadline5TextBlock}" Foreground="Gray" FontWeight="Bold">Mods</TextBlock>
-                    <StackPanel x:Name="Mods_Panel" Orientation="Vertical" Margin="0,0,0,0">
+                    <TextBlock Style="{DynamicResource MaterialDesignHeadline5TextBlock}" Margin="0,0,0,10" Foreground="Gray" FontWeight="Bold">Mods</TextBlock>
 
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel x:Name="Mods_Pagination_Panel" Orientation="Horizontal" Margin="10,0,10,0" HorizontalAlignment="Center">
-
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Height="480">
+                        <ItemsControl x:Name="AllModsList" Margin="0,0,10,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <materialDesign:Card x:Name="ModItem" MouseEnter="ModItem_MouseEnter" MouseLeave="ModItem_MouseLeave" Cursor="Hand"  Margin="2,10,10,10" Height="280" Width="197" MouseLeftButtonUp="Card_MouseLeftButtonUp">
+                                        <Border BorderThickness="{Binding IsInstalled}" BorderBrush="#65a338">
+                                            <StackPanel Width="197" Height="280" x:Name="ModItem_Panel">
+                                                <Image Source="{Binding Image}" Height="120" Width="197" Stretch="UniformToFill" />
+                                                <TextBlock TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="Black" Margin="10, 5, 10, 0" x:Name="ModItem_Name" Text="{Binding Name}" Style="{DynamicResource MaterialDesignBody1TextBlock}"></TextBlock>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Foreground="#65a338" Margin="10, 0, 5, 5" TextTrimming="CharacterEllipsis" FontWeight="Normal" x:Name="ModItem_Author" Text="{Binding Author}" Style="{DynamicResource MaterialDesignSubtitle2TextBlock}"></TextBlock>
+                                                    <Image Visibility="{Binding ImageVisibility}" Height="15" Width="15" VerticalAlignment="Top" Margin="0,2,5,0" x:Name="ModItem_AuthorTick" Source="pack://siteoforigin:,,,/Resources/tick.png" />
+                                                </StackPanel>
+                                                <TextBlock Style="{DynamicResource MaterialDesignBody1TextBlock}" Margin="10,0,10,0" FontSize="12" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" MaxHeight="85" Foreground="Black" x:Name="ModItem_Desc" Text="{Binding Description}"></TextBlock>
+                                            </StackPanel>
+                                        </Border>
+                                    </materialDesign:Card>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Width="880" Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

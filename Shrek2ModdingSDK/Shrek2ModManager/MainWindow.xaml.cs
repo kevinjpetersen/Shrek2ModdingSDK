@@ -37,18 +37,34 @@ namespace Shrek2ModManager
             InitializeComponent();
         }
 
+        private void Card_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            MaterialDesignThemes.Wpf.Card btn = sender as MaterialDesignThemes.Wpf.Card;
+            var dataObject = btn.DataContext as Mod.VisualMod;
+
+            if (ModWindow != null)
+            {
+                ModWindow.Focus();
+                return;
+            }
+
+            ModWindow = new ModWindow(dataObject.Mod);
+            ModWindow.Closed += (a, b) => ModWindow = null;
+            ModWindow.Show();
+        }
+
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
             Application.Current.Shutdown();
         }
 
-        private async void Window_Loaded(object sender, RoutedEventArgs rea)
+        private void Window_Loaded(object sender, RoutedEventArgs rea)
         {
             MapsPageNumber = 0;
 
-            Nav_Button_Overview.Click += async (s, e) => await SelectNavItem(0);
-            Nav_Button_Mods.Click += async (s, e) => await SelectNavItem(1);
+            Nav_Button_Overview.Click += (s, e) => SelectNavItem(0);
+            Nav_Button_Mods.Click += (s, e) => SelectNavItem(1);
 
             Nav_Button_Settings.Click += Nav_Button_Settings_Click;
 
@@ -71,11 +87,7 @@ namespace Shrek2ModManager
             }
 
             Mods = Mod.GetMods();
-
-            PopulateMaps(Popular_Maps_Panel, false);
-            PopulateMaps(Maps_Panel, true);
-
-            PopulatePagination(Maps_Pagination_Panel);
+            OverviewModsList.ItemsSource = Mod.VisualMod.ToVisualMods(Mods.Take(4).ToList());
         }
 
         private void Overview_Button_ManageMods_MouseUp(object sender, MouseButtonEventArgs e)
@@ -173,320 +185,7 @@ namespace Shrek2ModManager
             Overview_Button_PlayGame.Opacity = 0.8;
         }
 
-        private void SwitchPage(int i)
-        {
-            MapsPageNumber = i;
-            PopulateMaps(Maps_Panel, true);
-        }
-        
-        private void PopulatePagination(StackPanel panel)
-        {
-            panel.Children.Clear();
-
-            var maxPages = (Mods.Count / 10) + (Mods.Count % 10 > 0 ? 1 : 0);
-            for (int i = 1; i <= maxPages; i++)
-            {
-                var button = new Button()
-                {
-                    Style = (Style)FindResource("MaterialDesignFloatingActionButton"),
-                    Background = Shrek2Colors.GetBrushFromHex(i == 1 ? Shrek2Colors.NavColor_Selected : Shrek2Colors.NavColor_Normal),
-                    BorderBrush = Shrek2Colors.GetBrushFromHex(i == 1 ? Shrek2Colors.NavColor_Selected : Shrek2Colors.NavColor_Normal),
-                    Height = 30,
-                    Width = 30,
-                    Margin = new Thickness(10, 0, 0, 0),
-                    Content = i
-                };
-                button.Click += (e, s) =>
-                {
-                    foreach (var child in panel.Children)
-                    {
-                        if (child is Button)
-                        {
-                            (child as Button).Background = Shrek2Colors.GetBrushFromHex(Shrek2Colors.NavColor_Normal);
-                            (child as Button).BorderBrush = Shrek2Colors.GetBrushFromHex(Shrek2Colors.NavColor_Normal);
-                        }
-                    }
-
-                    button.Background = Shrek2Colors.GetBrushFromHex(Shrek2Colors.NavColor_Selected);
-                    button.BorderBrush = Shrek2Colors.GetBrushFromHex(Shrek2Colors.NavColor_Selected);
-
-                    SwitchPage(int.Parse(button.Content.ToString()) - 1);
-                };
-                panel.Children.Add(button);
-            }
-        }
-        
-
-        
-        private void PopulateMaps(StackPanel panel, bool hasTwoRows)
-        {
-            panel.Children.Clear();
-
-            var rowPanel1 = new StackPanel()
-            {
-                Orientation = Orientation.Horizontal
-            };
-
-            var rowPanel2 = new StackPanel()
-            {
-                Orientation = Orientation.Horizontal
-            };
-
-            foreach (var map in Mods.Skip(10 * MapsPageNumber).Take(5))
-            {
-                var card = new MaterialDesignThemes.Wpf.Card()
-                {
-                    Margin = new Thickness(map == Mods.Skip(10 * MapsPageNumber).First() ? 0 : 10, 10, map == Mods.Skip(10 * MapsPageNumber).Take(5).Last() ? 0 : 10, 10),
-                    Width = 156,
-                    Height = 200
-                };
-
-                card.Content = new StackPanel();
-                card.Cursor = Cursors.Hand;
-
-                StackPanel cardPanel = card.Content as StackPanel;
-
-                var defaultBorderBrush = cardPanel.Background;
-
-                cardPanel.MouseEnter += (s, e) =>
-                {
-                    cardPanel.Background = Shrek2Colors.GetBrushFromHex(Shrek2Colors.NavColor_Selected);
-                    foreach (var child in cardPanel.Children)
-                    {
-                        if (child is TextBlock) (child as TextBlock).Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_White);
-                        if (child is StackPanel)
-                        {
-                            ((child as StackPanel).Children[0] as TextBlock).Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_White);
-                            ((child as StackPanel).Children[1] as Image).Source = new BitmapImage(new Uri(@"Resources/embed_tick_white.png", UriKind.Relative));
-                        }
-                    }
-                };
-
-                cardPanel.MouseLeave += (s, e) =>
-                {
-                    cardPanel.Background = defaultBorderBrush;
-                    foreach (var child in cardPanel.Children)
-                    {
-                        if (child is TextBlock)
-                        {
-                            (child as TextBlock).Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Black);
-                        }
-                        if (child is StackPanel)
-                        {
-                            ((child as StackPanel).Children[0] as TextBlock).Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Green);
-                            ((child as StackPanel).Children[1] as Image).Source = new BitmapImage(new Uri(@"Resources/embed_tick.png", UriKind.Relative));
-                        }
-                    }
-                };
-
-                cardPanel.MouseUp += (s, e) =>
-                {
-                    if (ModWindow != null)
-                    {
-                        ModWindow.Focus();
-                        return;
-                    }
-
-                    ModWindow = new ModWindow(map);
-                    ModWindow.Closed += (a, b) => ModWindow = null;
-                    ModWindow.Show();
-                };
-
-                cardPanel.Children.Add(new Image()
-                {
-                    Source = new BitmapImage(new Uri(map.HasThumbnail == 1 ? $"{SH2WorkshopFileHandler.ThumbnailDownloadUrlPrefix}/{map.ModGUID}.png" : "https://shrek2modding.fra1.digitaloceanspaces.com/Internal/defaultmodimage.jpeg")),
-                    Height = 80,
-                    Width = 156,
-                    Stretch = Stretch.UniformToFill
-                });
-
-                cardPanel.Children.Add(new TextBlock()
-                {
-                    Style = (Style)FindResource("MaterialDesignBody1TextBlock"),
-                    Text = map.Name,
-                    Margin = new Thickness(10, 5, 10, 0),
-                    TextTrimming = TextTrimming.CharacterEllipsis,
-                    FontWeight = FontWeights.Bold,
-                    Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Black)
-                });
-
-                var authorPanel = new StackPanel()
-                {
-                    Orientation = Orientation.Horizontal
-                };
-                authorPanel.Children.Add(new TextBlock()
-                {
-                    Style = (Style)FindResource("MaterialDesignSubtitle2TextBlock"),
-                    Text = $"By {map.Username}",
-                    Margin = new Thickness(10, 0, 5, 5),
-                    TextTrimming = TextTrimming.CharacterEllipsis,
-                    FontWeight = FontWeights.Normal,
-                    Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Green)
-                });
-                authorPanel.Children.Add(new Image()
-                {
-                    Visibility = map.Verified == 1 ? Visibility.Visible : Visibility.Hidden,
-                    Height = 15,
-                    Width = 15,
-                    VerticalAlignment = VerticalAlignment.Top,
-                    Source = new BitmapImage(new Uri(@"Resources/embed_tick.png", UriKind.Relative)),
-                    Margin = new Thickness(0, 2, 5, 0)
-                });
-
-                cardPanel.Children.Add(authorPanel);
-
-                cardPanel.Children.Add(new TextBlock()
-                {
-                    Style = (Style)FindResource("MaterialDesignBody1TextBlock"),
-                    Text = map.Description,
-                    Margin = new Thickness(10, 0, 10, 0),
-                    FontSize = 12,
-                    TextTrimming = TextTrimming.CharacterEllipsis,
-                    TextWrapping = TextWrapping.Wrap,
-                    MaxHeight = 65,
-                    Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Black)
-                });
-
-                card.Content = cardPanel;
-                rowPanel1.Children.Add(card);
-            }
-            panel.Children.Add(rowPanel1);
-
-            if (hasTwoRows)
-            {
-                foreach (var map in Mods.Skip(10 * MapsPageNumber).Skip(5).Take(5))
-                {
-                    var card = new MaterialDesignThemes.Wpf.Card()
-                    {
-                        Margin = new Thickness(map == Mods.Skip(10 * MapsPageNumber).Skip(5).First() ? 0 : 10, 10, map == Mods.Skip(10 * MapsPageNumber).Skip(5).Take(5).Last() ? 0 : 10, 10),
-                        Width = 156,
-                        Height = 200
-                    };
-
-                    card.Content = new StackPanel();
-                    card.Cursor = Cursors.Hand;
-
-                    StackPanel cardPanel = card.Content as StackPanel;
-
-                    var defaultBorderBrush = cardPanel.Background;
-
-                    cardPanel.MouseEnter += (s, e) =>
-                    {
-                        cardPanel.Background = Shrek2Colors.GetBrushFromHex(Shrek2Colors.NavColor_Selected);
-                        foreach (var child in cardPanel.Children)
-                        {
-                            if (child is TextBlock) (child as TextBlock).Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_White);
-                            if (child is StackPanel)
-                            {
-                                ((child as StackPanel).Children[0] as TextBlock).Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_White);
-                                ((child as StackPanel).Children[1] as Image).Source = new BitmapImage(new Uri(@"Resources/embed_tick_white.png", UriKind.Relative));
-                            }
-                        }
-                    };
-
-                    cardPanel.MouseLeave += (s, e) =>
-                    {
-                        cardPanel.Background = defaultBorderBrush;
-                        foreach (var child in cardPanel.Children)
-                        {
-                            if (child is TextBlock)
-                            {
-                                (child as TextBlock).Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Black);
-                            }
-                            if (child is StackPanel)
-                            {
-                                ((child as StackPanel).Children[0] as TextBlock).Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Green);
-                                ((child as StackPanel).Children[1] as Image).Source = new BitmapImage(new Uri(@"Resources/embed_tick.png", UriKind.Relative));
-                            }
-                        }
-                    };
-
-                    cardPanel.MouseUp += (s, e) =>
-                    {
-                        if (ModWindow != null)
-                        {
-                            ModWindow.Focus();
-                            return;
-                        }
-
-                        ModWindow = new ModWindow(map);
-                        ModWindow.Closed += (a, b) => ModWindow = null;
-                        ModWindow.Show();
-                    };
-
-                    cardPanel.Children.Add(new Image()
-                    {
-                        Source = new BitmapImage(new Uri(map.HasThumbnail == 1 ? $"{SH2WorkshopFileHandler.ThumbnailDownloadUrlPrefix}/{map.ModGUID}.png" : "https://shrek2modding.fra1.digitaloceanspaces.com/Internal/defaultmodimage.jpeg")),
-                        Height = 80,
-                        Width = 156,
-                        Stretch = Stretch.UniformToFill
-                    });
-
-                    cardPanel.Children.Add(new TextBlock()
-                    {
-                        Style = (Style)FindResource("MaterialDesignBody1TextBlock"),
-                        Text = map.Name,
-                        Margin = new Thickness(10, 5, 10, 0),
-                        TextTrimming = TextTrimming.CharacterEllipsis,
-                        FontWeight = FontWeights.Bold,
-                        Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Black)
-                    });
-
-                    var authorPanel = new StackPanel()
-                    {
-                        Orientation = Orientation.Horizontal
-                    };
-                    authorPanel.Children.Add(new TextBlock()
-                    {
-                        Style = (Style)FindResource("MaterialDesignSubtitle2TextBlock"),
-                        Text = $"By {map.Username}",
-                        Margin = new Thickness(10, 0, 5, 5),
-                        TextTrimming = TextTrimming.CharacterEllipsis,
-                        FontWeight = FontWeights.Normal,
-                        Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Green)
-                    });
-                    authorPanel.Children.Add(new Image()
-                    {
-                        Visibility = map.Verified == 1 ? Visibility.Visible : Visibility.Hidden,
-                        Height = 15,
-                        Width = 15,
-                        VerticalAlignment = VerticalAlignment.Top,
-                        Source = new BitmapImage(new Uri(@"Resources/embed_tick.png", UriKind.Relative)),
-                        Margin = new Thickness(0, 2, 5, 0)
-                    });
-
-                    cardPanel.Children.Add(authorPanel);
-
-                    cardPanel.Children.Add(new TextBlock()
-                    {
-                        Style = (Style)FindResource("MaterialDesignBody1TextBlock"),
-                        Text = map.Description,
-                        Margin = new Thickness(10, 0, 10, 0),
-                        FontSize = 12,
-                        TextTrimming = TextTrimming.CharacterEllipsis,
-                        TextWrapping = TextWrapping.Wrap,
-                        MaxHeight = 65,
-                        Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Black)
-                    });
-
-                    card.Content = cardPanel;
-                    rowPanel2.Children.Add(card);
-                }
-                panel.Children.Add(rowPanel2);
-            }
-        }
-        
-        private async Task RefreshMaps()
-        {
-            Mods = Mod.GetMods();
-
-            PopulateMaps(Popular_Maps_Panel, false);
-            PopulateMaps(Maps_Panel, true);
-            PopulatePagination(Maps_Pagination_Panel);
-            PopulateMaps(Mods_Panel, true);
-        }
-
-        private async Task SelectNavItem(int item)
+        private void SelectNavItem(int item)
         {
             if (item == 0)
             {
@@ -497,7 +196,8 @@ namespace Shrek2ModManager
                 Content_Panel_Overview.Visibility = Visibility.Visible;
                 Content_Panel_Mods.Visibility = Visibility.Collapsed;
 
-                await RefreshMaps();
+                Mods = Mod.GetMods();
+                OverviewModsList.ItemsSource = Mod.VisualMod.ToVisualMods(Mods.Take(4).ToList());
             }
             else if (item == 1)
             {
@@ -507,8 +207,67 @@ namespace Shrek2ModManager
                 Content_Panel_Overview.Visibility = Visibility.Collapsed;
                 Content_Panel_Mods.Visibility = Visibility.Visible;
 
-                await RefreshMaps();
+                Mods = Mod.GetMods();
+                AllModsList.ItemsSource = Mod.VisualMod.ToVisualMods(Mods);
             }
+        }
+
+        private void ModItem_MouseEnter(object sender, MouseEventArgs e)
+        {
+            MaterialDesignThemes.Wpf.Card card = (MaterialDesignThemes.Wpf.Card)sender;
+            var ModItem_Panel = FindElementByName<StackPanel>(card, "ModItem_Panel");
+            var ModItem_Name = FindElementByName<TextBlock>(card, "ModItem_Name");
+            var ModItem_Author = FindElementByName<TextBlock>(card, "ModItem_Author");
+            var ModItem_AuthorTick = FindElementByName<Image>(card, "ModItem_AuthorTick");
+            var ModItem_Desc = FindElementByName<TextBlock>(card, "ModItem_Desc");
+
+            ModItem_Panel.Background = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Green);
+            ModItem_Name.Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_White);
+            ModItem_Author.Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_White);
+            ModItem_AuthorTick.Source = new BitmapImage(new Uri(@"Resources/embed_tick_white.png", UriKind.Relative));
+            ModItem_Desc.Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_White);
+
+        }
+
+        private void ModItem_MouseLeave(object sender, MouseEventArgs e)
+        {
+            MaterialDesignThemes.Wpf.Card card = (MaterialDesignThemes.Wpf.Card)sender;
+            var ModItem_Panel = FindElementByName<StackPanel>(card, "ModItem_Panel");
+            var ModItem_Name = FindElementByName<TextBlock>(card, "ModItem_Name");
+            var ModItem_Author = FindElementByName<TextBlock>(card, "ModItem_Author");
+            var ModItem_AuthorTick = FindElementByName<Image>(card, "ModItem_AuthorTick");
+            var ModItem_Desc = FindElementByName<TextBlock>(card, "ModItem_Desc");
+
+            ModItem_Panel.Background = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_White);
+            ModItem_Name.Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Black);
+            ModItem_Author.Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Green);
+            ModItem_AuthorTick.Source = new BitmapImage(new Uri(@"Resources/embed_tick.png", UriKind.Relative));
+            ModItem_Desc.Foreground = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Black);
+        }
+
+        public T FindElementByName<T>(FrameworkElement element, string sChildName) where T : FrameworkElement
+        {
+            T childElement = null;
+            var nChildCount = VisualTreeHelper.GetChildrenCount(element);
+            for (int i = 0; i < nChildCount; i++)
+            {
+                FrameworkElement child = VisualTreeHelper.GetChild(element, i) as FrameworkElement;
+
+                if (child == null)
+                    continue;
+
+                if (child is T && child.Name.Equals(sChildName))
+                {
+                    childElement = (T)child;
+                    break;
+                }
+
+                childElement = FindElementByName<T>(child, sChildName);
+
+                if (childElement != null)
+                    break;
+            }
+            return childElement;
         }
     }
 }

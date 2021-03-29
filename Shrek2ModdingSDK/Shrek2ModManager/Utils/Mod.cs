@@ -6,11 +6,40 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Shrek2ModManager.Utils
 {
     public class Mod
     {
+        public class VisualMod
+        {
+            public string Name { get; set; }
+            public string Author { get; set; }
+            public string Image { get; set; }
+            public Visibility ImageVisibility { get; set; }
+            public int IsInstalled { get; set; }
+            public string Description { get; set; }
+            public Mod Mod { get; set; }
+
+            public static List<VisualMod> ToVisualMods(List<Mod> mods)
+            {
+                var installedMods = SH2WorkshopFileHandler.GetInstalledModObjects();
+                return mods.Select(p => new VisualMod(p, installedMods.Any(i => i.ModGUID == p.ModGUID))).ToList();
+            }
+
+            public VisualMod(Mod mod, bool isInstalled)
+            {
+                Name = mod.Name;
+                Author = $"By {mod.Username}";
+                Image = mod.HasThumbnail == 1 ? $"{SH2WorkshopFileHandler.ThumbnailDownloadUrlPrefix}/{mod.ModGUID}.png" : "https://shrek2modding.fra1.digitaloceanspaces.com/Internal/defaultmodimage.jpeg";
+                ImageVisibility = mod.Verified == 1 ? Visibility.Visible : Visibility.Hidden;
+                IsInstalled = isInstalled ? 3 : 0;
+                Description = mod.Description;
+                Mod = mod;
+            }
+        }
+
         public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

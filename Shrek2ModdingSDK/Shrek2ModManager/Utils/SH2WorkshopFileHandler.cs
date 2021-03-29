@@ -224,6 +224,30 @@ namespace Shrek2ModManager.Utils
             }
         }
 
+        public static List<Mod> GetInstalledModObjects()
+        {
+            try
+            {
+                var installedJsonPath = Path.Combine(Directory.GetCurrentDirectory(), "installed_mods.json");
+                if (File.Exists(installedJsonPath) == false)
+                {
+                    return new List<Mod>();
+                }
+
+                var installedMods = JsonConvert.DeserializeObject<List<Mod>>(File.ReadAllText(installedJsonPath));
+                if (installedMods == null)
+                {
+                    installedMods = new List<Mod>();
+                }
+
+                return installedMods;
+            }
+            catch
+            {
+                return new List<Mod>();
+            }
+        }
+
         public static bool AddOrUpdateModToInstalledJson(Mod mod)
         {
             try
