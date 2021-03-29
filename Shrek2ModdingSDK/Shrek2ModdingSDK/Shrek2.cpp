@@ -42,7 +42,6 @@ void Shrek2::Initialize(std::string ModName, bool ShowConsoleByDefault = true)
 	Sounds = Shrek2Sound(Shrek2StaticVars::DllFolderPath);
 	Variables = Shrek2Pointers();
 	Functions = Shrek2Functions(DllName);
-	Input = Shrek2Input();
 	Config = Shrek2Config(Shrek2StaticVars::DllFolderPath);
 
 	LogToConsole("DllName is: " + DllName);

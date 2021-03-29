@@ -8,7 +8,40 @@ bool Shrek2Input::OnKeyPress(Keys key)
 {
     int vkey = KeyToVKey(key);
     if (vkey == -1) return false;
+
+    if (EnableConsoleProtection)
+    {
+        if (GetAsyncKeyState(KeyToVKey(Keys::TAB)) & 1)
+        {
+            AllowKeyInput = false;
+            ClearKeyInputBuffer();
+            return false;
+        }
+        else if (GetAsyncKeyState(KeyToVKey(Keys::ENTER)) & 1)
+        {
+            AllowKeyInput = true;
+            ClearKeyInputBuffer();
+            return false;
+        } else if (GetAsyncKeyState(KeyToVKey(Keys::ESCAPE)) & 1)
+        {
+            AllowKeyInput = true;
+            ClearKeyInputBuffer();
+            return false;
+        }
+
+        if (!AllowKeyInput) return false;
+    }
+
     return (GetAsyncKeyState(vkey) & 1);
+}
+
+void Shrek2Input::ClearKeyInputBuffer()
+{
+    for (int keyInt = Keys::A; keyInt != Keys::ESCAPE; keyInt++)
+    {
+        Keys key = static_cast<Keys>(keyInt);
+        GetAsyncKeyState(KeyToVKey(key));
+    }
 }
 
 int Shrek2Input::KeyToVKey(Keys key)
@@ -51,6 +84,9 @@ int Shrek2Input::KeyToVKey(Keys key)
     case Keys::NUMBER_7: return 0x37;
     case Keys::NUMBER_8: return 0x38;
     case Keys::NUMBER_9: return 0x39;
+    case Keys::TAB: return 0x09;
+    case Keys::ENTER: return 0x0D;
+    case Keys::ESCAPE: return 0x1B;
     default: return -1;
     }
 }

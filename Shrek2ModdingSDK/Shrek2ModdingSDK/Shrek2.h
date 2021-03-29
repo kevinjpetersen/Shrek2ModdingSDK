@@ -26,7 +26,7 @@ public:
 	Shrek2Functions Functions;
 	Shrek2Events Events = Shrek2Events();
 	Shrek2Sound Sounds;
-	Shrek2Input Input;
+	Shrek2Input Input = Shrek2Input();
 	Shrek2Triggers Triggers = Shrek2Triggers();
 	Shrek2Config Config;
 	bool IsModRunning;

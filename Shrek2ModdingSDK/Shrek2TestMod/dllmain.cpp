@@ -111,7 +111,27 @@ void ExecuteEntitySafely(Entity* ent) {
 
 void OnTick()
 {
-	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
+	if (Game.Input.OnKeyPress(Shrek2Input::G))
+	{
+		Game.LogToConsole("Pressed G");
+	}
+
+	if (Game.Input.OnKeyPress(Shrek2Input::H))
+	{
+		Game.LogToConsole("Pressed H");
+	}
+
+	if (Game.Input.OnKeyPress(Shrek2Input::P))
+	{
+		Game.LogToConsole("Pressed P");
+	}
+
+	if (Game.Input.OnKeyPress(Shrek2Input::O))
+	{
+		Game.LogToConsole("Pressed O");
+	}
+
+	/*if (Game.Input.OnKeyPress(Shrek2Input::G)) {
 		system("CLS");
 
 		DWORD addr = Shrek2Memory::GetAddr("Engine.dll", 0x004E85F0, 0x18C, 0x334, 0x30, 0x88);
@@ -134,7 +154,7 @@ void OnTick()
 		else {
 			Game.LogToConsole("Pointer doesn't point to anything!");
 		}
-	}
+	}*/
 }
 
 void RenderUI()
@@ -159,6 +179,7 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	Game.Events.OnStart = OnStart;
 	Game.Events.OnTick = OnTick;
 
+	Game.Input.EnableConsoleProtection = true;
 	Game.Initialize("Shrek 2 Test Mod", true);
 
 	FreeLibraryAndExitThread(hModule, 0);
