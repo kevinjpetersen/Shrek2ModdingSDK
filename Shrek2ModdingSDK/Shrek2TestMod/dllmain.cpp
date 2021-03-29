@@ -96,6 +96,7 @@ void ExecuteEntity(Entity* ent)
 		if (hasName)
 		{
 			std::cout << "X: " << ent->Position.x << ", Y: " << ent->Position.y << ", Z: " << ent->Position.z << std::endl;
+			std::cout << "Addr: " << ent << std::endl;
 			std::cout << "----" << std::endl;
 		}
 	}
