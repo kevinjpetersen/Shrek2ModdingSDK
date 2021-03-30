@@ -35,7 +35,6 @@ namespace Shrek2ModManager
         public int CurrentPage { get; set; } = 0;
         public bool IsDownloading { get; set; } = false;
 
-
         public List<Mod> InstalledMods { get; set; }
 
         public Mod SelectedMod { get; set; }
@@ -43,7 +42,7 @@ namespace Shrek2ModManager
 
         public enum FieldTypes
         {
-            Unknown, String, Bool, Int, Long, Float
+            Unknown, String, Bool, Int, Long, Float, Double, Decimal
         }
 
         public MainWindow()
@@ -176,6 +175,21 @@ namespace Shrek2ModManager
 
         private void Window_Loaded(object sender, RoutedEventArgs rea)
         {
+            ManageModsDialog.DialogClosing += (s, e) =>
+            {
+                var changes = ConfigChanges();
+                if (changes == 1 || changes == 2)
+                {
+                    if(changes == 2) e.Cancel();
+
+                    MessageBoxResult dialogResult = MessageBox.Show("You have some unsaved changes. Would you like to save them?", "Unsaved changes", MessageBoxButton.YesNo);
+                    if (dialogResult == MessageBoxResult.Yes)
+                    {
+                        ConfigSaveButton_Click(null, null);
+                    }
+                }
+            };
+
             Nav_Button_Overview.Click += (s, e) => SelectNavItem(0);
             Nav_Button_Mods.Click += (s, e) => SelectNavItem(1);
 
@@ -232,7 +246,7 @@ namespace Shrek2ModManager
             }
 
             await ManageModsDialog.ShowDialog(null);
-
+            
 
             //if (ManageModsWindow != null)
             //{
@@ -344,6 +358,7 @@ namespace Shrek2ModManager
             }
             else if (item == 1)
             {
+                Mods_Search_Text.Text = "";
                 CurrentPage = 1;
                 Nav_Button_Overview.Background = Shrek2Colors.GetBrushFromHex(Shrek2Colors.NavColor_Normal);
                 Nav_Button_Mods.Background = Shrek2Colors.GetBrushFromHex(Shrek2Colors.NavColor_Selected);
@@ -518,7 +533,7 @@ namespace Shrek2ModManager
                 });
             }
 
-            if (fieldType == FieldTypes.String || fieldType == FieldTypes.Int || fieldType == FieldTypes.Float || fieldType == FieldTypes.Long)
+            if (fieldType == FieldTypes.String || fieldType == FieldTypes.Int || fieldType == FieldTypes.Float || fieldType == FieldTypes.Long || fieldType == FieldTypes.Double || fieldType == FieldTypes.Decimal)
             {
                 sp.Children.Add(new TextBox()
                 {
@@ -545,6 +560,96 @@ namespace Shrek2ModManager
         private void ConfigDiscardButton_Click(object sender, RoutedEventArgs e)
         {
             ManageModsDialog.CurrentSession.Close();
+        }
+
+        private int ConfigChanges()
+        {
+            try
+            {
+                if (LoadedConfig == null || LoadedConfig.Config == null || LoadedConfig.Config.Count <= 0) return 0;
+
+                foreach (var field in LoadedConfig.Config)
+                {
+                    var fieldType = GetFieldType(field.Value);
+
+                    if (fieldType == FieldTypes.String)
+                    {
+                        var fieldItem = FindElementByDataContext<TextBox>(ConfigFields_Items, field.Key);
+                        if (LoadedConfig.Config[field.Key].ToString() != fieldItem.Text) return 1;
+                    }
+                    else if (fieldType == FieldTypes.Int)
+                    {
+                        var fieldItem = FindElementByDataContext<TextBox>(ConfigFields_Items, field.Key);
+                        if (int.TryParse(fieldItem.Text, out int num))
+                        {
+                            if ((int)LoadedConfig.Config[field.Key] != num) return 1;
+                        }
+                        else
+                        {
+                            return 2;
+                        }
+                    }
+                    else if (fieldType == FieldTypes.Float)
+                    {
+                        var fieldItem = FindElementByDataContext<TextBox>(ConfigFields_Items, field.Key);
+                        if (float.TryParse(fieldItem.Text, out float num))
+                        {
+                            if ((float)LoadedConfig.Config[field.Key] != num) return 1;
+                        }
+                        else
+                        {
+                            return 2;
+                        }
+                    }
+                    else if (fieldType == FieldTypes.Long)
+                    {
+                        var fieldItem = FindElementByDataContext<TextBox>(ConfigFields_Items, field.Key);
+                        if (long.TryParse(fieldItem.Text, out long num))
+                        {
+                            if ((long)LoadedConfig.Config[field.Key] != num) return 1;
+                        }
+                        else
+                        {
+                            return 2;
+                        }
+                    }
+                    else if (fieldType == FieldTypes.Double)
+                    {
+                        var fieldItem = FindElementByDataContext<TextBox>(ConfigFields_Items, field.Key);
+                        if (double.TryParse(fieldItem.Text, out double num))
+                        {
+                            if ((double)LoadedConfig.Config[field.Key] != num) return 1;
+                        }
+                        else
+                        {
+                            return 2;
+                        }
+                    }
+                    else if (fieldType == FieldTypes.Decimal)
+                    {
+                        var fieldItem = FindElementByDataContext<TextBox>(ConfigFields_Items, field.Key);
+                        if (decimal.TryParse(fieldItem.Text, out decimal num))
+                        {
+                            if ((decimal)LoadedConfig.Config[field.Key] != num) return 1;
+                        }
+                        else
+                        {
+                            return 2;
+                        }
+                    }
+                    else if (fieldType == FieldTypes.Bool)
+                    {
+                        var fieldItem = FindElementByDataContext<CheckBox>(ConfigFields_Items, field.Key);
+                        if ((bool)LoadedConfig.Config[field.Key] != fieldItem.IsChecked) return 1;
+                    }
+                }
+
+                return 0;
+            }
+            catch
+            {
+                return 2;
+            }
         }
 
         private void ConfigSaveButton_Click(object sender, RoutedEventArgs e)
@@ -577,7 +682,7 @@ namespace Shrek2ModManager
                             return;
                         }
                     }
-                    else if (fieldType == FieldTypes.Float || fieldType == FieldTypes.Long)
+                    else if (fieldType == FieldTypes.Float || fieldType == FieldTypes.Long || fieldType == FieldTypes.Decimal || fieldType == FieldTypes.Double)
                     {
                         var fieldItem = FindElementByDataContext<TextBox>(ConfigFields_Items, field.Key);
                         if (float.TryParse(fieldItem.Text, out float num))
@@ -614,8 +719,8 @@ namespace Shrek2ModManager
             if (fieldObject is bool) return FieldTypes.Bool;
             if (fieldObject is float) return FieldTypes.Float;
             if (fieldObject is long) return FieldTypes.Long;
-            if (fieldObject is double) return FieldTypes.Long;
-            if (fieldObject is decimal) return FieldTypes.Long;
+            if (fieldObject is double) return FieldTypes.Double;
+            if (fieldObject is decimal) return FieldTypes.Decimal;
             if (fieldObject is string) return FieldTypes.String;
             if (fieldObject is int) return FieldTypes.Int;
             return FieldTypes.Unknown;
@@ -648,7 +753,7 @@ namespace Shrek2ModManager
 
         private void Mods_Search_Text_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Mods = Mods.Where(p => p.Name.Contains(Mods_Search_Text.Text)).OrderByDescending(p => p.ID).ToList();
+            AllModsList.ItemsSource = Mod.VisualMod.ToVisualMods(Mods.Where(p => p.Name.ToLower().Contains(Mods_Search_Text.Text.ToLower())).OrderByDescending(p => p.ID).ToList());
         }
     }
 }
