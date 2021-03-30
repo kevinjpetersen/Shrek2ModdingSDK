@@ -1,4 +1,5 @@
-﻿using Shrek2ModManager.Utils;
+﻿using MaterialDesignThemes.Wpf;
+using Shrek2ModManager.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,6 +35,17 @@ namespace Shrek2ModManager
         public int CurrentPage { get; set; } = 0;
         public bool IsDownloading { get; set; } = false;
 
+
+        public List<Mod> InstalledMods { get; set; }
+
+        public Mod SelectedMod { get; set; }
+        public Shrek2Config LoadedConfig { get; set; }
+
+        public enum FieldTypes
+        {
+            Unknown, String, Bool, Int, Long, Float
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -66,7 +78,7 @@ namespace Shrek2ModManager
 
             if (SH2WorkshopFileHandler.IsModInstalled(Mod.ModGUID))
             {
-                if(dataObject.UpdateAvailable)
+                if (dataObject.UpdateAvailable)
                 {
                     if (string.IsNullOrWhiteSpace(Settings.GameFolderLocation))
                     {
@@ -96,7 +108,8 @@ namespace Shrek2ModManager
                     SH2WorkshopFileHandler.HandleDefUserChanges();
                     RefreshMods();
                     IsDownloading = false;
-                } else
+                }
+                else
                 {
                     if (string.IsNullOrWhiteSpace(Settings.GameFolderLocation))
                     {
@@ -143,12 +156,12 @@ namespace Shrek2ModManager
 
         public void RefreshMods()
         {
-            if(CurrentPage == 0)
+            if (CurrentPage == 0)
             {
                 Mods = Mod.GetMods();
                 OverviewModsList.ItemsSource = Mod.VisualMod.ToVisualMods(Mods.Take(4).ToList());
             }
-            else if(CurrentPage == 1)
+            else if (CurrentPage == 1)
             {
                 Mods = Mod.GetMods();
                 AllModsList.ItemsSource = Mod.VisualMod.ToVisualMods(Mods);
@@ -178,10 +191,11 @@ namespace Shrek2ModManager
 
             Settings = SH2WorkshopFileHandler.GetSettings();
 
-            if(SH2WorkshopFileHandler.IsInternalModFilesInstalled())
+            if (SH2WorkshopFileHandler.IsInternalModFilesInstalled())
             {
                 Overview_Button_PlayGame_Text.Text = "Play Shrek 2 Modded";
-            } else
+            }
+            else
             {
                 Overview_Button_PlayGame_Text.Text = "Install Shrek 2 Modded";
             }
@@ -190,20 +204,48 @@ namespace Shrek2ModManager
             OverviewModsList.ItemsSource = Mod.VisualMod.ToVisualMods(Mods.Take(4).ToList());
         }
 
-        private void Overview_Button_ManageMods_MouseUp(object sender, MouseButtonEventArgs e)
+        private async void Overview_Button_ManageMods_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (ManageModsWindow != null)
+            LoadedConfig = null;
+            SelectedMod = null;
+            ErrorMessage.Text = "";
+            SelectedModNoConfig.Visibility = Visibility.Collapsed;
+
+            DefaultText.Visibility = Visibility.Visible;
+            SelectedModName.Text = "";
+            SelectedModInfo.Visibility = Visibility.Collapsed;
+
+            ConfigFields_Items.Children.Clear();
+
+            InstalledMods = Mod.GetInstalledMods(Mods);
+
+            InstalledModsList.Items.Clear();
+            foreach (var mod in InstalledMods)
             {
-                ManageModsWindow.Focus();
-                return;
+                InstalledModsList.Items.Add(new ListViewItem()
+                {
+                    Content = mod.Name,
+                    BorderThickness = new Thickness(0, 0, 0, 1),
+                    BorderBrush = Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_White),
+                    Name = mod.ModGUID.Replace("-", "")
+                });
             }
 
-            ManageModsWindow = new ManageModsWindow(Mods);
-            ManageModsWindow.Closed += (a, b) =>
-            {
-                ManageModsWindow = null;
-            };
-            ManageModsWindow.Show();
+            await ManageModsDialog.ShowDialog(null);
+
+
+            //if (ManageModsWindow != null)
+            //{
+            //    ManageModsWindow.Focus();
+            //    return;
+            //}
+
+            //ManageModsWindow = new ManageModsWindow(Mods);
+            //ManageModsWindow.Closed += (a, b) =>
+            //{
+            //    ManageModsWindow = null;
+            //};
+            //ManageModsWindow.Show();
         }
 
         private async void Overview_Button_PlayGame_MouseUp(object sender, MouseButtonEventArgs e)
@@ -216,10 +258,11 @@ namespace Shrek2ModManager
                     return;
                 }
 
-                if(SH2WorkshopFileHandler.IsInternalModFilesInstalled())
+                if (SH2WorkshopFileHandler.IsInternalModFilesInstalled())
                 {
                     Process.Start(System.IO.Path.Combine(Settings.GameFolderLocation, "Shrek 2 Modded.exe"), Settings.WindowMode == Settings.WindowModes.WindowMode ? "-windowed" : "");
-                } else
+                }
+                else
                 {
                     Overview_Button_PlayGame_Text.Text = "Downloading..";
                     bool downloaded = await SH2WorkshopFileHandler.DownloadInternalModFiles((ea, ex) =>
@@ -227,12 +270,12 @@ namespace Shrek2ModManager
 
                     });
 
-                    if(downloaded)
+                    if (downloaded)
                     {
                         Overview_Button_PlayGame_Text.Text = "Installing..";
 
                         bool installed = SH2WorkshopFileHandler.ExtractInternalModFiles();
-                        if(installed)
+                        if (installed)
                         {
                             Overview_Button_PlayGame_Text.Text = "Play Shrek 2 Modded";
                             return;
@@ -371,6 +414,241 @@ namespace Shrek2ModManager
             return childElement;
         }
 
-        
+        /* MANAGE MODS */
+
+
+        private void InstalledModsList_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ErrorMessage.Text = "";
+
+            var item = e.Source as ListViewItem;
+            if (item != null && item.IsSelected)
+            {
+                SelectedMod = InstalledMods.FirstOrDefault(p => p.ModGUID.Replace("-", "") == item.Name);
+
+                if (SelectedMod != null)
+                {
+                    DefaultText.Visibility = Visibility.Collapsed;
+                    SelectedModName.Text = SelectedMod.Name;
+                    SelectedModInfo.Visibility = Visibility.Visible;
+                    SelectedModNoConfig.Visibility = Visibility.Collapsed;
+
+                    var configable = SH2WorkshopFileHandler.IsModConfigable(SelectedMod.ModGUID);
+                    if (configable)
+                    {
+                        AddConfigFields();
+                        ConfigFields.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        SelectedModNoConfig.Visibility = Visibility.Visible;
+                        ConfigFields.Visibility = Visibility.Collapsed;
+                    }
+                }
+            }
+        }
+
+        public void AddConfigFields()
+        {
+            try
+            {
+                LoadedConfig = Shrek2Config.GetConfig(SelectedMod);
+                if (LoadedConfig == null)
+                {
+                    ConfigFields.Visibility = Visibility.Collapsed;
+                    MessageBox.Show("Failed to load config fields from config.json! The config file could be incorrectly formatted.");
+                    return;
+                }
+
+                ConfigFields_Items.Children.Clear();
+
+                if (LoadedConfig.Config == null || LoadedConfig.Config.Count <= 0)
+                {
+                    ConfigFields.Visibility = Visibility.Collapsed;
+                    MessageBox.Show("The loaded mod's config file has no fields to configure!");
+                    return;
+                }
+
+                foreach (var field in LoadedConfig.Config)
+                {
+                    try
+                    {
+                        AddConfigField(field);
+                    }
+                    catch { }
+                }
+            }
+            catch
+            {
+                ConfigFields.Visibility = Visibility.Collapsed;
+                MessageBox.Show("Failed to load config fields!");
+            }
+        }
+
+        public void AddConfigField(KeyValuePair<string, object> field)
+        {
+            var fieldType = GetFieldType(field.Value);
+
+            var sp = new StackPanel()
+            {
+                Orientation = Orientation.Vertical,
+                Margin = new Thickness(20, 0, 20, 20),
+                HorizontalAlignment = HorizontalAlignment.Left,
+            };
+
+            sp.Children.Add(new TextBlock()
+            {
+                FontWeight = FontWeights.Bold,
+                Text = field.Key,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Margin = new Thickness(0, 0, 0, 0),
+                FontSize = 16
+            });
+
+            if (LoadedConfig.Docs.ContainsKey(field.Key))
+            {
+                sp.Children.Add(new TextBlock()
+                {
+                    FontWeight = FontWeights.Normal,
+                    FontSize = 13,
+                    Text = LoadedConfig.Docs[field.Key],
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Margin = new Thickness(0, 0, 0, 5),
+                    TextWrapping = TextWrapping.Wrap
+                });
+            }
+
+            if (fieldType == FieldTypes.String || fieldType == FieldTypes.Int || fieldType == FieldTypes.Float || fieldType == FieldTypes.Long)
+            {
+                sp.Children.Add(new TextBox()
+                {
+                    Text = field.Value.ToString(),
+                    Width = 200,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    DataContext = field.Key
+                });
+            }
+
+            if (fieldType == FieldTypes.Bool)
+            {
+                sp.Children.Add(new CheckBox()
+                {
+                    IsChecked = (bool)field.Value,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    DataContext = field.Key
+                });
+            }
+
+            ConfigFields_Items.Children.Add(sp);
+        }
+
+        private void ConfigDiscardButton_Click(object sender, RoutedEventArgs e)
+        {
+            ManageModsDialog.CurrentSession.Close();
+        }
+
+        private void ConfigSaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ErrorMessage.Text = "";
+                var configFields = new Dictionary<string, object>();
+
+                foreach (var field in LoadedConfig.Config)
+                {
+                    var fieldType = GetFieldType(field.Value);
+
+                    if (fieldType == FieldTypes.String)
+                    {
+                        var fieldItem = FindElementByDataContext<TextBox>(ConfigFields_Items, field.Key);
+                        configFields.Add(field.Key, fieldItem.Text);
+                    }
+                    else if (fieldType == FieldTypes.Int)
+                    {
+                        var fieldItem = FindElementByDataContext<TextBox>(ConfigFields_Items, field.Key);
+                        if (int.TryParse(fieldItem.Text, out int num))
+                        {
+                            configFields.Add(field.Key, num);
+                        }
+                        else
+                        {
+                            ErrorMessage.Text = $"The setting '{field.Key}' can only be a number!";
+                            MessageBox.Show($"The setting '{field.Key}' can only be a number!");
+                            return;
+                        }
+                    }
+                    else if (fieldType == FieldTypes.Float || fieldType == FieldTypes.Long)
+                    {
+                        var fieldItem = FindElementByDataContext<TextBox>(ConfigFields_Items, field.Key);
+                        if (float.TryParse(fieldItem.Text, out float num))
+                        {
+                            configFields.Add(field.Key, num);
+                        }
+                        else
+                        {
+                            ErrorMessage.Text = $"The setting '{field.Key}' can only be a decimal number!";
+                            MessageBox.Show($"The setting '{field.Key}' can only be a decimal number!");
+                            return;
+                        }
+                    }
+                    else if (fieldType == FieldTypes.Bool)
+                    {
+                        var fieldItem = FindElementByDataContext<CheckBox>(ConfigFields_Items, field.Key);
+                        configFields.Add(field.Key, fieldItem.IsChecked);
+                    }
+                }
+
+                LoadedConfig.Config = configFields;
+                LoadedConfig.SaveConfig(SelectedMod);
+                ErrorMessage.Text = "Successfully saved changes!";
+            }
+            catch
+            {
+                ErrorMessage.Text = "Failed to save changes to config!";
+                MessageBox.Show("Failed to save changes to config!");
+            }
+        }
+
+        public FieldTypes GetFieldType(object fieldObject)
+        {
+            if (fieldObject is bool) return FieldTypes.Bool;
+            if (fieldObject is float) return FieldTypes.Float;
+            if (fieldObject is long) return FieldTypes.Long;
+            if (fieldObject is double) return FieldTypes.Long;
+            if (fieldObject is decimal) return FieldTypes.Long;
+            if (fieldObject is string) return FieldTypes.String;
+            if (fieldObject is int) return FieldTypes.Int;
+            return FieldTypes.Unknown;
+        }
+
+        public T FindElementByDataContext<T>(FrameworkElement element, string sChildName) where T : FrameworkElement
+        {
+            T childElement = null;
+            var nChildCount = VisualTreeHelper.GetChildrenCount(element);
+            for (int i = 0; i < nChildCount; i++)
+            {
+                FrameworkElement child = VisualTreeHelper.GetChild(element, i) as FrameworkElement;
+
+                if (child == null)
+                    continue;
+
+                if (child is T && child.DataContext.Equals(sChildName))
+                {
+                    childElement = (T)child;
+                    break;
+                }
+
+                childElement = FindElementByDataContext<T>(child, sChildName);
+
+                if (childElement != null)
+                    break;
+            }
+            return childElement;
+        }
+
+        private void Mods_Search_Text_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Mods = Mods.Where(p => p.Name.Contains(Mods_Search_Text.Text)).OrderByDescending(p => p.ID).ToList();
+        }
     }
 }

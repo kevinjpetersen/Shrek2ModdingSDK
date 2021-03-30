@@ -18,115 +18,95 @@
         mc:Ignorable="d"
         Title="Shrek 2 Mod Manager" Height="700" Width="900" Icon="pack://siteoforigin:,,,/Resources/s2mmlogo.png">
     <Grid>
-        <StackPanel>
-
-            <!-- Navigation -->
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*"/>
-                    <ColumnDefinition Width="0.5*"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Grid.Column="0">
-                    <Button x:Name="Nav_Button_Overview" Style="{StaticResource MaterialDesignRaisedButton}" Margin="10,0,0,0" BorderThickness="0" Content="Overview" Background="#65a338"/>
-                    <Button x:Name="Nav_Button_Mods" Style="{StaticResource MaterialDesignRaisedButton}" Margin="10,0,0,0" BorderThickness="0" Content="Mods" Background="#b7cba8"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Right" Grid.Column="1">
-                    <Button x:Name="Nav_Button_Settings" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignRaisedButton}" Margin="10,0,10,0" BorderThickness="0" Content="Settings" Background="#65a338" />
-                </StackPanel>
-            </Grid>
-
-            <!-- Overview -->
-            <StackPanel x:Name="Content_Panel_Overview" Visibility="Visible">
-                <materialDesign:Card Margin="10,20,10,10" Padding="15">
-                    <StackPanel>
-                        <TextBlock Style="{DynamicResource MaterialDesignHeadline4TextBlock}" FontWeight="Bold">Welcome to Shrek 2 Mod Manager!</TextBlock>
-                        <TextBlock Style="{DynamicResource MaterialDesignBody1TextBlock}" TextWrapping="WrapWithOverflow">You can use this to download, manage, install and play mods for Shrek 2.</TextBlock>
+        <materialDesign:DialogHost x:Name="ManageModsDialog" CloseOnClickAway="True">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Width="700" Height="500" Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical" Grid.Column="0" Background="#65a338" Width="150">
+                        <ListView Foreground="#fff" x:Name="InstalledModsList" MouseLeftButtonUp="InstalledModsList_MouseLeftButtonUp"></ListView>
                     </StackPanel>
-                </materialDesign:Card>
-                <StackPanel Orientation="Horizontal" Margin="10,0,10,10">
-                    <StackPanel Width="440">
-                        <materialDesign:Card Margin="0,10,10,10" Height="120" Cursor="Hand" x:Name="Overview_Button_PlayGame">
-                            <StackPanel>
-                                <StackPanel.Background>
-                                    <ImageBrush ImageSource="pack://siteoforigin:,,,/Resources/playshrek2_image.jpg" Stretch="UniformToFill" />
-                                </StackPanel.Background>
-                                <Border BorderBrush="{x:Null}" Height="120">
-                                    <TextBlock x:Name="Overview_Button_PlayGame_Text" VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignHeadline4TextBlock}" FontWeight="Bold">Play Shrek 2 Modded</TextBlock>
-                                </Border>
-                            </StackPanel>
-                        </materialDesign:Card>
-                    </StackPanel>
-                    <StackPanel Width="440">
-                        <materialDesign:Card Margin="0,10,0,10" Height="120" Cursor="Hand" x:Name="Overview_Button_ManageMods">
-                            <StackPanel>
-                                <StackPanel.Background>
-                                    <ImageBrush ImageSource="pack://siteoforigin:,,,/Resources/openeditor_image.jpg" Stretch="UniformToFill" />
-                                </StackPanel.Background>
-                                <Border BorderBrush="{x:Null}" Height="120">
-                                    <TextBlock VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignHeadline4TextBlock}" FontWeight="Bold">Manage Mods</TextBlock>
-                                </Border>
-                            </StackPanel>
-                        </materialDesign:Card>
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel Margin="10,0,0,10">
-                    <TextBlock Style="{DynamicResource MaterialDesignHeadline5TextBlock}" Foreground="Gray" FontWeight="Bold">New Mods</TextBlock>
+                    <StackPanel Orientation="Vertical" Grid.Column="1" Width="550" Height="500" VerticalAlignment="Top">
+                        <StackPanel x:Name="SelectedModInfo" Visibility="Collapsed">
+                            <TextBlock Style="{DynamicResource MaterialDesignHeadline4TextBlock}" FontWeight="Bold" Margin="15" x:Name="SelectedModName">Mod 1</TextBlock>
 
-                    <ItemsControl Width="Auto" x:Name="OverviewModsList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <materialDesign:Card x:Name="ModItem" MouseEnter="ModItem_MouseEnter" MouseLeave="ModItem_MouseLeave" Cursor="Hand"  Margin="2,10,10,10" Height="280" Width="202" MouseLeftButtonUp="Card_MouseLeftButtonUp">
-                                    <StackPanel Width="202" Height="280" x:Name="ModItem_Panel">
-                                        <Image Source="{Binding Image}" Height="120" Width="202" Stretch="UniformToFill" />
-                                        <TextBlock TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="Black" Margin="10, 5, 10, 0" x:Name="ModItem_Name" Text="{Binding Name}" Style="{DynamicResource MaterialDesignBody1TextBlock}"></TextBlock>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Foreground="#65a338" Margin="10, 0, 5, 5" TextTrimming="CharacterEllipsis" FontWeight="Normal" x:Name="ModItem_Author" Text="{Binding Author}" Style="{DynamicResource MaterialDesignSubtitle2TextBlock}"></TextBlock>
-                                            <Image Visibility="{Binding ImageVisibility}" Height="15" Width="15" VerticalAlignment="Top" Margin="0,2,5,0" x:Name="ModItem_AuthorTick" Source="pack://siteoforigin:,,,/Resources/tick.png" />
-                                        </StackPanel>
-                                        <TextBlock Style="{DynamicResource MaterialDesignBody1TextBlock}" Margin="10,0,10,0" FontSize="12" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" Height="60" Foreground="Black" x:Name="ModItem_Desc" Text="{Binding Description}"></TextBlock>
-                                        <Button x:Name="InstallButton" Click="InstallButton_Click" Margin="10,0,10,0" BorderThickness="0" Background="{Binding InstalledButtonColor}" Content="{Binding IsInstalled}"></Button>
+                            <TextBlock Style="{DynamicResource MaterialDesignHeadline5TextBlock}" Margin="15,0,15,15" x:Name="SelectedModNoConfig" Visibility="Collapsed">No settings found.</TextBlock>
+
+                            <StackPanel x:Name="ConfigFields" Visibility="Collapsed">
+                                <TextBlock Style="{DynamicResource MaterialDesignHeadline5TextBlock}" Margin="15,0,15,15" FontWeight="Bold">Mod Settings</TextBlock>
+                                <ScrollViewer Height="290" VerticalScrollBarVisibility="Auto">
+                                    <StackPanel>
+                                        <StackPanel x:Name="ConfigFields_Items"></StackPanel>
                                     </StackPanel>
-                                </materialDesign:Card>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel Width="880" Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
-
+                                </ScrollViewer>
+                                <StackPanel Height="100" Margin="0,10,0,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button x:Name="ConfigSaveButton" Click="ConfigSaveButton_Click" Margin="20,10,10,10" Width="200" HorizontalAlignment="Left" Background="#65a338" BorderThickness="0">Save changes</Button>
+                                        <Button x:Name="ConfigDiscardButton" Click="ConfigDiscardButton_Click" Margin="0,10,20,10" Width="200" HorizontalAlignment="Left" Background="#aaa" BorderThickness="0">Close</Button>
+                                    </StackPanel>
+                                    <TextBlock x:Name="ErrorMessage" Margin="20,0,20,50"></TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <TextBlock Style="{DynamicResource MaterialDesignHeadline4TextBlock}" Margin="15" x:Name="DefaultText">Select an Installed Mod</TextBlock>
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+            <StackPanel>
 
-            <!-- Mods -->
-            <StackPanel x:Name="Content_Panel_Mods" Visibility="Collapsed">
-                <StackPanel Orientation="Horizontal" Margin="10">
-                    <TextBox x:Name="Mods_Search_Text" Width="200" Padding="0" 
-                             materialDesign:TextFieldAssist.HasClearButton="True" 
-                             materialDesign:TextFieldAssist.UnderlineBrush="#65a338"
-                             materialDesign:HintAssist.Hint="Search for Mods"
-                             materialDesign:HintAssist.Foreground="Black"
-                             materialDesign:TextFieldAssist.TextBoxViewMargin="0"
-                             materialDesign:HintAssist.IsFloating="True"
-                             />
-                    <ComboBox x:Name="Mods_Search_Sorting" Width="200" Margin="10,0,0,0" 
-                              SelectedIndex="0"
-                              materialDesign:HintAssist.IsFloating="True" 
-                              materialDesign:TextFieldAssist.HasClearButton="True" 
-                              materialDesign:TextFieldAssist.UnderlineBrush="#65a338"
-                              materialDesign:HintAssist.Foreground="Black"
-                              materialDesign:HintAssist.Hint="Sorting">
-                        <ComboBoxItem Tag="1" Content="Newest" />
-                        <ComboBoxItem Tag="2" Content="Most Popular" />
-                        <ComboBoxItem Tag="3" Content="Most Viewed" />
-                    </ComboBox>
-                </StackPanel>
-                <StackPanel Margin="10">
-                    <TextBlock Style="{DynamicResource MaterialDesignHeadline5TextBlock}" Margin="0,0,0,10" Foreground="Gray" FontWeight="Bold">Mods</TextBlock>
+                <!-- put the content over which the dialog is shown here (e.g. your main window grid)-->
 
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" Height="480">
-                        <ItemsControl x:Name="AllModsList" Margin="0,0,10,0">
+                <!-- Navigation -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition Width="0.5*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Grid.Column="0">
+                        <Button x:Name="Nav_Button_Overview" Style="{StaticResource MaterialDesignRaisedButton}" Margin="10,0,0,0" BorderThickness="0" Content="Overview" Background="#65a338"/>
+                        <Button x:Name="Nav_Button_Mods" Style="{StaticResource MaterialDesignRaisedButton}" Margin="10,0,0,0" BorderThickness="0" Content="Mods" Background="#b7cba8"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Right" Grid.Column="1">
+                        <Button x:Name="Nav_Button_Settings" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignRaisedButton}" Margin="10,0,10,0" BorderThickness="0" Content="Settings" Background="#65a338" />
+                    </StackPanel>
+                </Grid>
+
+                <!-- Overview -->
+                <StackPanel x:Name="Content_Panel_Overview" Visibility="Visible">
+                    <materialDesign:Card Margin="10,20,10,10" Padding="15">
+                        <StackPanel>
+                            <TextBlock Style="{DynamicResource MaterialDesignHeadline4TextBlock}" FontWeight="Bold">Welcome to Shrek 2 Mod Manager!</TextBlock>
+                            <TextBlock Style="{DynamicResource MaterialDesignBody1TextBlock}" TextWrapping="WrapWithOverflow">You can use this to download, manage, install and play mods for Shrek 2.</TextBlock>
+                        </StackPanel>
+                    </materialDesign:Card>
+                    <StackPanel Orientation="Horizontal" Margin="10,0,10,10">
+                        <StackPanel Width="440">
+                            <materialDesign:Card Margin="0,10,10,10" Height="120" Cursor="Hand" x:Name="Overview_Button_PlayGame">
+                                <StackPanel>
+                                    <StackPanel.Background>
+                                        <ImageBrush ImageSource="pack://siteoforigin:,,,/Resources/playshrek2_image.jpg" Stretch="UniformToFill" />
+                                    </StackPanel.Background>
+                                    <Border BorderBrush="{x:Null}" Height="120">
+                                        <TextBlock x:Name="Overview_Button_PlayGame_Text" VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignHeadline4TextBlock}" FontWeight="Bold">Play Shrek 2 Modded</TextBlock>
+                                    </Border>
+                                </StackPanel>
+                            </materialDesign:Card>
+                        </StackPanel>
+                        <StackPanel Width="440">
+                            <materialDesign:Card Margin="0,10,0,10" Height="120" Cursor="Hand" x:Name="Overview_Button_ManageMods">
+                                <StackPanel>
+                                    <StackPanel.Background>
+                                        <ImageBrush ImageSource="pack://siteoforigin:,,,/Resources/openeditor_image.jpg" Stretch="UniformToFill" />
+                                    </StackPanel.Background>
+                                    <Border BorderBrush="{x:Null}" Height="120">
+                                        <TextBlock VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignHeadline4TextBlock}" FontWeight="Bold">Manage Mods</TextBlock>
+                                    </Border>
+                                </StackPanel>
+                            </materialDesign:Card>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Margin="10,0,0,10">
+                        <TextBlock Style="{DynamicResource MaterialDesignHeadline5TextBlock}" Foreground="Gray" FontWeight="Bold">New Mods</TextBlock>
+
+                        <ItemsControl Width="Auto" x:Name="OverviewModsList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <materialDesign:Card x:Name="ModItem" MouseEnter="ModItem_MouseEnter" MouseLeave="ModItem_MouseLeave" Cursor="Hand"  Margin="2,10,10,10" Height="280" Width="202" MouseLeftButtonUp="Card_MouseLeftButtonUp">
@@ -149,9 +129,64 @@
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                         </ItemsControl>
-                    </ScrollViewer>
+
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Mods -->
+                <StackPanel x:Name="Content_Panel_Mods" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <TextBox TextChanged="Mods_Search_Text_TextChanged" x:Name="Mods_Search_Text" Width="200" Padding="0" 
+                             materialDesign:TextFieldAssist.HasClearButton="True" 
+                             materialDesign:TextFieldAssist.UnderlineBrush="#65a338"
+                             materialDesign:HintAssist.Hint="Search for Mods"
+                             materialDesign:HintAssist.Foreground="Black"
+                             materialDesign:TextFieldAssist.TextBoxViewMargin="0"
+                             materialDesign:HintAssist.IsFloating="True"
+                             />
+                        <ComboBox x:Name="Mods_Search_Sorting" Width="200" Margin="10,0,0,0" 
+                              SelectedIndex="0"
+                              materialDesign:HintAssist.IsFloating="True" 
+                              materialDesign:TextFieldAssist.HasClearButton="True" 
+                              materialDesign:TextFieldAssist.UnderlineBrush="#65a338"
+                              materialDesign:HintAssist.Foreground="Black"
+                              materialDesign:HintAssist.Hint="Sorting">
+                            <ComboBoxItem Tag="1" Content="Newest" />
+                            <!--<ComboBoxItem Tag="2" Content="Most Popular" />-->
+                            <!--<ComboBoxItem Tag="3" Content="Most Viewed" />-->
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Margin="10">
+                        <TextBlock Style="{DynamicResource MaterialDesignHeadline5TextBlock}" Margin="0,0,0,10" Foreground="Gray" FontWeight="Bold">Mods</TextBlock>
+
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="480">
+                            <ItemsControl x:Name="AllModsList" Margin="0,0,10,0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <materialDesign:Card x:Name="ModItem" MouseEnter="ModItem_MouseEnter" MouseLeave="ModItem_MouseLeave" Cursor="Hand"  Margin="2,10,10,10" Height="280" Width="202" MouseLeftButtonUp="Card_MouseLeftButtonUp">
+                                            <StackPanel Width="202" Height="280" x:Name="ModItem_Panel">
+                                                <Image Source="{Binding Image}" Height="120" Width="202" Stretch="UniformToFill" />
+                                                <TextBlock TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="Black" Margin="10, 5, 10, 0" x:Name="ModItem_Name" Text="{Binding Name}" Style="{DynamicResource MaterialDesignBody1TextBlock}"></TextBlock>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Foreground="#65a338" Margin="10, 0, 5, 5" TextTrimming="CharacterEllipsis" FontWeight="Normal" x:Name="ModItem_Author" Text="{Binding Author}" Style="{DynamicResource MaterialDesignSubtitle2TextBlock}"></TextBlock>
+                                                    <Image Visibility="{Binding ImageVisibility}" Height="15" Width="15" VerticalAlignment="Top" Margin="0,2,5,0" x:Name="ModItem_AuthorTick" Source="pack://siteoforigin:,,,/Resources/tick.png" />
+                                                </StackPanel>
+                                                <TextBlock Style="{DynamicResource MaterialDesignBody1TextBlock}" Margin="10,0,10,0" FontSize="12" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" Height="60" Foreground="Black" x:Name="ModItem_Desc" Text="{Binding Description}"></TextBlock>
+                                                <Button x:Name="InstallButton" Click="InstallButton_Click" Margin="10,0,10,0" BorderThickness="0" Background="{Binding InstalledButtonColor}" Content="{Binding IsInstalled}"></Button>
+                                            </StackPanel>
+                                        </materialDesign:Card>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Width="880" Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
-        </StackPanel>
+        </materialDesign:DialogHost>
     </Grid>
 </Window>
