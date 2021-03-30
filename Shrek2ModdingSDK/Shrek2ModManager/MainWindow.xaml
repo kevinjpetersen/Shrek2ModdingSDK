@@ -21,11 +21,11 @@
     <Grid>
         <materialDesign:DialogHost x:Name="ManageModsDialog" CloseOnClickAway="True">
             <materialDesign:DialogHost.DialogContent>
-                <StackPanel Width="700" Height="500" Orientation="Horizontal">
-                    <StackPanel Orientation="Vertical" Grid.Column="0" Background="#65a338" Width="150">
+                <StackPanel x:Name="ManageModsPopup" Width="700" Height="500" Orientation="Horizontal">
+                    <StackPanel x:Name="ManageModsPopup_Left" Orientation="Vertical" Grid.Column="0" Background="#65a338" Width="150">
                         <ListView Foreground="#fff" x:Name="InstalledModsList" MouseLeftButtonUp="InstalledModsList_MouseLeftButtonUp"></ListView>
                     </StackPanel>
-                    <StackPanel Orientation="Vertical" Grid.Column="1" Width="550" Height="500" VerticalAlignment="Top">
+                    <StackPanel x:Name="ManageModsPopup_Right" Orientation="Vertical" Grid.Column="1" Width="550" Height="500" VerticalAlignment="Top">
                         <StackPanel x:Name="SelectedModInfo" Visibility="Collapsed">
                             <TextBlock Style="{DynamicResource MaterialDesignHeadline4TextBlock}" FontWeight="Bold" Margin="15" x:Name="SelectedModName">Mod 1</TextBlock>
 
@@ -33,7 +33,7 @@
 
                             <StackPanel x:Name="ConfigFields" Visibility="Collapsed">
                                 <TextBlock Style="{DynamicResource MaterialDesignHeadline5TextBlock}" Margin="15,0,15,15" FontWeight="Bold">Mod Settings</TextBlock>
-                                <ScrollViewer Height="290" VerticalScrollBarVisibility="Auto">
+                                <ScrollViewer x:Name="ManageModsPopup_Right_ScrollViewer" Height="290" VerticalScrollBarVisibility="Auto">
                                     <StackPanel>
                                         <StackPanel x:Name="ConfigFields_Items"></StackPanel>
                                     </StackPanel>

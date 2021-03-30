@@ -198,14 +198,15 @@ namespace Shrek2ModManager
                 var changes = ConfigChanges();
                 if (changes == 1 || changes == 2)
                 {
-                    if(changes == 2) e.Cancel();
 
                     MessageBoxResult dialogResult = MessageBox.Show("You have some unsaved changes. Would you like to save them?", "Unsaved changes", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
                     if (dialogResult == MessageBoxResult.Yes)
                     {
+                        if(changes == 2) e.Cancel();
                         ConfigSaveButton_Click(null, null);
                     }
                 }
+                UnsavedChangesDialogOpened = false;
             };
 
             Nav_Button_Overview.Click += (s, e) => SelectNavItem(0);
@@ -386,10 +387,6 @@ namespace Shrek2ModManager
                 Content_Panel_Mods.Visibility = Visibility.Visible;
 
                 Mods = Mod.GetMods();
-                Mods.AddRange(Mods);
-                Mods.AddRange(Mods);
-                Mods.AddRange(Mods);
-                Mods.AddRange(Mods);
                 AllModsList.ItemsSource = Mod.VisualMod.ToVisualMods(Mods);
             }
         }

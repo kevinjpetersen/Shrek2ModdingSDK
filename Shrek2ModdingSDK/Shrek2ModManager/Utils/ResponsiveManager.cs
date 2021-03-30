@@ -36,8 +36,16 @@ namespace Shrek2ModManager.Utils
 
             Window.AllModsScrollViewer.Height = GetHeight(0.9f) - 150;
 
-            //Window.Res_Bottom_Mods.Width = GetWidth(1);
-            //Window.Res_Bottom_Mods.Height = GetHeight(0.7f);
+            Window.ManageModsPopup.Width = GetWidth(0.8f);
+            Window.ManageModsPopup.Height = GetHeight(0.8f);
+
+            Window.ManageModsPopup_Left.Width = Window.ManageModsPopup.Width * 0.2;
+            Window.ManageModsPopup_Left.Height = Window.ManageModsPopup.Height;
+
+            Window.ManageModsPopup_Right.Width = Window.ManageModsPopup.Width * 0.8;
+            Window.ManageModsPopup_Right.Height = Window.ManageModsPopup.Height;
+
+            Window.ManageModsPopup_Right_ScrollViewer.Height = (Window.ManageModsPopup_Right.Height * 0.7) - 50;
         }
 
         private double GetWidth(float percentage)
