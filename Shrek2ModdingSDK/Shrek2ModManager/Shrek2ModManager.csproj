@@ -91,6 +91,7 @@
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\Mod.cs" />
+    <Compile Include="Utils\ResponsiveManager.cs" />
     <Compile Include="Utils\Settings.cs" />
     <Compile Include="Utils\SH2WorkshopFileHandler.cs" />
     <Compile Include="Utils\Shrek2Colors.cs" />

@@ -47,9 +47,16 @@ namespace Shrek2ModManager
             Unknown, String, Bool, Int, Long, Float, Double, Decimal
         }
 
+        ResponsiveManager RM;
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if(RM != null) RM.Handle();
         }
 
         private void Card_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -177,6 +184,9 @@ namespace Shrek2ModManager
 
         private void Window_Loaded(object sender, RoutedEventArgs rea)
         {
+            RM = new ResponsiveManager(this);
+            RM.Handle();
+
             ManageModsDialog.DialogClosing += (s, e) =>
             {
                 if (UnsavedChangesDialogOpened)
@@ -376,6 +386,10 @@ namespace Shrek2ModManager
                 Content_Panel_Mods.Visibility = Visibility.Visible;
 
                 Mods = Mod.GetMods();
+                Mods.AddRange(Mods);
+                Mods.AddRange(Mods);
+                Mods.AddRange(Mods);
+                Mods.AddRange(Mods);
                 AllModsList.ItemsSource = Mod.VisualMod.ToVisualMods(Mods);
             }
         }
@@ -766,5 +780,7 @@ namespace Shrek2ModManager
         {
             AllModsList.ItemsSource = Mod.VisualMod.ToVisualMods(Mods.Where(p => p.Name.ToLower().Contains(Mods_Search_Text.Text.ToLower())).OrderByDescending(p => p.ID).ToList());
         }
+
+        
     }
 }

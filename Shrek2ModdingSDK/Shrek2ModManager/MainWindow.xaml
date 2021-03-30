@@ -4,19 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Shrek2ModManager"
+        xmlns:utils="clr-namespace:Shrek2ModManager.Utils"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
-        ResizeMode="CanMinimize"
         Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen"
         TextElement.FontSize="13"
+        SizeChanged="Window_SizeChanged"
         TextOptions.TextFormattingMode="Ideal" 
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignLightBackground}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
-        Title="Shrek 2 Mod Manager" Height="700" Width="900" Icon="pack://siteoforigin:,,,/Resources/s2mmlogo.png">
+        Title="Shrek 2 Mod Manager" Height="720" Width="900" MinHeight="720" MinWidth="900" Icon="pack://siteoforigin:,,,/Resources/s2mmlogo.png">
     <Grid>
         <materialDesign:DialogHost x:Name="ManageModsDialog" CloseOnClickAway="True">
             <materialDesign:DialogHost.DialogContent>
@@ -51,62 +52,62 @@
                 </StackPanel>
             </materialDesign:DialogHost.DialogContent>
             <StackPanel>
+                <StackPanel x:Name="Res_Top_Menu" Orientation="Horizontal" Height="auto">
 
-                <!-- put the content over which the dialog is shown here (e.g. your main window grid)-->
-
-                <!-- Navigation -->
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.5*"/>
-                        <ColumnDefinition Width="0.5*"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Grid.Column="0">
+                    <StackPanel x:Name="Res_Top_Menu_Left" Orientation="Horizontal" Margin="0,10,0,10" HorizontalAlignment="Right">
                         <Button x:Name="Nav_Button_Overview" Style="{StaticResource MaterialDesignRaisedButton}" Margin="10,0,0,0" BorderThickness="0" Content="Overview" Background="#65a338"/>
                         <Button x:Name="Nav_Button_Mods" Style="{StaticResource MaterialDesignRaisedButton}" Margin="10,0,0,0" BorderThickness="0" Content="Mods" Background="#b7cba8"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Right" Grid.Column="1">
-                        <Button x:Name="Nav_Button_Settings" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignRaisedButton}" Margin="10,0,10,0" BorderThickness="0" Content="Settings" Background="#65a338" />
+                    <StackPanel x:Name="Res_Top_Menu_Right" Margin="0,10,0,10" HorizontalAlignment="Right">
+                        <Button x:Name="Nav_Button_Settings" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignRaisedButton}" Margin="10,0,25,0" BorderThickness="0" Content="Settings" Background="#65a338" />
                     </StackPanel>
-                </Grid>
 
-                <!-- Overview -->
+                </StackPanel>
+
+                <!-- put the content over which the dialog is shown here (e.g. your main window grid)-->
                 <StackPanel x:Name="Content_Panel_Overview" Visibility="Visible">
-                    <materialDesign:Card Margin="10,20,10,10" Padding="15">
+                    <!-- Navigation -->
+
+                    <materialDesign:Card x:Name="Res_Top_Info" Margin="10,10,10,10" Padding="15">
                         <StackPanel>
                             <TextBlock Style="{DynamicResource MaterialDesignHeadline4TextBlock}" FontWeight="Bold">Welcome to Shrek 2 Mod Manager!</TextBlock>
                             <TextBlock Style="{DynamicResource MaterialDesignBody1TextBlock}" TextWrapping="WrapWithOverflow">You can use this to download, manage, install and play mods for Shrek 2.</TextBlock>
                         </StackPanel>
                     </materialDesign:Card>
-                    <StackPanel Orientation="Horizontal" Margin="10,0,10,10">
-                        <StackPanel Width="440">
-                            <materialDesign:Card Margin="0,10,10,10" Height="120" Cursor="Hand" x:Name="Overview_Button_PlayGame">
+                    <!-- Overview -->
+
+                    <StackPanel Margin="10,0,10,10" x:Name="Res_Middle_Buttons" Orientation="Horizontal">
+                        <StackPanel x:Name="Res_Middle_Buttons_Left">
+                            <materialDesign:Card Margin="0,10,10,10" Cursor="Hand" x:Name="Overview_Button_PlayGame">
                                 <StackPanel>
                                     <StackPanel.Background>
                                         <ImageBrush ImageSource="pack://siteoforigin:,,,/Resources/playshrek2_image.jpg" Stretch="UniformToFill" />
                                     </StackPanel.Background>
-                                    <Border BorderBrush="{x:Null}" Height="120">
+                                    <Border BorderBrush="{x:Null}" x:Name="Res_Middle_Buttons_Left_Border" Height="200">
                                         <TextBlock x:Name="Overview_Button_PlayGame_Text" VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignHeadline4TextBlock}" FontWeight="Bold">Play Shrek 2 Modded</TextBlock>
                                     </Border>
                                 </StackPanel>
                             </materialDesign:Card>
                         </StackPanel>
-                        <StackPanel Width="440">
-                            <materialDesign:Card Margin="0,10,0,10" Height="120" Cursor="Hand" x:Name="Overview_Button_ManageMods">
+                        <StackPanel x:Name="Res_Middle_Buttons_Right">
+                            <materialDesign:Card Margin="0,10,0,10" Cursor="Hand" x:Name="Overview_Button_ManageMods">
                                 <StackPanel>
                                     <StackPanel.Background>
                                         <ImageBrush ImageSource="pack://siteoforigin:,,,/Resources/openeditor_image.jpg" Stretch="UniformToFill" />
                                     </StackPanel.Background>
-                                    <Border BorderBrush="{x:Null}" Height="120">
+                                    <Border BorderBrush="{x:Null}" x:Name="Res_Middle_Buttons_Right_Border">
                                         <TextBlock VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignHeadline4TextBlock}" FontWeight="Bold">Manage Mods</TextBlock>
                                     </Border>
                                 </StackPanel>
                             </materialDesign:Card>
                         </StackPanel>
                     </StackPanel>
-                    <StackPanel Margin="10,0,0,10">
+
+
+                    <StackPanel Margin="10,0,0,10" x:Name="Res_Bottom_Mods">
                         <TextBlock Style="{DynamicResource MaterialDesignHeadline5TextBlock}" Foreground="Gray" FontWeight="Bold">New Mods</TextBlock>
 
-                        <ItemsControl Width="Auto" x:Name="OverviewModsList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <ItemsControl Width="Auto" x:Name="OverviewModsList" HorizontalAlignment="Left" VerticalAlignment="Stretch">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <materialDesign:Card x:Name="ModItem" MouseEnter="ModItem_MouseEnter" MouseLeave="ModItem_MouseLeave" Cursor="Hand"  Margin="2,10,10,10" Height="280" Width="202" MouseLeftButtonUp="Card_MouseLeftButtonUp">
@@ -125,7 +126,7 @@
                             </ItemsControl.ItemTemplate>
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <WrapPanel Width="880" Orientation="Horizontal" />
+                                    <WrapPanel Orientation="Horizontal" />
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                         </ItemsControl>
@@ -159,13 +160,13 @@
                     <StackPanel Margin="10">
                         <TextBlock Style="{DynamicResource MaterialDesignHeadline5TextBlock}" Margin="0,0,0,10" Foreground="Gray" FontWeight="Bold">Mods</TextBlock>
 
-                        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="480">
-                            <ItemsControl x:Name="AllModsList" Margin="0,0,10,0">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" x:Name="AllModsScrollViewer">
+                            <ItemsControl x:Name="AllModsList" Margin="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Stretch">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <materialDesign:Card x:Name="ModItem" MouseEnter="ModItem_MouseEnter" MouseLeave="ModItem_MouseLeave" Cursor="Hand"  Margin="2,10,10,10" Height="280" Width="202" MouseLeftButtonUp="Card_MouseLeftButtonUp">
-                                            <StackPanel Width="202" Height="280" x:Name="ModItem_Panel">
-                                                <Image Source="{Binding Image}" Height="120" Width="202" Stretch="UniformToFill" />
+                                        <materialDesign:Card x:Name="ModItem" MouseEnter="ModItem_MouseEnter" MouseLeave="ModItem_MouseLeave" Cursor="Hand"  Margin="2,10,10,10" Height="280" Width="195" MouseLeftButtonUp="Card_MouseLeftButtonUp">
+                                            <StackPanel Width="195" Height="280" x:Name="ModItem_Panel">
+                                                <Image Source="{Binding Image}" Height="120" Width="195" Stretch="UniformToFill" />
                                                 <TextBlock TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="Black" Margin="10, 5, 10, 0" x:Name="ModItem_Name" Text="{Binding Name}" Style="{DynamicResource MaterialDesignBody1TextBlock}"></TextBlock>
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock Foreground="#65a338" Margin="10, 0, 5, 5" TextTrimming="CharacterEllipsis" FontWeight="Normal" x:Name="ModItem_Author" Text="{Binding Author}" Style="{DynamicResource MaterialDesignSubtitle2TextBlock}"></TextBlock>
@@ -179,7 +180,7 @@
                                 </ItemsControl.ItemTemplate>
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <WrapPanel Width="880" Orientation="Horizontal" />
+                                        <WrapPanel Orientation="Horizontal" />
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
                             </ItemsControl>
