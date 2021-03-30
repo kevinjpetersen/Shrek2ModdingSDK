@@ -378,6 +378,7 @@ namespace Shrek2ModManager
             }
             else if (item == 1)
             {
+                Mods_Search_Sorting.SelectedIndex = 0;
                 Mods_Search_Text.Text = "";
                 CurrentPage = 1;
                 Nav_Button_Overview.Background = Shrek2Colors.GetBrushFromHex(Shrek2Colors.NavColor_Normal);
@@ -775,9 +776,32 @@ namespace Shrek2ModManager
 
         private void Mods_Search_Text_TextChanged(object sender, TextChangedEventArgs e)
         {
-            AllModsList.ItemsSource = Mod.VisualMod.ToVisualMods(Mods.Where(p => p.Name.ToLower().Contains(Mods_Search_Text.Text.ToLower())).OrderByDescending(p => p.ID).ToList());
+            if (Mods == null || Mods.Count <= 0) return;
+
+            var items = Mods.Where(p => p.Name.ToLower().Contains(Mods_Search_Text.Text.ToLower())).OrderByDescending(p => p.ID).ToList();
+
+            if (Mods_Search_Sorting.SelectedIndex == 0)
+            {
+                AllModsList.ItemsSource = Mod.VisualMod.ToVisualMods(items.OrderByDescending(p => p.ID).ToList());
+            }
+            else if (Mods_Search_Sorting.SelectedIndex == 1)
+            {
+                AllModsList.ItemsSource = Mod.VisualMod.ToVisualMods(items.OrderByDescending(p => p.Modified).ToList());
+            }
         }
 
-        
+        private void Mods_Search_Sorting_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Mods == null || Mods.Count <= 0) return;
+
+            if(Mods_Search_Sorting.SelectedIndex == 0)
+            {
+                AllModsList.ItemsSource = Mod.VisualMod.ToVisualMods(Mods.OrderByDescending(p => p.ID).ToList());
+            }
+            else if(Mods_Search_Sorting.SelectedIndex == 1)
+            {
+                AllModsList.ItemsSource = Mod.VisualMod.ToVisualMods(Mods.OrderByDescending(p => p.Modified).ToList());
+            }
+        }
     }
 }

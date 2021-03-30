@@ -2,6 +2,7 @@
 using Shrek2ModManager.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -47,6 +48,20 @@ namespace Shrek2ModManager
 
             Button_PickGameFolder.Click += Button_PickGameFolder_Click;
             Button_SaveSettings.Click += Button_SaveSettings_Click;
+            Button_OpenGameFolder.Click += Button_OpenGameFolder_Click;
+        }
+
+        private void Button_OpenGameFolder_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(MainWindow.Settings.GameFolderLocation)) return;
+            try
+            {
+                Process.Start(MainWindow.Settings.GameFolderLocation);
+            }
+            catch
+            {
+
+            }
         }
 
         private void Button_SaveSettings_Click(object sender, RoutedEventArgs e)

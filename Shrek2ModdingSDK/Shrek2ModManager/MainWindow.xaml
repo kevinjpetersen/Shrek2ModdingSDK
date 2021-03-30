@@ -146,6 +146,7 @@
                              materialDesign:HintAssist.IsFloating="True"
                              />
                         <ComboBox x:Name="Mods_Search_Sorting" Width="200" Margin="10,0,0,0" 
+                                  SelectionChanged="Mods_Search_Sorting_SelectionChanged"
                               SelectedIndex="0"
                               materialDesign:HintAssist.IsFloating="True" 
                               materialDesign:TextFieldAssist.HasClearButton="True" 
@@ -153,7 +154,7 @@
                               materialDesign:HintAssist.Foreground="Black"
                               materialDesign:HintAssist.Hint="Sorting">
                             <ComboBoxItem Tag="1" Content="Newest" />
-                            <!--<ComboBoxItem Tag="2" Content="Most Popular" />-->
+                            <ComboBoxItem Tag="2" Content="Last updated" />
                             <!--<ComboBoxItem Tag="3" Content="Most Viewed" />-->
                         </ComboBox>
                     </StackPanel>
