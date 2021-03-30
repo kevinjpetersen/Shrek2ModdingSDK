@@ -157,38 +157,10 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	while (true) {
 		Sleep(1);
 
-		// Disable Modloader and Mods
-		if (GetAsyncKeyState(VK_NUMPAD2) & 1) {
-			if (LoadedMods.size() > 0) {
-				UnloadMods();
-			}
-			else
-			{
-				LogToConsole("No mods found to unload.");
-			}
-			break;
-		}
-
-		// Toggle Mods
-		if (GetAsyncKeyState(VK_NUMPAD0) & 1) {
-			if (modsLoaded == false) {
-				modsLoaded = true;
-				if (AvailableMods.size() > 0) {
-					if (LoadedMods.size() <= 0) {
-						LoadMods();
-					}
-					else
-					{
-						LogToConsole("You cannot load mods when they're already loaded.");
-					}
-				}
-				else
-				{
-					LogToConsole("No mods found to load.");
-				}
-			}
-			else {
-				modsLoaded = false;
+		if (IsConsoleVisible())
+		{
+			// Disable Modloader and Mods
+			if (GetAsyncKeyState(VK_NUMPAD2) & 1) {
 				if (LoadedMods.size() > 0) {
 					UnloadMods();
 				}
@@ -196,16 +168,47 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 				{
 					LogToConsole("No mods found to unload.");
 				}
+				break;
 			}
-		}
 
-		// Toggle Debug Console
-		if (GetAsyncKeyState(VK_NUMPAD1) & 1) {
-			if (IsConsoleVisible()) {
-				HideConsole();
+			// Toggle Mods
+			if (GetAsyncKeyState(VK_NUMPAD0) & 1) {
+				if (modsLoaded == false) {
+					modsLoaded = true;
+					if (AvailableMods.size() > 0) {
+						if (LoadedMods.size() <= 0) {
+							LoadMods();
+						}
+						else
+						{
+							LogToConsole("You cannot load mods when they're already loaded.");
+						}
+					}
+					else
+					{
+						LogToConsole("No mods found to load.");
+					}
+				}
+				else {
+					modsLoaded = false;
+					if (LoadedMods.size() > 0) {
+						UnloadMods();
+					}
+					else
+					{
+						LogToConsole("No mods found to unload.");
+					}
+				}
 			}
-			else {
-				ShowConsole();
+
+			// Toggle Debug Console
+			if (GetAsyncKeyState(VK_NUMPAD1) & 1) {
+				if (IsConsoleVisible()) {
+					HideConsole();
+				}
+				else {
+					ShowConsole();
+				}
 			}
 		}
 	}
