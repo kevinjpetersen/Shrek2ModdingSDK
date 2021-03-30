@@ -40,6 +40,8 @@ namespace Shrek2ModManager
         public Mod SelectedMod { get; set; }
         public Shrek2Config LoadedConfig { get; set; }
 
+        public bool UnsavedChangesDialogOpened { get; set; } = false;
+
         public enum FieldTypes
         {
             Unknown, String, Bool, Int, Long, Float, Double, Decimal
@@ -177,12 +179,18 @@ namespace Shrek2ModManager
         {
             ManageModsDialog.DialogClosing += (s, e) =>
             {
+                if (UnsavedChangesDialogOpened)
+                {
+                    e.Cancel();
+                    return;
+                }
+                UnsavedChangesDialogOpened = true;
                 var changes = ConfigChanges();
                 if (changes == 1 || changes == 2)
                 {
                     if(changes == 2) e.Cancel();
 
-                    MessageBoxResult dialogResult = MessageBox.Show("You have some unsaved changes. Would you like to save them?", "Unsaved changes", MessageBoxButton.YesNo);
+                    MessageBoxResult dialogResult = MessageBox.Show("You have some unsaved changes. Would you like to save them?", "Unsaved changes", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
                     if (dialogResult == MessageBoxResult.Yes)
                     {
                         ConfigSaveButton_Click(null, null);
@@ -220,6 +228,7 @@ namespace Shrek2ModManager
 
         private async void Overview_Button_ManageMods_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            UnsavedChangesDialogOpened = false;
             LoadedConfig = null;
             SelectedMod = null;
             ErrorMessage.Text = "";
@@ -559,6 +568,8 @@ namespace Shrek2ModManager
 
         private void ConfigDiscardButton_Click(object sender, RoutedEventArgs e)
         {
+            if (ManageModsDialog == null || ManageModsDialog.CurrentSession == null) return;
+            if (ManageModsDialog.CurrentSession.IsEnded) return;
             ManageModsDialog.CurrentSession.Close();
         }
 
