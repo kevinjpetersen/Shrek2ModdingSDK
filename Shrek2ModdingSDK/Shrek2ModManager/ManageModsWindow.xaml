@@ -17,7 +17,7 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="Manage Mods"  Height="450" Width="800">
+        Title="Manage Mods"  Height="650" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.3*"/>
@@ -28,10 +28,19 @@
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Column="1">
             <StackPanel x:Name="SelectedModInfo" Visibility="Collapsed">
-                <TextBlock Style="{DynamicResource MaterialDesignHeadline4TextBlock}" Margin="15" x:Name="SelectedModName">Mod 1</TextBlock>
+                <TextBlock Style="{DynamicResource MaterialDesignHeadline4TextBlock}" FontWeight="Bold" Margin="15" x:Name="SelectedModName">Mod 1</TextBlock>
 
+                <TextBlock Style="{DynamicResource MaterialDesignHeadline5TextBlock}" Margin="15,0,15,15" x:Name="SelectedModNoConfig" Visibility="Collapsed">No settings found.</TextBlock>
+                
                 <StackPanel x:Name="ConfigFields" Visibility="Collapsed">
-                    <TextBlock Style="{DynamicResource MaterialDesignHeadline5TextBlock}" Margin="15">Mod Settings</TextBlock>
+                    <TextBlock Style="{DynamicResource MaterialDesignHeadline5TextBlock}" Margin="15,0,15,15">Mod Settings</TextBlock>
+                    <ScrollViewer Height="480" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <StackPanel x:Name="ConfigFields_Items"></StackPanel>
+                            <Button x:Name="ConfigSaveButton" Click="ConfigSaveButton_Click" Margin="20,10,20,10" Width="200" HorizontalAlignment="Left" Background="#65a338" BorderThickness="0">Save changes</Button>
+                            <TextBlock x:Name="ErrorMessage" Margin="20,0,20,50"></TextBlock>
+                        </StackPanel>
+                    </ScrollViewer>
                 </StackPanel>
             </StackPanel>
             <TextBlock Style="{DynamicResource MaterialDesignHeadline4TextBlock}" Margin="15" x:Name="DefaultText">Select an Installed Mod</TextBlock>
