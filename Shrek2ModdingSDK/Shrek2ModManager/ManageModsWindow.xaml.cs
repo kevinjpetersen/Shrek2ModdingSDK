@@ -156,7 +156,8 @@ namespace Shrek2ModManager
                     FontSize = 13,
                     Text = LoadedConfig.Docs[field.Key],
                     HorizontalAlignment = HorizontalAlignment.Left,
-                    Margin = new Thickness(0, 0, 0, 5)
+                    Margin = new Thickness(0, 0, 0, 5),
+                    TextWrapping = TextWrapping.Wrap
                 });
             }
 
@@ -167,7 +168,7 @@ namespace Shrek2ModManager
                     Text = field.Value.ToString(),
                     Width = 200,
                     HorizontalAlignment = HorizontalAlignment.Left,
-                    Name = field.Key
+                    DataContext = field.Key
                 });
             }
 
@@ -177,7 +178,7 @@ namespace Shrek2ModManager
                 {
                     IsChecked = (bool)field.Value,
                     HorizontalAlignment = HorizontalAlignment.Left,
-                    Name = field.Key
+                    DataContext = field.Key
                 });
             }
 
@@ -267,7 +268,7 @@ namespace Shrek2ModManager
                 if (child == null)
                     continue;
 
-                if (child is T && child.Name.Equals(sChildName))
+                if (child is T && child.DataContext.Equals(sChildName))
                 {
                     childElement = (T)child;
                     break;
