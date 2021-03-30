@@ -23,7 +23,7 @@ namespace Shrek2ModManager.Utils
 
             Window.Res_Middle_Buttons.Width = GetWidth(1);
             Window.Res_Middle_Buttons_Left.Width = GetWidth(0.5f);
-            Window.Res_Middle_Buttons_Right.Width = GetWidth(0.5f);
+            Window.Res_Middle_Buttons_Right.Width = GetWidth(0.5f) - 37;
 
             Window.Res_Middle_Buttons_Left.Height = GetHeight(0.2f) + 20;
             Window.Res_Middle_Buttons_Right.Height = GetHeight(0.2f) + 20;
