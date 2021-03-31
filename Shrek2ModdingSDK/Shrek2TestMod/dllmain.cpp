@@ -113,22 +113,20 @@ void OnTick()
 {
 	if (Game.Input.OnKeyPress(Shrek2Input::G))
 	{
-		Game.LogToConsole("Pressed G");
+		Game.Storage.SetFloat("PlayerX", Game.Variables.GetPositionX());
+		Game.Storage.SetFloat("PlayerY", Game.Variables.GetPositionY());
+		Game.Storage.SetFloat("PlayerZ", Game.Variables.GetPositionZ());
 	}
 
 	if (Game.Input.OnKeyPress(Shrek2Input::H))
 	{
-		Game.LogToConsole("Pressed H");
-	}
-
-	if (Game.Input.OnKeyPress(Shrek2Input::P))
-	{
-		Game.LogToConsole("Pressed P");
+		auto pos = Shrek2Vector3(Game.Storage.GetFloat("PlayerX"), Game.Storage.GetFloat("PlayerY"), Game.Storage.GetFloat("PlayerZ"));
+		Game.Variables.SetPosition(pos);
 	}
 
 	if (Game.Input.OnKeyPress(Shrek2Input::O))
 	{
-		Game.LogToConsole("Pressed O");
+		Game.LogToConsole("Test: " + std::to_string(Game.Storage.GetLong("Bla bla")));
 	}
 
 	/*if (Game.Input.OnKeyPress(Shrek2Input::G)) {

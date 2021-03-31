@@ -29,6 +29,7 @@ public:
 	Shrek2Input Input = Shrek2Input();
 	Shrek2Triggers Triggers = Shrek2Triggers();
 	Shrek2Config Config;
+	Shrek2Storage Storage;
 	bool IsModRunning;
 	void SetDllHandle(HMODULE hModule);
 	task<void> Delay(unsigned int delayAmountInMs);
