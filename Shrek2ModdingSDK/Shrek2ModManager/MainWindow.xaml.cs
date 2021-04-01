@@ -74,8 +74,7 @@ namespace Shrek2ModManager
 
             if (ModWindow != null)
             {
-                ModWindow.Focus();
-                return;
+                ModWindow.Close();
             }
 
             ModWindow = new ModWindow(dataObject.Mod, RefreshMods);

@@ -5,19 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Shrek2ModManager"
         mc:Ignorable="d"
-        ResizeMode="NoResize"
         Loaded="Window_Loaded"
         Icon="pack://siteoforigin:,,,/Resources/s2mmlogo.png"
         WindowStartupLocation="CenterScreen"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        ResizeMode="NoResize"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal" 
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="Map Window" Height="337.5" Width="450">
+        Title="Map Window" Height="450" Width="550">
     <Grid>
         <StackPanel>
             <StackPanel Margin="15">
@@ -27,7 +27,9 @@
                     <Image Visibility="Hidden" x:Name="Map_Verified" Source="pack://siteoforigin:,,,/Resources/tick.png" VerticalAlignment="Top" Height="15" Width="15" Margin="5,2,5,0"/>
                 </StackPanel>
                 <TextBlock x:Name="Map_Version" Style="{DynamicResource MaterialDesignBody1TextBlock}" Margin="0,0,0,15"></TextBlock>
-                <TextBlock x:Name="Map_Desc" Style="{DynamicResource MaterialDesignBody1TextBlock}" TextWrapping="WrapWithOverflow">...</TextBlock>
+                <ScrollViewer Height="280" VerticalScrollBarVisibility="Visible" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBlock x:Name="Map_Desc" VerticalAlignment="Stretch" Style="{DynamicResource MaterialDesignBody1TextBlock}" TextWrapping="WrapWithOverflow" />
+                </ScrollViewer>
                 <StackPanel Background="#b7cba8" Orientation="Horizontal" Margin="0,5,0,0" x:Name="Map_Tags">
                 </StackPanel>
             </StackPanel>
