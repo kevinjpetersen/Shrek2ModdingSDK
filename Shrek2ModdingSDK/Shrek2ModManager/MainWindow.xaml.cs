@@ -39,6 +39,14 @@ namespace Shrek2ModManager
 
         public Mod SelectedMod { get; set; }
         public Shrek2Config LoadedConfig { get; set; }
+        public Dictionary<string, string> LoadedBinds { get; set; }
+        public int ManageMods_CurrentSettingType { get; set; }
+
+        public static List<string> AvailableBinds = new List<string>()
+        {
+            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+            "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
+        };
 
         public bool UnsavedChangesDialogOpened { get; set; } = false;
 
@@ -195,18 +203,40 @@ namespace Shrek2ModManager
                     return;
                 }
                 UnsavedChangesDialogOpened = true;
-                var changes = ConfigChanges();
-                if (changes == 1 || changes == 2)
-                {
 
-                    MessageBoxResult dialogResult = MessageBox.Show("You have some unsaved changes. Would you like to save them?", "Unsaved changes", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
-                    if (dialogResult == MessageBoxResult.Yes)
+                if(ManageMods_CurrentSettingType == 0)
+                {
+                    var changes = ConfigChanges();
+                    if (changes == 1 || changes == 2)
                     {
-                        if(changes == 2) e.Cancel();
-                        ConfigSaveButton_Click(null, null);
+
+                        MessageBoxResult dialogResult = MessageBox.Show("You have some unsaved 'Mod Settings' changes. Would you like to save them?", "Unsaved changes", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
+                        if (dialogResult == MessageBoxResult.Yes)
+                        {
+                            if(changes == 2) e.Cancel();
+                            ConfigSaveButton_Click(null, null);
+                        }
                     }
+                    UnsavedChangesDialogOpened = false;
                 }
-                UnsavedChangesDialogOpened = false;
+                else if(ManageMods_CurrentSettingType == 1)
+                {
+                    var changes = BindChanges();
+                    if (changes == 1 || changes == 2)
+                    {
+
+                        MessageBoxResult dialogResult = MessageBox.Show("You have some unsaved 'Mod Binds' changes. Would you like to save them?", "Unsaved changes", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
+                        if (dialogResult == MessageBoxResult.Yes)
+                        {
+                            if (changes == 2) e.Cancel();
+                            ConfigSaveButton_Click(null, null);
+                        }
+                    }
+                    UnsavedChangesDialogOpened = false;
+                } else
+                {
+                    UnsavedChangesDialogOpened = false;
+                }
             };
 
             Nav_Button_Overview.Click += (s, e) => SelectNavItem(0);
@@ -244,6 +274,7 @@ namespace Shrek2ModManager
             SelectedMod = null;
             ErrorMessage.Text = "";
             SelectedModNoConfig.Visibility = Visibility.Collapsed;
+            ManageMods_CurrentSettingType = -1;
 
             DefaultText.Visibility = Visibility.Visible;
             SelectedModName.Text = "";
@@ -452,15 +483,15 @@ namespace Shrek2ModManager
 
         /* MANAGE MODS */
 
-
-        private void InstalledModsList_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void ManageModsSelectSetting(int type)
         {
-            ErrorMessage.Text = "";
-
-            var item = e.Source as ListViewItem;
-            if (item != null && item.IsSelected)
+            ManageMods_CurrentSettingType = type;
+            if (ManageMods_CurrentSettingType == 0)
             {
-                SelectedMod = InstalledMods.FirstOrDefault(p => p.ModGUID.Replace("-", "") == item.Name);
+                // Settings
+                ModSettingsTitle.Text = "Mod Settings";
+                ModSettings_SettingsButton.Background = Shrek2Colors.GetBrushFromHex("#65a338");
+                ModSettings_BindsButton.Background = Shrek2Colors.GetBrushFromHex("#b7cba8");
 
                 if (SelectedMod != null)
                 {
@@ -481,7 +512,126 @@ namespace Shrek2ModManager
                         ConfigFields.Visibility = Visibility.Collapsed;
                     }
                 }
+            } else if(ManageMods_CurrentSettingType == 1)
+            {
+                // Binds
+                ModSettingsTitle.Text = "Mod Binds";
+                ModSettings_SettingsButton.Background = Shrek2Colors.GetBrushFromHex("#b7cba8");
+                ModSettings_BindsButton.Background = Shrek2Colors.GetBrushFromHex("#65a338");
+
+                if (SelectedMod != null)
+                {
+                    DefaultText.Visibility = Visibility.Collapsed;
+                    SelectedModName.Text = SelectedMod.Name;
+                    SelectedModInfo.Visibility = Visibility.Visible;
+                    SelectedModNoConfig.Visibility = Visibility.Collapsed;
+
+                    var bindable = SH2WorkshopFileHandler.IsModBindable(SelectedMod.ModGUID);
+                    if (bindable)
+                    {
+                        AddBindFields();
+                        ConfigFields.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        SelectedModNoConfig.Visibility = Visibility.Visible;
+                        ConfigFields.Visibility = Visibility.Collapsed;
+                    }
+                }
             }
+        }
+
+        private void InstalledModsList_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ErrorMessage.Text = "";
+
+            var item = e.Source as ListViewItem;
+            if (item != null && item.IsSelected)
+            {
+                SelectedMod = InstalledMods.FirstOrDefault(p => p.ModGUID.Replace("-", "") == item.Name);
+                
+                ManageModsSelectSetting(0);
+                if (SH2WorkshopFileHandler.IsModBindable(SelectedMod.ModGUID))
+                {
+                    ModSettings_BindsButton.Visibility = Visibility.Visible;
+                } else
+                {
+                    ModSettings_BindsButton.Visibility = Visibility.Collapsed;
+                }
+            }
+        }
+
+        public void AddBindFields()
+        {
+            try
+            {
+                LoadedBinds = Shrek2Binds.GetBinds(SelectedMod);
+                if (LoadedBinds == null)
+                {
+                    ConfigFields.Visibility = Visibility.Collapsed;
+                    MessageBox.Show("Failed to load binds from binds.json! The binds file could be incorrectly formatted.");
+                    return;
+                }
+
+                ConfigFields_Items.Children.Clear();
+
+                if (LoadedBinds == null || LoadedBinds.Count <= 0)
+                {
+                    ConfigFields.Visibility = Visibility.Collapsed;
+                    MessageBox.Show("The loaded mod's binds file has no fields to configure!");
+                    return;
+                }
+
+                foreach (var field in LoadedBinds)
+                {
+                    try
+                    {
+                        AddBindField(field);
+                    }
+                    catch { }
+                }
+            }
+            catch
+            {
+                ConfigFields.Visibility = Visibility.Collapsed;
+                MessageBox.Show("Failed to load bind fields!");
+            }
+        }
+
+        public void AddBindField(KeyValuePair<string, string> field)
+        {
+            var sp = new StackPanel()
+            {
+                Orientation = Orientation.Vertical,
+                Margin = new Thickness(20, 0, 20, 20),
+                HorizontalAlignment = HorizontalAlignment.Left,
+            };
+
+            sp.Children.Add(new TextBlock()
+            {
+                FontWeight = FontWeights.Bold,
+                Text = field.Key,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Margin = new Thickness(0, 0, 0, 0),
+                FontSize = 16
+            });
+
+            var listBox = new ComboBox()
+            {
+                Width = 200,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                DataContext = field.Key
+            };
+
+            foreach(var ab in AvailableBinds)
+            {
+                listBox.Items.Add(ab);
+            }
+            listBox.SelectedItem = field.Value;
+
+            sp.Children.Add(listBox);
+
+            ConfigFields_Items.Children.Add(sp);
         }
 
         public void AddConfigFields()
@@ -585,6 +735,26 @@ namespace Shrek2ModManager
             ManageModsDialog.CurrentSession.Close();
         }
 
+        private int BindChanges()
+        {
+            try
+            {
+                if (LoadedBinds == null || LoadedBinds.Count <= 0) return 0;
+
+                foreach (var field in LoadedBinds)
+                {
+                    var fieldItem = FindElementByDataContext<ComboBox>(ConfigFields_Items, field.Key);
+                    if (field.Value != fieldItem.Text) return 1;
+                }
+
+                return 0;
+            }
+            catch
+            {
+                return 2;
+            }
+        }
+
         private int ConfigChanges()
         {
             try
@@ -675,7 +845,7 @@ namespace Shrek2ModManager
             }
         }
 
-        private void ConfigSaveButton_Click(object sender, RoutedEventArgs e)
+        private void SaveConfig()
         {
             try
             {
@@ -734,6 +904,41 @@ namespace Shrek2ModManager
             {
                 ErrorMessage.Text = "Failed to save changes to config!";
                 MessageBox.Show("Failed to save changes to config!");
+            }
+        }
+
+        private void SaveBinds()
+        {
+            try
+            {
+                ErrorMessage.Text = "";
+                var configFields = new Dictionary<string, string>();
+
+                foreach (var field in LoadedBinds)
+                {
+                    var fieldItem = FindElementByDataContext<ComboBox>(ConfigFields_Items, field.Key);
+                    configFields.Add(field.Key, fieldItem.SelectedItem.ToString());
+                }
+
+                LoadedBinds = configFields;
+                Shrek2Binds.SaveBinds(SelectedMod, LoadedBinds);
+                ErrorMessage.Text = "Successfully saved changes!";
+            }
+            catch
+            {
+                ErrorMessage.Text = "Failed to save changes to config!";
+                MessageBox.Show("Failed to save changes to config!");
+            }
+        }
+
+        private void ConfigSaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(ManageMods_CurrentSettingType == 0)
+            {
+                SaveConfig();
+            } else if(ManageMods_CurrentSettingType == 1)
+            {
+                SaveBinds();
             }
         }
 
@@ -802,6 +1007,16 @@ namespace Shrek2ModManager
             {
                 AllModsList.ItemsSource = Mod.VisualMod.ToVisualMods(Mods.OrderByDescending(p => p.Modified).ToList());
             }
+        }
+
+        private void ModSettings_SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            ManageModsSelectSetting(0);
+        }
+
+        private void ModSettings_BindsButton_Click(object sender, RoutedEventArgs e)
+        {
+            ManageModsSelectSetting(1);
         }
     }
 }

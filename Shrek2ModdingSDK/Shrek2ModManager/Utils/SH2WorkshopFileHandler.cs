@@ -171,6 +171,16 @@ namespace Shrek2ModManager.Utils
             return File.Exists(Path.Combine(settings.GameFolderLocation, ModsInstalledFolder, modId, "config.json"));
         }
 
+        public static bool IsModBindable(string modId)
+        {
+            var settings = GetSettings();
+
+            if (string.IsNullOrWhiteSpace(settings.GameFolderLocation)) return false;
+
+            if (Directory.Exists(Path.Combine(settings.GameFolderLocation, ModsInstalledFolder, modId)) == false) return false;
+            return File.Exists(Path.Combine(settings.GameFolderLocation, ModsInstalledFolder, modId, "binds.json"));
+        }
+
         public static bool IsModInstalled(string modId)
         {
             var settings = GetSettings();

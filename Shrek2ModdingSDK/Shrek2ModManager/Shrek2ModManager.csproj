@@ -94,6 +94,7 @@
     <Compile Include="Utils\ResponsiveManager.cs" />
     <Compile Include="Utils\Settings.cs" />
     <Compile Include="Utils\SH2WorkshopFileHandler.cs" />
+    <Compile Include="Utils\Shrek2Binds.cs" />
     <Compile Include="Utils\Shrek2Colors.cs" />
     <Compile Include="Utils\Shrek2Config.cs" />
     <Compile Include="Utils\ZipArchiveExtensions.cs" />

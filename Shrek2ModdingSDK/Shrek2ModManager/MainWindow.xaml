@@ -27,12 +27,17 @@
                     </StackPanel>
                     <StackPanel x:Name="ManageModsPopup_Right" Orientation="Vertical" Grid.Column="1" Width="550" Height="500" VerticalAlignment="Top">
                         <StackPanel x:Name="SelectedModInfo" Visibility="Collapsed">
-                            <TextBlock Style="{DynamicResource MaterialDesignHeadline4TextBlock}" FontWeight="Bold" Margin="15" x:Name="SelectedModName">Mod 1</TextBlock>
+                            <TextBlock Style="{DynamicResource MaterialDesignHeadline4TextBlock}" FontWeight="Bold" Margin="15,15,15,10" x:Name="SelectedModName">Mod 1</TextBlock>
 
                             <TextBlock Style="{DynamicResource MaterialDesignHeadline5TextBlock}" Margin="15,0,15,15" x:Name="SelectedModNoConfig" Visibility="Collapsed">No settings found.</TextBlock>
 
                             <StackPanel x:Name="ConfigFields" Visibility="Collapsed">
-                                <TextBlock Style="{DynamicResource MaterialDesignHeadline5TextBlock}" Margin="15,0,15,15" FontWeight="Bold">Mod Settings</TextBlock>
+                                <StackPanel Margin="15,0,0,10" Orientation="Horizontal">
+                                    <Button Click="ModSettings_SettingsButton_Click" x:Name="ModSettings_SettingsButton" Background="#65a338" BorderThickness="0" Margin="0,0,10,0">Settings</Button>
+                                    <Button Click="ModSettings_BindsButton_Click" x:Name="ModSettings_BindsButton" Background="#b7cba8" BorderThickness="0">Binds</Button>
+                                </StackPanel>
+
+                                <TextBlock x:Name="ModSettingsTitle" Style="{DynamicResource MaterialDesignHeadline5TextBlock}" Margin="15,0,15,15" FontWeight="Bold">Mod Settings</TextBlock>
                                 <ScrollViewer x:Name="ManageModsPopup_Right_ScrollViewer" Height="290" VerticalScrollBarVisibility="Auto">
                                     <StackPanel>
                                         <StackPanel x:Name="ConfigFields_Items"></StackPanel>
