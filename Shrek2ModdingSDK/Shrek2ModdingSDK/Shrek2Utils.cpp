@@ -89,6 +89,19 @@ bool Shrek2Utils::DoesEqual(std::string str1, std::string str2)
 	return std::strcmp(str1.c_str(), str2.c_str()) == 0;
 }
 
+bool Shrek2Utils::DoesEqualForced(std::string str1, std::string str2)
+{
+	if (str1.size() != str2.size()) {
+		return false;
+	}
+	for (std::string::const_iterator c1 = str1.begin(), c2 = str2.begin(); c1 != str1.end(); ++c1, ++c2) {
+		if (tolower(static_cast<unsigned char>(*c1)) != tolower(static_cast<unsigned char>(*c2))) {
+			return false;
+		}
+	}
+	return true;
+}
+
 RECT Shrek2Utils::GetWindowSize(HWND windowHandle)
 {
 	RECT windowRect;

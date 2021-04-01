@@ -6,7 +6,20 @@
 
 bool Shrek2Input::OnKeyPress(Keys key)
 {
-    int vkey = KeyToVKey(key);
+    return OnKeyPress(KeyToVKey(key));
+}
+
+bool Shrek2Input::OnKeyPress(std::string keyBindName)
+{
+    if (!IsLoaded) return false;
+    if (LoadedJson.count(keyBindName) == 0) return false;
+    std::string keyBindValue = (std::string)LoadedJson[keyBindName];
+
+    return OnKeyPress(KeyToVKey(keyBindValue));
+}
+
+bool Shrek2Input::OnKeyPress(int vkey)
+{
     if (vkey == -1) return false;
 
     if (EnableConsoleProtection)
@@ -22,7 +35,8 @@ bool Shrek2Input::OnKeyPress(Keys key)
             AllowKeyInput = true;
             ClearKeyInputBuffer();
             return false;
-        } else if (GetAsyncKeyState(KeyToVKey(Keys::ESCAPE)) & 1)
+        }
+        else if (GetAsyncKeyState(KeyToVKey(Keys::ESCAPE)) & 1)
         {
             AllowKeyInput = true;
             ClearKeyInputBuffer();
@@ -33,6 +47,44 @@ bool Shrek2Input::OnKeyPress(Keys key)
     }
 
     return (GetAsyncKeyState(vkey) & 1);
+}
+
+bool Shrek2Input::LoadBinds()
+{
+    try
+    {
+        if (DllPath.empty()) return false;
+
+        std::string filePath = DllPath + "\\" + "binds.json";
+        if (BindsExists(filePath) == false) {
+            IsLoaded = false;
+            std::cout << "Loaded binds: " << (IsLoaded ? "Yes" : "No") << std::endl;
+            return false;
+        }
+
+        std::ifstream t(filePath);
+        std::string str((std::istreambuf_iterator<char>(t)),
+            std::istreambuf_iterator<char>());
+
+        LoadedJson = json::parse(str);
+        IsLoaded = true;
+
+        std::cout << "Loaded binds: " << (IsLoaded ? "Yes" : "No") << std::endl;
+
+        return true;
+    }
+    catch (std::exception ex)
+    {
+        IsLoaded = false;
+        std::cout << "Loaded binds: " << (IsLoaded ? "Yes" : "No") << std::endl;
+        return false;
+    }
+}
+
+bool Shrek2Input::BindsExists(std::string name)
+{
+    std::ifstream f(name.c_str());
+    return f.good();
 }
 
 void Shrek2Input::ClearKeyInputBuffer()
@@ -89,4 +141,47 @@ int Shrek2Input::KeyToVKey(Keys key)
     case Keys::ESCAPE: return 0x1B;
     default: return -1;
     }
+}
+
+int Shrek2Input::KeyToVKey(std::string key)
+{
+    if (Shrek2Utils::DoesEqualForced(key, "A")) return KeyToVKey(Keys::A);
+    if (Shrek2Utils::DoesEqualForced(key, "B")) return KeyToVKey(Keys::B);
+    if (Shrek2Utils::DoesEqualForced(key, "C")) return KeyToVKey(Keys::C);
+    if (Shrek2Utils::DoesEqualForced(key, "D")) return KeyToVKey(Keys::D);
+    if (Shrek2Utils::DoesEqualForced(key, "E")) return KeyToVKey(Keys::E);
+    if (Shrek2Utils::DoesEqualForced(key, "F")) return KeyToVKey(Keys::F);
+    if (Shrek2Utils::DoesEqualForced(key, "G")) return KeyToVKey(Keys::G);
+    if (Shrek2Utils::DoesEqualForced(key, "H")) return KeyToVKey(Keys::H);
+    if (Shrek2Utils::DoesEqualForced(key, "I")) return KeyToVKey(Keys::I);
+    if (Shrek2Utils::DoesEqualForced(key, "J")) return KeyToVKey(Keys::J);
+    if (Shrek2Utils::DoesEqualForced(key, "K")) return KeyToVKey(Keys::K);
+    if (Shrek2Utils::DoesEqualForced(key, "L")) return KeyToVKey(Keys::L);
+    if (Shrek2Utils::DoesEqualForced(key, "M")) return KeyToVKey(Keys::M);
+    if (Shrek2Utils::DoesEqualForced(key, "N")) return KeyToVKey(Keys::N);
+    if (Shrek2Utils::DoesEqualForced(key, "O")) return KeyToVKey(Keys::O);
+    if (Shrek2Utils::DoesEqualForced(key, "P")) return KeyToVKey(Keys::P);
+    if (Shrek2Utils::DoesEqualForced(key, "Q")) return KeyToVKey(Keys::Q);
+    if (Shrek2Utils::DoesEqualForced(key, "R")) return KeyToVKey(Keys::R);
+    if (Shrek2Utils::DoesEqualForced(key, "S")) return KeyToVKey(Keys::S);
+    if (Shrek2Utils::DoesEqualForced(key, "T")) return KeyToVKey(Keys::T);
+    if (Shrek2Utils::DoesEqualForced(key, "U")) return KeyToVKey(Keys::U);
+    if (Shrek2Utils::DoesEqualForced(key, "V")) return KeyToVKey(Keys::V);
+    if (Shrek2Utils::DoesEqualForced(key, "W")) return KeyToVKey(Keys::W);
+    if (Shrek2Utils::DoesEqualForced(key, "X")) return KeyToVKey(Keys::X);
+    if (Shrek2Utils::DoesEqualForced(key, "Y")) return KeyToVKey(Keys::Y);
+    if (Shrek2Utils::DoesEqualForced(key, "Z")) return KeyToVKey(Keys::Z);
+
+    if (Shrek2Utils::DoesEqualForced(key, "0")) return KeyToVKey(Keys::NUMBER_0);
+    if (Shrek2Utils::DoesEqualForced(key, "1")) return KeyToVKey(Keys::NUMBER_1);
+    if (Shrek2Utils::DoesEqualForced(key, "2")) return KeyToVKey(Keys::NUMBER_2);
+    if (Shrek2Utils::DoesEqualForced(key, "3")) return KeyToVKey(Keys::NUMBER_3);
+    if (Shrek2Utils::DoesEqualForced(key, "4")) return KeyToVKey(Keys::NUMBER_4);
+    if (Shrek2Utils::DoesEqualForced(key, "5")) return KeyToVKey(Keys::NUMBER_5);
+    if (Shrek2Utils::DoesEqualForced(key, "6")) return KeyToVKey(Keys::NUMBER_6);
+    if (Shrek2Utils::DoesEqualForced(key, "7")) return KeyToVKey(Keys::NUMBER_7);
+    if (Shrek2Utils::DoesEqualForced(key, "8")) return KeyToVKey(Keys::NUMBER_8);
+    if (Shrek2Utils::DoesEqualForced(key, "9")) return KeyToVKey(Keys::NUMBER_9);
+  
+    return -1;
 }

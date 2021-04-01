@@ -13,10 +13,20 @@ public:
 	};
 
 	bool OnKeyPress(Keys key);
+	bool OnKeyPress(std::string keyBindName);
 	bool EnableConsoleProtection = true;
+	
+	std::string DllPath;
+	bool LoadBinds();
 private:
+	bool OnKeyPress(int vkey);
+	bool BindsExists(std::string name);
+	bool IsLoaded = false;
+	json LoadedJson;
+
 	void ClearKeyInputBuffer();
 	int KeyToVKey(Keys key);
+	int KeyToVKey(std::string key);
 	bool AllowKeyInput = true;
 };
 

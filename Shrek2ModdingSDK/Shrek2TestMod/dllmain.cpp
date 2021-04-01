@@ -124,7 +124,7 @@ void OnTick()
 		Game.Variables.SetPosition(pos);
 	}
 
-	if (Game.Input.OnKeyPress(Shrek2Input::O))
+	if (Game.Input.OnKeyPress("Custom Bind 1"))
 	{
 		Game.LogToConsole("Test: " + std::to_string(Game.Storage.GetLong("Bla bla")));
 	}
