@@ -411,6 +411,11 @@ namespace Shrek2ModManager.Utils
                     arch.ExtractToDirectory(settings.GameFolderLocation);
                 }
 
+                if(!Directory.Exists(Path.Combine(settings.GameFolderLocation, "Shrek 2 Mods")))
+                {
+                    Directory.CreateDirectory(Path.Combine(settings.GameFolderLocation, "Shrek 2 Mods"));
+                }
+
                 return true;
             }
             catch
