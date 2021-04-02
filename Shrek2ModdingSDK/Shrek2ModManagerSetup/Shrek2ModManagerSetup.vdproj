@@ -708,15 +708,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Shrek 2 Mod Manager"
-        "ProductCode" = "8:{BD2E72AB-14DB-495A-A779-94674126B43B}"
-        "PackageCode" = "8:{F8E446D2-ECB6-4115-8B2E-EDEAA609CF54}"
+        "ProductCode" = "8:{B6D4041B-2D09-4B53-B5DC-BC9DDA730C05}"
+        "PackageCode" = "8:{C0CB49DD-2E0F-491A-9F81-5391BF8EF870}"
         "UpgradeCode" = "8:{450257D4-6B67-4B2D-A36B-76A216161093}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:2.0.0"
+        "ProductVersion" = "8:2.2.0"
         "Manufacturer" = "8:KevinJPetersen"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/kevinjpetersen"
@@ -1258,7 +1258,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_EC58D05A704F42639F8CEBFB23842003"
             {
-            "SourcePath" = "8:"
+            "SourcePath" = "8:..\\Shrek2ModManager\\obj\\Release\\Shrek 2 Mod Manager.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_9D44CA2477BA4629AC3A127632E7FB43"

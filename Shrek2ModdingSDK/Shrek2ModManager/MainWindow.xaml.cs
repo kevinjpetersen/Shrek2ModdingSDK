@@ -84,6 +84,20 @@ namespace Shrek2ModManager
 
         private async void InstallButton_Click(object sender, RoutedEventArgs e)
         {
+            Settings = SH2WorkshopFileHandler.GetSettings();
+
+            if(string.IsNullOrWhiteSpace(Settings.GameFolderLocation))
+            {
+                MessageBox.Show("You have not setup the Shrek 2 Game.exe in the Settings! You need to set it up before you can play mods directly!");
+                return;
+            }
+
+            if (!SH2WorkshopFileHandler.IsInternalModFilesInstalled())
+            {
+                MessageBox.Show("Before you can install a mod you need to install the Mod Framework by pressing the button 'Install Shrek 2 Modded' on the Overview Page!");
+                return;
+            }
+
             Button btn = sender as Button;
             var dataObject = btn.DataContext as Mod.VisualMod;
 
