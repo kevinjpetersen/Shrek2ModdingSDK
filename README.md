@@ -2,10 +2,10 @@
 This repository consists of the Shrek 2 Modding SDK, used to create and play mods. This SDK was built for simplicity and easy use so anyone with basic understanding and knowledge of C++ can get started and make mods for Shrek 2.
 
 # How to Get Started
-- Documentation is currently being developed
+- Documentation is currently being developed. If you already have a created a mod and wanna publish it, go to https://shrek2mods.com/ and Login with Discord to add your mod. Your mod will need to be verified by an Admin to before it becomes available for everyone in the Shrek 2 Mod Manager.
 
 # How to Play Mods
-- Documentation is currently being developed
+- Go to https://shrek2mods.com/ and **Download Shrek 2 Mod Manager**, this is the application used to manage, install, uninstall, update and play mods published with this SDK.
 
 # Prerequisite/requirements for using the SDK
 - Visual Studio 2019 or later
@@ -14,7 +14,7 @@ This repository consists of the Shrek 2 Modding SDK, used to create and play mod
 - Detours
 
 # Official Mods
-- Coming Soon
+- Master Toolz (Can be downloaded in Shrek 2 Mod Manager)
 
 # Credits
 - <a href="https://www.youtube.com/channel/UC_7DEB6JOtilHFg0XeF6HkA" target="_blank">HuniePop</a> for developing the code!
