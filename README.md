@@ -14,7 +14,7 @@ This repository consists of the Shrek 2 Modding SDK, used to create and play mod
 - Detours
 
 # Official Mods
-- Master Toolz (Can be downloaded in Shrek 2 Mod Manager)
+- Master Toolz (Can be downloaded in Shrek 2 Mod Manager) by Master_64
 
 # Credits
 - <a href="https://www.youtube.com/channel/UC_7DEB6JOtilHFg0XeF6HkA" target="_blank">HuniePop</a> for developing the code!
