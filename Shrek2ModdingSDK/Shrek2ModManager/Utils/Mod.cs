@@ -39,7 +39,7 @@ namespace Shrek2ModManager.Utils
                 ImageVisibility = mod.Verified == 1 ? Visibility.Visible : Visibility.Hidden;
                 IsInstalled = isInstalled ? "Uninstall" : "Install";
                 InstalledButtonColor = isInstalled ? Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Red) : Shrek2Colors.GetBrushFromHex(Shrek2Colors.Color_Green);
-                Description = mod.Description.Replace("\\n", "");
+                Description = mod.Description.Replace("\n", " ");
                 Mod = mod;
 
                 if(updateAvailable)
