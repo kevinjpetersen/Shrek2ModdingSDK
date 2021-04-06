@@ -169,6 +169,7 @@
     <ClInclude Include="Shrek2Config.h" />
     <ClInclude Include="Shrek2DirectX.h" />
     <ClInclude Include="Shrek2Events.h" />
+    <ClInclude Include="Shrek2ModdingSDK2.h" />
     <ClInclude Include="Shrek2Storage.h" />
     <ClInclude Include="Shrek2Input.h" />
     <ClInclude Include="Shrek2Maps.h" />
