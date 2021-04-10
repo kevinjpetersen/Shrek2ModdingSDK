@@ -42,6 +42,8 @@ using json = nlohmann::json;
 #include "Shrek2Events.h"
 #include "Shrek2Functions.h"
 #include "Shrek2Sound.h"
+#include "Shrek2EntityTypes.h"
+#include "Shrek2EntityModels.h"
 #include "Shrek2Entity.h"
 #include "Shrek2EntityList.h"
 

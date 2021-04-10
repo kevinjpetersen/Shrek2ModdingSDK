@@ -50,16 +50,18 @@ void ExecuteEntity(Entity* ent)
 
 		if (classInfo)
 		{
-			if (classInfo->ClassID == 116)
+			if (classInfo->ClassID == 589)
 			{
-				/*std::cout << "Coin " << coinId << std::endl;
-				std::cout << "X: " << ent->Position.x << ", Y: " << ent->Position.y << ", Z: " << ent->Position.z << std::endl;
-				std::cout << "Addr: " << ent << std::endl;
-				std::cout << "----" << std::endl;*/
+				CoinCollection* coinCollection = (CoinCollection*)ent;
 
-				ent->Position.x = Game.Variables.GetPositionX();
-				ent->Position.y = Game.Variables.GetPositionY();
-				ent->Position.z = Game.Variables.GetPositionZ() + 115;
+				std::cout << "CoinCollection" << std::endl;
+				std::cout << "Coins: " << coinCollection->Coins << std::endl;
+				std::cout << "Addr: " << ent << std::endl;
+				std::cout << "----" << std::endl;
+
+				//ent->Position.x = Game.Variables.GetPositionX();
+				//ent->Position.y = Game.Variables.GetPositionY();
+				//ent->Position.z = Game.Variables.GetPositionZ() + 115;
 
 				//coinId++;
 			}
@@ -171,7 +173,7 @@ void EntityListTest()
 		auto entities = LoadEntities(addr);
 		if (entities.size() > 0)
 		{
-			//Game.LogToConsole("Amount of Entities in Level: " + std::to_string(entities.size()));
+			Game.LogToConsole("Amount of Entities in Level: " + std::to_string(entities.size()));
 
 			for (Entity* ent : entities)
 			{
@@ -179,11 +181,11 @@ void EntityListTest()
 			}
 		}
 		else {
-			//Game.LogToConsole("No entities found in this level.");
+			Game.LogToConsole("No entities found in this level.");
 		}
 	}
 	else {
-		//Game.LogToConsole("Pointer doesn't point to anything!");
+		Game.LogToConsole("Pointer doesn't point to anything!");
 	}
 }
 
@@ -209,11 +211,9 @@ void OnTick()
 
 	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
 		system("CLS");
-
-		
+		EntityListTest();
 	}
 
-	EntityListTest();
 }
 
 void RenderUI()

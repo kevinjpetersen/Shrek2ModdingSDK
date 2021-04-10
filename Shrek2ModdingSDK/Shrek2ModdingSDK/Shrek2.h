@@ -30,6 +30,7 @@ public:
 	Shrek2Triggers Triggers = Shrek2Triggers();
 	Shrek2Config Config;
 	Shrek2Storage Storage;
+	Shrek2EntityList Entities = Shrek2EntityList();
 	bool IsModRunning;
 	void SetDllHandle(HMODULE hModule);
 	task<void> Delay(unsigned int delayAmountInMs);

@@ -34,3 +34,11 @@ public:
 	int32_t ClassID; //0x0014
 	char pad_0018[40]; //0x0018
 }; //Size: 0x0040
+
+class CoinCollection
+{
+public:
+	char pad_0000[1084]; //0x0000
+	uint32_t Coins; //0x043C
+	char pad_0440[1024]; //0x0440
+}; //Size: 0x0840

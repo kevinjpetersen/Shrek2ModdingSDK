@@ -168,8 +168,11 @@
     <ClInclude Include="json.hpp" />
     <ClInclude Include="Shrek2Config.h" />
     <ClInclude Include="Shrek2DirectX.h" />
+    <ClInclude Include="Shrek2Entity.h" />
+    <ClInclude Include="Shrek2EntityList.h" />
+    <ClInclude Include="Shrek2EntityModels.h" />
+    <ClInclude Include="Shrek2EntityTypes.h" />
     <ClInclude Include="Shrek2Events.h" />
-    <ClInclude Include="Shrek2ModdingSDK2.h" />
     <ClInclude Include="Shrek2Storage.h" />
     <ClInclude Include="Shrek2Input.h" />
     <ClInclude Include="Shrek2Maps.h" />
@@ -195,6 +198,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Shrek2Config.cpp" />
+    <ClCompile Include="Shrek2EntityList.cpp" />
     <ClCompile Include="Shrek2Events.cpp" />
     <ClCompile Include="Shrek2Storage.cpp" />
     <ClCompile Include="Shrek2Input.cpp" />

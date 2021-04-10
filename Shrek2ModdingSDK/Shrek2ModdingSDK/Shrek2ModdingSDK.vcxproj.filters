@@ -93,7 +93,16 @@
     <ClInclude Include="Shrek2Storage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Shrek2ModdingSDK2.h">
+    <ClInclude Include="Shrek2EntityList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shrek2Entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shrek2EntityTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shrek2EntityModels.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -162,6 +171,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Shrek2Storage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shrek2EntityList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
