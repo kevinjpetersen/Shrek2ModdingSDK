@@ -32,18 +32,49 @@ std::vector<Entity*> LoadEntities(uintptr_t ptr)
 	return entities;
 }
 
+int coinId = 0;
+int coinStackId = 0;
 void ExecuteEntity(Entity* ent)
 {
-	std::string name1 = "";
-	std::string name2 = "";
-
 	MEMORY_BASIC_INFORMATION mbi0;
 	VirtualQuery(ent, &mbi0, sizeof(mbi0));
 
 	if (mbi0.Protect & PAGE_READWRITE)
 	{
 
-		MEMORY_BASIC_INFORMATION mbi1;
+		EntityClassInfo* classInfo = NULL;
+		if (ent->ClassInfo)
+		{
+			classInfo = (EntityClassInfo*)ent->ClassInfo;
+		}
+
+		if (classInfo)
+		{
+			if (classInfo->ClassID == 116)
+			{
+				/*std::cout << "Coin " << coinId << std::endl;
+				std::cout << "X: " << ent->Position.x << ", Y: " << ent->Position.y << ", Z: " << ent->Position.z << std::endl;
+				std::cout << "Addr: " << ent << std::endl;
+				std::cout << "----" << std::endl;*/
+
+				ent->Position.x = Game.Variables.GetPositionX();
+				ent->Position.y = Game.Variables.GetPositionY();
+				ent->Position.z = Game.Variables.GetPositionZ() + 115;
+
+				//coinId++;
+			}
+
+			/*if (classInfo->ClassID == 5285)
+			{
+				std::cout << "CoinStack " << coinStackId << std::endl;
+				std::cout << "X: " << ent->Position.x << ", Y: " << ent->Position.y << ", Z: " << ent->Position.z << std::endl;
+				std::cout << "Addr: " << ent << std::endl;
+				std::cout << "----" << std::endl;
+				coinStackId++;
+			}*/
+		}
+
+		/*MEMORY_BASIC_INFORMATION mbi1;
 		VirtualQuery(ent->Name1, &mbi1, sizeof(mbi1));
 
 		if (mbi1.Protect == PAGE_READWRITE)
@@ -71,35 +102,58 @@ void ExecuteEntity(Entity* ent)
 					name2 = Shrek2Utils::WS2String(str);
 				}
 			}
-		}
+		}*/
 	}
 
-	if (!name1.empty() || !name2.empty()) {
-		bool hasName = false;
-		if (!name1.empty())
+	/*bool hasName = false;
+	if (!name1.empty())
+	{
+		if (!Shrek2Utils::Contains(name1, "?"))
 		{
-			if (!Shrek2Utils::Contains(name1, "?"))
-			{
-				std::cout << "Name 1: " << name1 << std::endl;
-				hasName = true;
-			}
-		}
-		if (!name2.empty())
-		{
-			if (!Shrek2Utils::Contains(name2, "?"))
-			{
-				std::cout << "Name 2: " << name2 << std::endl;
-				hasName = true;
-			}
-		}
-
-		if (hasName)
-		{
-			std::cout << "X: " << ent->Position.x << ", Y: " << ent->Position.y << ", Z: " << ent->Position.z << std::endl;
-			std::cout << "Addr: " << ent << std::endl;
-			std::cout << "----" << std::endl;
+			std::cout << "Name 1: " << name1 << std::endl;
+			hasName = true;
 		}
 	}
+	if (!name2.empty())
+	{
+		if (!Shrek2Utils::Contains(name2, "?"))
+		{
+			std::cout << "Name 2: " << name2 << std::endl;
+			hasName = true;
+		}
+	}*/
+
+	
+
+	//if (hasName)
+	//{
+	//	std::cout << "X: " << ent->Position.x << ", Y: " << ent->Position.y << ", Z: " << ent->Position.z << std::endl;
+	//	std::cout << "Addr: " << ent << std::endl;
+	//	if (ent->ClassInfo)
+	//	{
+	//		EntityClassInfo* classInfo = (EntityClassInfo*)ent->ClassInfo;
+	//		if (classInfo)
+	//		{
+	//			std::cout << "Class ID: " << classInfo->ClassID << std::endl;
+	//		}
+	//	}
+	//	std::cout << "----" << std::endl;
+	//}
+	//else {
+	//	/*std::cout << "No name" << std::endl;
+	//	std::cout << "X: " << ent->Position.x << ", Y: " << ent->Position.y << ", Z: " << ent->Position.z << std::endl;
+	//	std::cout << "Addr: " << ent << std::endl;
+	//	if (ent->ClassInfo)
+	//	{
+	//		EntityClassInfo* classInfo = (EntityClassInfo*)ent->ClassInfo;
+	//		if (classInfo)
+	//		{
+	//			std::cout << "Class ID: " << classInfo->ClassID << std::endl;
+	//		}
+	//	}
+	//	std::cout << "----" << std::endl;*/
+	//}
+
 }
 
 void ExecuteEntitySafely(Entity* ent) {
@@ -109,9 +163,33 @@ void ExecuteEntitySafely(Entity* ent) {
 	__except (EXCEPTION_EXECUTE_HANDLER) {}
 }
 
+void EntityListTest()
+{
+	DWORD addr = Shrek2Memory::GetAddr("Engine.dll", 0x004E85F0, 0x18C, 0x334, 0x30, 0x88);
+	if (addr)
+	{
+		auto entities = LoadEntities(addr);
+		if (entities.size() > 0)
+		{
+			//Game.LogToConsole("Amount of Entities in Level: " + std::to_string(entities.size()));
+
+			for (Entity* ent : entities)
+			{
+				ExecuteEntitySafely(ent);
+			}
+		}
+		else {
+			//Game.LogToConsole("No entities found in this level.");
+		}
+	}
+	else {
+		//Game.LogToConsole("Pointer doesn't point to anything!");
+	}
+}
+
 void OnTick()
 {
-	if (Game.Input.OnKeyPress(Shrek2Input::G))
+	/*if (Game.Input.OnKeyPress(Shrek2Input::G))
 	{
 		Game.Storage.SetFloat("PlayerX", Game.Variables.GetPositionX());
 		Game.Storage.SetFloat("PlayerY", Game.Variables.GetPositionY());
@@ -127,32 +205,15 @@ void OnTick()
 	if (Game.Input.OnKeyPress("Custom Bind 1"))
 	{
 		Game.LogToConsole("Test: " + std::to_string(Game.Storage.GetLong("Bla bla")));
-	}
+	}*/
 
-	/*if (Game.Input.OnKeyPress(Shrek2Input::G)) {
+	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
 		system("CLS");
 
-		DWORD addr = Shrek2Memory::GetAddr("Engine.dll", 0x004E85F0, 0x18C, 0x334, 0x30, 0x88);
-		if (addr)
-		{
-			auto entities = LoadEntities(addr);
-			if (entities.size() > 0)
-			{
-				Game.LogToConsole("Amount of Entities in Level: " + std::to_string(entities.size()));
+		
+	}
 
-				for (Entity* ent : entities)
-				{
-					ExecuteEntitySafely(ent);
-				}
-			}
-			else {
-				Game.LogToConsole("No entities found in this level.");
-			}
-		}
-		else {
-			Game.LogToConsole("Pointer doesn't point to anything!");
-		}
-	}*/
+	EntityListTest();
 }
 
 void RenderUI()
