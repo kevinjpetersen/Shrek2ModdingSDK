@@ -12,17 +12,12 @@ Shrek2 Game = Shrek2();
 void OnTick()
 {
 	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
-		system("CLS");
-
-		Game.LogToConsole("Coins: " + std::to_string(Game.Inventory.GetCoins()));
-		Game.LogToConsole("Shamrocks: " + std::to_string(Game.Inventory.GetShamrocks()));
-		Game.LogToConsole("Strength Pots: " + std::to_string(Game.Inventory.GetStrengthPotions()));
-	}
-
-	if (Game.Input.OnKeyPress(Shrek2Input::H)) {
-		Game.Inventory.SetCoins(999);
-		Game.Inventory.SetShamrocks(6);
-		Game.Inventory.SetStrengthPotions(12);
+		
+		auto coins = Game.Entities.GetEntities(Shrek2EntityTypes::Coin);
+		if (!coins.empty())
+		{
+			Game.LogToConsole("Amount of coins currently in level: " + std::to_string(coins.size()));
+		}
 	}
 }
 
