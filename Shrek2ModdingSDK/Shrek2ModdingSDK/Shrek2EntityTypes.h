@@ -12,7 +12,6 @@ enum class Shrek2CollectionTypes {
 	InvisibilityPotionCollection = 1485,
 	SleepPotionCollection = 1508,
 	StinkPotionCollection = 1524,
-	FrogPotionCollection = 1549,
 	ShrinkEnemeyPotionCollection = 1606,
 	FreezePotionCollection = 1622,
 	LovePotionCollection = 1646

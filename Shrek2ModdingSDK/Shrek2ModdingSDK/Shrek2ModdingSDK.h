@@ -46,6 +46,7 @@ using json = nlohmann::json;
 #include "Shrek2EntityModels.h"
 #include "Shrek2Entity.h"
 #include "Shrek2EntityList.h"
+#include "Shrek2Inventory.h"
 
 using namespace Concurrency;
 #include "Shrek2.h"

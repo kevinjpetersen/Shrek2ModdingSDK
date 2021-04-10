@@ -31,6 +31,7 @@ public:
 	Shrek2Config Config;
 	Shrek2Storage Storage;
 	Shrek2EntityList Entities = Shrek2EntityList();
+	Shrek2Inventory Inventory = Shrek2Inventory();
 	bool IsModRunning;
 	void SetDllHandle(HMODULE hModule);
 	task<void> Delay(unsigned int delayAmountInMs);

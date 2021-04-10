@@ -3,7 +3,7 @@ class Shrek2AnyCollection
 {
 public:
 	char pad_0000[1084]; //0x0000
-	uint32_t Items; //0x043C
+	int Items; //0x043C
 	char pad_0440[1024]; //0x0440
 }; //Size: 0x0840
 
