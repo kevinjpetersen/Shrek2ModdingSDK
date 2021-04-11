@@ -1,7 +1,17 @@
 #pragma once
-enum class Shrek2EntityTypes {
+enum class Shrek2ActorTypes {
 	Coin = 116,
-	CoinStack = 5285
+	CoinStack = 5285,
+	BaseCam = 4441,
+
+	// Characters
+	Shrek = 79,
+	Donkey = 163,
+	PIB = 242,
+	Steed = 8186,
+	ShrekHuman = 210,
+	MongoWithoutShrek = 6825,
+	MongoWithShrek = 1073
 };
 
 enum class Shrek2CollectionTypes {

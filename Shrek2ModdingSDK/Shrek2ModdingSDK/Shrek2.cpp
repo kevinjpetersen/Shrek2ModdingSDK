@@ -10,8 +10,20 @@ DWORD WINAPI CutLogThread(HINSTANCE hModule)
 	Shrek2& Game = *Shrek2::Instance;
 
 	while (Game.IsModRunning) {
-		Sleep(1);
+		Sleep(1000 / Game.OnCutLogTPS);
 		Game.Events.EU_OnCutLogTick();
+	}
+
+	ExitThread(0);
+}
+
+DWORD WINAPI ActorListThread(HINSTANCE hModule)
+{
+	Shrek2& Game = *Shrek2::Instance;
+
+	while (Game.IsModRunning) {
+		Sleep(1000 / Game.OnActorListTPS);
+		if(Game.Events.OnActorList) Game.Events.OnActorList();
 	}
 
 	ExitThread(0);
@@ -72,10 +84,11 @@ void Shrek2::Initialize(std::string ModName, bool ShowConsoleByDefault = true)
 	QUERY_USER_NOTIFICATION_STATE pquns;
 
 	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)CutLogThread, NULL, 0, NULL);
+	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ActorListThread, NULL, 0, NULL);
 
 	if (Events.OnStart) Events.OnStart();
 	while (IsModRunning) {
-		Sleep(1);
+		Sleep(1000 / OnTickTPS);
 
 		GameWindowSize = Shrek2Utils::GetWindowSize(WindowHandle);
 		GameClientSize = Shrek2Utils::GetClientSize(WindowHandle);

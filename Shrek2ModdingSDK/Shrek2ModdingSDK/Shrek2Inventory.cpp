@@ -106,7 +106,7 @@ void Shrek2Inventory::SetLovePotions(int newValue)
 
 int Shrek2Inventory::GetInventoryItem(Shrek2CollectionTypes itemType)
 {
-	auto collection1 = Shrek2EntityList::GetCollection(itemType);
+	auto collection1 = Shrek2ActorList::GetCollection(itemType);
 	if (collection1 != NULL) {
 		return collection1->Items;
 	}
@@ -115,7 +115,7 @@ int Shrek2Inventory::GetInventoryItem(Shrek2CollectionTypes itemType)
 
 bool Shrek2Inventory::SetInventoryItem(Shrek2CollectionTypes itemType, int newValue)
 {
-	auto collection1 = Shrek2EntityList::GetCollection(itemType);
+	auto collection1 = Shrek2ActorList::GetCollection(itemType);
 
 	if (collection1 != NULL) {
 		if (collection1->Items)

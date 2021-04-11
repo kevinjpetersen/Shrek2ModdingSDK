@@ -12,18 +12,32 @@ Shrek2 Game = Shrek2();
 void OnTick()
 {
 	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
-		
-		auto coins = Game.Entities.GetEntities(Shrek2EntityTypes::Coin);
-		if (!coins.empty())
+		Game.OnActorListTPS += 50;
+	}
+
+	if (Game.Input.OnKeyPress(Shrek2Input::H)) {
+		if (Game.OnActorListTPS == 50)
 		{
-			Game.LogToConsole("Amount of coins currently in level: " + std::to_string(coins.size()));
+			Game.OnActorListTPS = 1;
+		}
+		else {
+			Game.OnActorListTPS -= 50;
 		}
 	}
 }
 
 void RenderUI()
 {
+	Shrek2UI::RenderText(Shrek2Rect(25, 25, 300, 50), "OnActorList TPS: " + std::to_string(Game.OnActorListTPS), Shrek2UI::GetColor(255, 255, 255), true);
+}
 
+void OnActorList()
+{
+	auto donkey = Game.Actors.GetActor(Shrek2ActorTypes::Donkey);
+	if (donkey)
+	{
+		donkey->Position = Shrek2Vector3(Game.Variables.GetPosition());
+	}
 }
 
 void OnStart()
@@ -37,6 +51,7 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 {
 	Game.Events.OnStart = OnStart;
 	Game.Events.OnTick = OnTick;
+	Game.Events.OnActorList = OnActorList;
 
 	Game.Initialize("Shrek 2 Test Mod", true);
 

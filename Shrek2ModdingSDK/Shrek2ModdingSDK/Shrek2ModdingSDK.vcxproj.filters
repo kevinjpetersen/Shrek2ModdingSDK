@@ -93,16 +93,16 @@
     <ClInclude Include="Shrek2Storage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Shrek2EntityList.h">
+    <ClInclude Include="Shrek2ActorList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Shrek2Entity.h">
+    <ClInclude Include="Shrek2Actor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Shrek2EntityTypes.h">
+    <ClInclude Include="Shrek2ActorTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Shrek2EntityModels.h">
+    <ClInclude Include="Shrek2ActorModels.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Shrek2Inventory.h">
@@ -176,7 +176,7 @@
     <ClCompile Include="Shrek2Storage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Shrek2EntityList.cpp">
+    <ClCompile Include="Shrek2ActorList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Shrek2Inventory.cpp">

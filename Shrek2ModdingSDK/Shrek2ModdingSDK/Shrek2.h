@@ -30,7 +30,7 @@ public:
 	Shrek2Triggers Triggers = Shrek2Triggers();
 	Shrek2Config Config;
 	Shrek2Storage Storage;
-	Shrek2EntityList Entities = Shrek2EntityList();
+	Shrek2ActorList Actors = Shrek2ActorList();
 	Shrek2Inventory Inventory = Shrek2Inventory();
 	bool IsModRunning;
 	void SetDllHandle(HMODULE hModule);
@@ -38,6 +38,10 @@ public:
 	void Wait(unsigned int waitAmountInMs);
 	RECT GameWindowSize;
 	RECT GameClientSize;
+
+	int OnTickTPS = 1000;
+	int OnCutLogTPS = 1000;
+	int OnActorListTPS = 100;
 private:
 	bool IsMinimized = false;
 	bool IsFullscreen = false;
