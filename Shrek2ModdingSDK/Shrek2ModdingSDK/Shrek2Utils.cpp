@@ -136,6 +136,14 @@ bool Shrek2Utils::Contains(std::string source, std::string find)
 	return source.find(find) != std::string::npos;
 }
 
+bool Shrek2Utils::ContainsForced(std::string source, std::string find)
+{
+	std::transform(source.begin(), source.end(), source.begin(), ::tolower);
+	std::transform(find.begin(), find.end(), find.begin(), ::tolower);
+
+	return source.find(find) != std::string::npos;
+}
+
 bool Shrek2Utils::Overlap(Shrek2Vector2 point, Shrek2Vector2 position, Shrek2Vector2 size)
 {
 	if (point.X > position.X && point.X < position.X + size.X && point.Y > position.Y && point.Y < position.Y + size.Y)

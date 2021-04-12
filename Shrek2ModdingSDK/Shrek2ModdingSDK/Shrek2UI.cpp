@@ -98,6 +98,16 @@ void Shrek2UI::RenderTexture(Shrek2Texture texture, Shrek2Position position, Shr
 	g_pSprite->End();
 }
 
+void Shrek2UI::RenderTexture(Shrek2Texture texture, Shrek2Vector2 position, D3DXCOLOR color)
+{
+	g_pSprite->Begin();
+	{
+		auto pos = D3DXVECTOR2(position.X, position.Y);
+		g_pSprite->Draw(texture.Texture, NULL, NULL, NULL, 0, &pos, color);
+	}
+	g_pSprite->End();
+}
+
 void Shrek2UI::StopUI() {
 	IsUIRunning = false;
 	Shrek2Textures::ReleaseTextures();

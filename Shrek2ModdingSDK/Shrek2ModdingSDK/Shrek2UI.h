@@ -16,6 +16,8 @@ namespace Shrek2UI
 	void RenderTexture(Shrek2Texture texture, Shrek2Position position, float rotation = 0, D3DXCOLOR color = 0xFFFFFFFF);
 	void RenderTexture(Shrek2Texture texture, Shrek2Position position, Shrek2Vector2 scale, float rotation = 0, D3DXCOLOR color = 0xFFFFFFFF);
 
+	void RenderTexture(Shrek2Texture texture, Shrek2Vector2 position, D3DXCOLOR color = 0xFFFFFFFF);
+
 	void StopUI();
 	inline bool IsUIRunning = false;
 
