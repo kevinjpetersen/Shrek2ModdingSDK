@@ -15,10 +15,13 @@ void OnTick()
 		auto donkey = Game.Actors.GetCharacter(Shrek2CharacterTypes::Donkey);
 		if (donkey)
 		{
-			donkey->VisualScaleAll = 5;
+			donkey->Rotation.X = 7000;
+			donkey->Rotation.Y = 4000;
+			donkey->Rotation.Z = 1300;
 		}
 
 		auto coinCollection = Game.Inventory.GetCoins();
+		Game.LogToConsole("Name: " + donkey->GetName());
 		Game.LogToConsole("Coins: " + std::to_string(Game.Inventory.GetCoins()));
 	}
 
@@ -26,7 +29,9 @@ void OnTick()
 		auto donkey = Game.Actors.GetCharacter(Shrek2CharacterTypes::Donkey);
 		if (donkey)
 		{
-			donkey->VisualScaleAll = 1;
+			donkey->Rotation.X = 0;
+			donkey->Rotation.Y = 0;
+			donkey->Rotation.Z = 0;
 		}
 	}
 }

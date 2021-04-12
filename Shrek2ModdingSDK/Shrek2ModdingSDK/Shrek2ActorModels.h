@@ -17,9 +17,8 @@ class Shrek2Actor
 public:
 	union {
 		DEFINE_MEMBER_N(Shrek2ActorClassInfo*, ClassInfo, 0x24);
-		DEFINE_MEMBER_N(Shrek2Vector3*, Position, 0x150);
-		DEFINE_MEMBER_N(WCHAR*, Name1, 0x364);
-		DEFINE_MEMBER_N(WCHAR*, Name2, 0x550);
+		DEFINE_MEMBER_N(Shrek2Vector3, Position, 0x150);
+		DEFINE_MEMBER_N(WCHAR*, Name, 0x364);
 	};
 };
 
@@ -45,12 +44,12 @@ public:
 	union {
 		DEFINE_MEMBER_N(WCHAR*, Name, 0x364);
 		DEFINE_MEMBER_N(Shrek2ActorClassInfo*, ClassInfo, 0x24);
-		DEFINE_MEMBER_N(Shrek2Vector3*, Position, 0x150);
-		DEFINE_MEMBER_N(Shrek2Vector3*, Velocity, 0x168);
-		DEFINE_MEMBER_N(FLOAT, RotationX, 0x15C);
-		DEFINE_MEMBER_N(FLOAT, RotationY, 0x160);
-		DEFINE_MEMBER_N(FLOAT, RotationZ, 0x164);
+		DEFINE_MEMBER_N(Shrek2Vector3, Position, 0x150);
+		DEFINE_MEMBER_N(Shrek2Vector3, Velocity, 0x168);
+		DEFINE_MEMBER_N(Shrek2Vector3, Rotation, 0x15C);
 		DEFINE_MEMBER_N(FLOAT, VisualScaleAll, 0x268);
+		DEFINE_MEMBER_N(Shrek2Vector3, VisualScale, 0x26C);
+
 	};
 
 	std::string GetName()
