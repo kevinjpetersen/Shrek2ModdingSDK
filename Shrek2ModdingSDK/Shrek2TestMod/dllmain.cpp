@@ -12,6 +12,7 @@ Shrek2 Game = Shrek2();
 void OnTick()
 {
 	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
+
 		auto donkey = Game.Actors.GetCharacter(Shrek2CharacterTypes::Donkey);
 		if (donkey)
 		{
@@ -26,6 +27,25 @@ void OnTick()
 			donkey->AccelerationRate = 2500;
 			donkey->AllowJumpAttack = true;
 		}
+
+		auto shrek = Game.Actors.GetCharacter(Shrek2CharacterTypes::Shrek);
+		if (shrek)
+		{
+			shrek->Health = 420;
+			shrek->AllowJumpAttack = false;
+			shrek->DoubleJumpHeight = 999;
+		}
+
+		auto pib = Game.Actors.GetCharacter(Shrek2CharacterTypes::PIB);
+		if (pib)
+		{
+			pib->Health = 9;
+			pib->AirControl = 20;
+			pib->AccelerationRate = 999;
+			pib->MovementSpeed = 1500;
+			pib->MovementAnimationSpeed = 5;
+		}
+
 	}
 
 	if (Game.Input.OnKeyPress(Shrek2Input::H)) {
