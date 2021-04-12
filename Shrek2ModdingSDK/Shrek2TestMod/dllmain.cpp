@@ -12,32 +12,37 @@ Shrek2 Game = Shrek2();
 void OnTick()
 {
 	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
-		Game.OnActorListTPS += 50;
+		auto donkey = Game.Actors.GetCharacter(Shrek2CharacterTypes::Donkey);
+		if (donkey)
+		{
+			donkey->Name1
+			donkey->VisualScaleAll = 5;
+		}
 	}
 
 	if (Game.Input.OnKeyPress(Shrek2Input::H)) {
-		if (Game.OnActorListTPS == 50)
+		auto donkey = Game.Actors.GetCharacter(Shrek2CharacterTypes::Donkey);
+		if (donkey)
 		{
-			Game.OnActorListTPS = 1;
-		}
-		else {
-			Game.OnActorListTPS -= 50;
+			donkey->VisualScaleAll = 1;
 		}
 	}
 }
 
 void RenderUI()
 {
-	Shrek2UI::RenderText(Shrek2Rect(25, 25, 300, 50), "OnActorList TPS: " + std::to_string(Game.OnActorListTPS), Shrek2UI::GetColor(255, 255, 255), true);
+	Shrek2UI::RenderText(Shrek2Rect(25, 300, 300, 100), "OnActorList TPS: " + std::to_string(Game.OnActorListTPS), Shrek2UI::GetColor(255, 255, 255), true);
 }
 
 void OnActorList()
 {
-	auto donkey = Game.Actors.GetActor(Shrek2ActorTypes::Donkey);
-	if (donkey)
+	/*auto coin = Game.Actors.GetActor(Shrek2ActorTypes::Coin);
+	if (coin)
 	{
-		donkey->Position = Shrek2Vector3(Game.Variables.GetPosition());
-	}
+		auto pos = Shrek2Vector3(Game.Variables.GetPosition());
+		pos.Z += 130;
+		coin->Position = pos;
+	}*/
 }
 
 void OnStart()

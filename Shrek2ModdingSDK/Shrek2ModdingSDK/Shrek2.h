@@ -41,7 +41,7 @@ public:
 
 	int OnTickTPS = 1000;
 	int OnCutLogTPS = 1000;
-	int OnActorListTPS = 100;
+	int OnActorListTPS = 240;
 private:
 	bool IsMinimized = false;
 	bool IsFullscreen = false;

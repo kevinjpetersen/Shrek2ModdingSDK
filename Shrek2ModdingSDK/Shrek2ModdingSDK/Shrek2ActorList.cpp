@@ -58,6 +58,21 @@ Shrek2Actor* Shrek2ActorList::GetActor(int classId)
 	return NULL;
 }
 
+Shrek2ActorCharacter* Shrek2ActorList::GetCharacter(Shrek2CharacterTypes characterType)
+{
+	auto actors = FindActors();
+	if (actors.empty()) return NULL;
+
+	for (Shrek2Actor* actor : actors)
+	{
+		if (actor->ClassInfo->ClassID == static_cast<int>(characterType)) {
+			return (Shrek2ActorCharacter*)actor;
+		}
+	}
+
+	return NULL;
+}
+
 std::vector<Shrek2Actor*> Shrek2ActorList::GetActors(Shrek2ActorTypes actorType)
 {
 	auto actors = FindActors();

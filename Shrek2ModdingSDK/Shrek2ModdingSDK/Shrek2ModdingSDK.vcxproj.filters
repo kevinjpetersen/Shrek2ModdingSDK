@@ -96,9 +96,6 @@
     <ClInclude Include="Shrek2ActorList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Shrek2Actor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Shrek2ActorTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>

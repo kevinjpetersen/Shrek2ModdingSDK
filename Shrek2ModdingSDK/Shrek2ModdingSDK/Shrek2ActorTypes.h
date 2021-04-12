@@ -2,9 +2,10 @@
 enum class Shrek2ActorTypes {
 	Coin = 116,
 	CoinStack = 5285,
-	BaseCam = 4441,
+	BaseCam = 4441
+};
 
-	// Characters
+enum class Shrek2CharacterTypes {
 	Shrek = 79,
 	Donkey = 163,
 	PIB = 242,

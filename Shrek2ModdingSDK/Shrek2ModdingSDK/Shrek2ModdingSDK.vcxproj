@@ -168,7 +168,6 @@
     <ClInclude Include="json.hpp" />
     <ClInclude Include="Shrek2Config.h" />
     <ClInclude Include="Shrek2DirectX.h" />
-    <ClInclude Include="Shrek2Actor.h" />
     <ClInclude Include="Shrek2ActorList.h" />
     <ClInclude Include="Shrek2ActorModels.h" />
     <ClInclude Include="Shrek2ActorTypes.h" />
