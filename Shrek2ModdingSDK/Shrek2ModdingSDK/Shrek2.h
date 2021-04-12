@@ -22,6 +22,7 @@ public:
 	LONG GetGameWindowWidth();
 	LONG GetGameClientHeight();
 	LONG GetGameClientWidth();
+	POINT GetMousePosition();
 	Shrek2Pointers Variables;
 	Shrek2Functions Functions;
 	Shrek2Events Events = Shrek2Events();

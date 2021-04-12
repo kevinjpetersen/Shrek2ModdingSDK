@@ -162,6 +162,21 @@ LONG Shrek2::GetGameClientWidth()
 	return GameClientSize.right - GameClientSize.left;
 }
 
+POINT Shrek2::GetMousePosition()
+{
+	POINT p;
+	if (!WindowHandle) return p;
+
+	if (GetCursorPos(&p))
+	{
+		if (ScreenToClient(WindowHandle, &p))
+		{
+			return p;
+		}
+	}
+	return p;
+}
+
 void Shrek2::Wait(unsigned int waitAmountInMs)
 {
 	concurrency::wait(1000);

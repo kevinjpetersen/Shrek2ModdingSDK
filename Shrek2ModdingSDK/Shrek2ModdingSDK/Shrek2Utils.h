@@ -20,5 +20,6 @@ public:
 	static RECT GetClientSize(HWND windowHandle);
 	static std::vector<std::string> SplitString(const std::string& stringToSplit, const std::string& regexPattern);
 	static bool Contains(std::string source, std::string find);
+	static bool Overlap(Shrek2Vector2 point, Shrek2Vector2 position, Shrek2Vector2 size);
 };
 

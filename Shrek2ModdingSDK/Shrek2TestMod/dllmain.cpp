@@ -9,14 +9,31 @@
 
 Shrek2 Game = Shrek2();
 
+POINT MousePosition;
+
+bool playHover = false;
+bool settingsHover = false;
+bool quitHover = false;
+
 void OnTick()
 {
-	
+	MousePosition = Game.GetMousePosition();
+
+	playHover = Shrek2Utils::Overlap(Shrek2Vector2(MousePosition.x, MousePosition.y), Shrek2Vector2(Game.GetGameClientWidth() / 2 - 64, 280), Shrek2Vector2(128, 64));
+	settingsHover = Shrek2Utils::Overlap(Shrek2Vector2(MousePosition.x, MousePosition.y), Shrek2Vector2(Game.GetGameClientWidth() / 2 - 64, 360), Shrek2Vector2(128, 64));
+	quitHover = Shrek2Utils::Overlap(Shrek2Vector2(MousePosition.x, MousePosition.y), Shrek2Vector2(Game.GetGameClientWidth() / 2 - 64, 440), Shrek2Vector2(128, 64));
 }
 
 void RenderUI()
 {
-	Shrek2UI::RenderText(Shrek2Rect(25, 300, 300, 100), "OnActorList TPS: " + std::to_string(Game.OnActorListTPS), Shrek2UI::GetColor(255, 255, 255), true);
+	if (Shrek2Utils::DoesEqual(Game.Variables.GetCurrentMap(), "Coop_MainMenu.unr"))
+	{
+		Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("Logo"), Shrek2Position(Game.GetGameClientWidth() / 2 - 200, 50), 0);
+
+		Shrek2UI::RenderTexture(Shrek2Textures::GetTexture(playHover ? "Button_Play_Hover" : "Button_Play"), Shrek2Position(Game.GetGameClientWidth() / 2 - 64, 280), 0);
+		Shrek2UI::RenderTexture(Shrek2Textures::GetTexture(settingsHover ? "Button_Settings_Hover" : "Button_Settings"), Shrek2Position(Game.GetGameClientWidth() / 2 - 64, 360), 0);
+		Shrek2UI::RenderTexture(Shrek2Textures::GetTexture(quitHover ? "Button_Quit_Hover" : "Button_Quit"), Shrek2Position(Game.GetGameClientWidth() / 2 - 64, 440), 0);
+	}
 }
 
 void OnActorList()
@@ -32,6 +49,17 @@ void OnActorList()
 
 void OnStart()
 {
+	Shrek2Textures::AddTexture("logo.png", "Logo");
+
+	Shrek2Textures::AddTexture("button_play.png", "Button_Play");
+	Shrek2Textures::AddTexture("button_play_hover.png", "Button_Play_Hover");
+
+	Shrek2Textures::AddTexture("button_settings.png", "Button_Settings");
+	Shrek2Textures::AddTexture("button_settings_hover.png", "Button_Settings_Hover");
+
+	Shrek2Textures::AddTexture("button_quit.png", "Button_Quit");
+	Shrek2Textures::AddTexture("button_quit_hover.png", "Button_Quit_Hover");
+
 	Shrek2UI::GameWindowSize = Game.GameWindowSize;
 	Shrek2UI::RenderUI = RenderUI;
 	Shrek2UI::Initialize();
@@ -43,7 +71,7 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	Game.Events.OnTick = OnTick;
 	Game.Events.OnActorList = OnActorList;
 
-	Game.Initialize("Shrek 2 Test Mod", true);
+	Game.Initialize("Shrek 2 Test Mod", false);
 
 	FreeLibraryAndExitThread(hModule, 0);
 	return 0;
