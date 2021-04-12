@@ -22,6 +22,25 @@ void OnTick()
 	playHover = Shrek2Utils::Overlap(Shrek2Vector2(MousePosition.x, MousePosition.y), Shrek2Vector2(Game.GetGameClientWidth() / 2 - 64, 280), Shrek2Vector2(128, 64));
 	settingsHover = Shrek2Utils::Overlap(Shrek2Vector2(MousePosition.x, MousePosition.y), Shrek2Vector2(Game.GetGameClientWidth() / 2 - 64, 360), Shrek2Vector2(128, 64));
 	quitHover = Shrek2Utils::Overlap(Shrek2Vector2(MousePosition.x, MousePosition.y), Shrek2Vector2(Game.GetGameClientWidth() / 2 - 64, 440), Shrek2Vector2(128, 64));
+
+	if (Game.Input.OnKeyPress(Shrek2Input::Keys::LEFT_MOUSE_BUTTON))
+	{
+		if (playHover)
+		{
+			Game.Input.SimulateKeyPress(Shrek2Input::Keys::ESCAPE);
+			Game.Functions.OpenMap(Shrek2Maps::Shreks_Swamp);
+			Game.LogToConsole("Play Button Clicked!");
+		}
+		else if (settingsHover)
+		{
+			Game.LogToConsole("Settings Button Clicked!");
+		}
+		else if (quitHover)
+		{
+			Game.LogToConsole("Quit Button Clicked!");
+			exit(0);
+		}
+	}
 }
 
 void RenderUI()

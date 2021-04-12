@@ -18,6 +18,27 @@ bool Shrek2Input::OnKeyPress(std::string keyBindName)
     return OnKeyPress(KeyToVKey(keyBindValue));
 }
 
+bool Shrek2Input::SimulateKeyPress(Keys key)
+{
+    int vkey = KeyToVKey(key);
+
+    INPUT ip;
+
+    ip.type = INPUT_KEYBOARD;
+    ip.ki.wScan = 0;
+    ip.ki.time = 0;
+    ip.ki.dwExtraInfo = 0;
+
+    ip.ki.wVk = vkey;
+    ip.ki.dwFlags = 0;
+    SendInput(1, &ip, sizeof(INPUT));
+
+    ip.ki.dwFlags = KEYEVENTF_KEYUP;
+    SendInput(1, &ip, sizeof(INPUT));
+
+    return true;
+}
+
 bool Shrek2Input::OnKeyPress(int vkey)
 {
     if (vkey == -1) return false;
@@ -89,7 +110,7 @@ bool Shrek2Input::BindsExists(std::string name)
 
 void Shrek2Input::ClearKeyInputBuffer()
 {
-    for (int keyInt = Keys::A; keyInt != Keys::ESCAPE; keyInt++)
+    for (int keyInt = Keys::A; keyInt != Keys::RIGHT_MOUSE_BUTTON; keyInt++)
     {
         Keys key = static_cast<Keys>(keyInt);
         GetAsyncKeyState(KeyToVKey(key));
@@ -139,6 +160,8 @@ int Shrek2Input::KeyToVKey(Keys key)
     case Keys::TAB: return 0x09;
     case Keys::ENTER: return 0x0D;
     case Keys::ESCAPE: return 0x1B;
+    case Keys::LEFT_MOUSE_BUTTON: return 0x01;
+    case Keys::RIGHT_MOUSE_BUTTON: return 0x02;
     default: return -1;
     }
 }
