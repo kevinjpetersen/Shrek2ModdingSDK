@@ -15,23 +15,24 @@ void OnTick()
 		auto donkey = Game.Actors.GetCharacter(Shrek2CharacterTypes::Donkey);
 		if (donkey)
 		{
-			donkey->Rotation.X = 7000;
-			donkey->Rotation.Y = 4000;
-			donkey->Rotation.Z = 1300;
+			donkey->SetUnlit(false);
+			donkey->GodMode = true;
+			donkey->Health = 64;
+			donkey->JumpHeight = 1000;
+			donkey->IgnoredByEnemies = true;
+			donkey->NoclipSpeed = 2500;
+			donkey->WaterSpeed = 1000;
+			donkey->WaterSpeed2 = 1000;
+			donkey->AccelerationRate = 2500;
+			donkey->AllowJumpAttack = true;
 		}
-
-		auto coinCollection = Game.Inventory.GetCoins();
-		Game.LogToConsole("Name: " + donkey->GetName());
-		Game.LogToConsole("Coins: " + std::to_string(Game.Inventory.GetCoins()));
 	}
 
 	if (Game.Input.OnKeyPress(Shrek2Input::H)) {
 		auto donkey = Game.Actors.GetCharacter(Shrek2CharacterTypes::Donkey);
 		if (donkey)
 		{
-			donkey->Rotation.X = 0;
-			donkey->Rotation.Y = 0;
-			donkey->Rotation.Z = 0;
+			donkey->GodMode = false;
 		}
 	}
 }
