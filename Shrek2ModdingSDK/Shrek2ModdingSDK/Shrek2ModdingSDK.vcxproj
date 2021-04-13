@@ -172,6 +172,7 @@
     <ClInclude Include="Shrek2ActorModels.h" />
     <ClInclude Include="Shrek2ActorTypes.h" />
     <ClInclude Include="Shrek2Events.h" />
+    <ClInclude Include="Shrek2Fonts.h" />
     <ClInclude Include="Shrek2Inventory.h" />
     <ClInclude Include="Shrek2Storage.h" />
     <ClInclude Include="Shrek2Input.h" />

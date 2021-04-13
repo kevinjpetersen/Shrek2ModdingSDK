@@ -9,66 +9,33 @@
 
 Shrek2 Game = Shrek2();
 
-POINT MousePosition;
-
-bool playHover = false;
-bool settingsHover = false;
-bool quitHover = false;
-
-bool showMenu = true;
 
 void OnTick()
 {
-	MousePosition = Game.GetMousePosition();
-
-	playHover = Shrek2Utils::Overlap(Shrek2Vector2(MousePosition.x, MousePosition.y), Shrek2Vector2(Game.GetGameClientWidth() / 2 - 64, 280), Shrek2Vector2(128, 64));
-	settingsHover = Shrek2Utils::Overlap(Shrek2Vector2(MousePosition.x, MousePosition.y), Shrek2Vector2(Game.GetGameClientWidth() / 2 - 64, 360), Shrek2Vector2(128, 64));
-	quitHover = Shrek2Utils::Overlap(Shrek2Vector2(MousePosition.x, MousePosition.y), Shrek2Vector2(Game.GetGameClientWidth() / 2 - 64, 440), Shrek2Vector2(128, 64));
-
-	if (Game.Input.OnKeyPress(Shrek2Input::Keys::LEFT_MOUSE_BUTTON))
-	{
-		if (showMenu)
+	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
+		system("cls");
+		auto cutcontrollers = Game.Actors.GetActors(4088);
+		if (!cutcontrollers.empty())
 		{
-			if (playHover)
+			for (int i = 0; i < cutcontrollers.size(); i++)
 			{
-				showMenu = false;
-				Game.Input.SimulateKeyPress(Shrek2Input::Keys::ESCAPE);
-				Game.Functions.OpenMap(Shrek2Maps::Shreks_Swamp);
-				Game.LogToConsole("Play Button Clicked!");
+				auto cc = cutcontrollers[i];
+				if (!cc->GetName().empty()) {
+					Game.LogToConsole("Name: " + cc->GetName());
+					std::cout << "Addr: " << &cutcontrollers[i] << std::endl;
+					Game.LogToConsole("------------");
+				}
 			}
-			else if (settingsHover)
-			{
-				Game.LogToConsole("Settings Button Clicked!");
-			}
-			else if (quitHover)
-			{
-				Game.LogToConsole("Quit Button Clicked!");
-				exit(0);
-			}
+		}
+		else {
+			Game.LogToConsole("No KWCutControllerII's currently active.");
 		}
 	}
 }
 
 void RenderUI()
 {
-	if (showMenu)
-	{
-		if (Shrek2Utils::DoesEqual(Game.Variables.GetCurrentMap(), "Coop_MainMenu.unr"))
-		{
-			Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("Logo"), Shrek2Position(Game.GetGameClientWidth() / 2 - 200, 50), 0);
-
-			Shrek2UI::RenderTexture(Shrek2Textures::GetTexture(playHover ? "Button_Play_Hover" : "Button_Play"), Shrek2Position(Game.GetGameClientWidth() / 2 - 64, 280), 0);
-			Shrek2UI::RenderTexture(Shrek2Textures::GetTexture(settingsHover ? "Button_Settings_Hover" : "Button_Settings"), Shrek2Position(Game.GetGameClientWidth() / 2 - 64, 360), 0);
-			Shrek2UI::RenderTexture(Shrek2Textures::GetTexture(quitHover ? "Button_Quit_Hover" : "Button_Quit"), Shrek2Position(Game.GetGameClientWidth() / 2 - 64, 440), 0);
-		}
-	}
-}
-
-void OnMapLoad(Shrek2Maps oldMap, Shrek2Maps newMap, std::string rawMap) {
-	if (Shrek2Utils::DoesEqual(Game.Variables.GetCurrentMap(), "Coop_MainMenu.unr"))
-	{
-		showMenu = true;
-	}
+	
 }
 
 void OnActorList()
@@ -84,17 +51,6 @@ void OnActorList()
 
 void OnStart()
 {
-	Shrek2Textures::AddTexture("logo.png", "Logo");
-
-	Shrek2Textures::AddTexture("button_play.png", "Button_Play");
-	Shrek2Textures::AddTexture("button_play_hover.png", "Button_Play_Hover");
-
-	Shrek2Textures::AddTexture("button_settings.png", "Button_Settings");
-	Shrek2Textures::AddTexture("button_settings_hover.png", "Button_Settings_Hover");
-
-	Shrek2Textures::AddTexture("button_quit.png", "Button_Quit");
-	Shrek2Textures::AddTexture("button_quit_hover.png", "Button_Quit_Hover");
-
 	Shrek2UI::GameWindowSize = Game.GameWindowSize;
 	Shrek2UI::RenderUI = RenderUI;
 	Shrek2UI::Initialize();
@@ -105,9 +61,8 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	Game.Events.OnStart = OnStart;
 	Game.Events.OnTick = OnTick;
 	Game.Events.OnActorList = OnActorList;
-	Game.Events.OnMapLoad = OnMapLoad;
 
-	Game.Initialize("Shrek 2 Test Mod", false);
+	Game.Initialize("Shrek 2 Test Mod", true);
 
 	FreeLibraryAndExitThread(hModule, 0);
 	return 0;

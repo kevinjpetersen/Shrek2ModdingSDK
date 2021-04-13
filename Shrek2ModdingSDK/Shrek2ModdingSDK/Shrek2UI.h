@@ -10,7 +10,9 @@ namespace Shrek2UI
 	void InitializeSprite(IDirect3DDevice8* pDevice);
 
 	void RenderRectangle(Shrek2Rect rect, D3DCOLOR color);
+	void RenderText(Shrek2Rect rect, std::string text, D3DCOLOR color, Shrek2Fonts font, DWORD alignment);
 	void RenderText(Shrek2Rect rect, std::string text, D3DCOLOR color, bool isNormalText);
+	void RenderTextCenter(Shrek2Rect rect, std::string text, D3DCOLOR color, Shrek2Fonts font);
 
 	void RenderTexture(Shrek2Texture texture, Shrek2Position position, D3DXCOLOR color = 0xFFFFFFFF);
 	void RenderTexture(Shrek2Texture texture, Shrek2Position position, float rotation = 0, D3DXCOLOR color = 0xFFFFFFFF);
@@ -27,6 +29,9 @@ namespace Shrek2UI
 
 	D3DCOLOR GetColor(int r, int g, int b);
 	D3DCOLOR GetColorAlpha(int r, int g, int b, int a);
+
+	inline LPD3DXFONT shLargeFont = NULL;
+	inline HFONT hLargeFont;
 
 	inline LPD3DXFONT shNormalFont = NULL;
 	inline HFONT hNormalFont;

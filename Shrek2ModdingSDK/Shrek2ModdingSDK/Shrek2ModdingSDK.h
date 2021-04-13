@@ -25,6 +25,7 @@
 
 using json = nlohmann::json;
 
+#include "Shrek2Fonts.h"
 #include "Shrek2Storage.h"
 #include "Shrek2Config.h"
 #include "Shrek2TimerLib.h"

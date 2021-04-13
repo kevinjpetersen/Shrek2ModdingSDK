@@ -20,10 +20,12 @@ void Shrek2UI::Initialize()
 }
 
 void Shrek2UI::Reset(IDirect3DDevice8* pDevice) {
+	D3D_RELEASE(shLargeFont);
 	D3D_RELEASE(shNormalFont);
 	D3D_RELEASE(shSmallFont);
 	D3D_RELEASE(g_pSprite);
 
+	D3DXCreateFont(pDevice, hLargeFont, &shLargeFont);
 	D3DXCreateFont(pDevice, hNormalFont, &shNormalFont);
 	D3DXCreateFont(pDevice, hSmallFont, &shSmallFont);
 	D3DXCreateSprite(pDevice, &g_pSprite);
@@ -31,6 +33,11 @@ void Shrek2UI::Reset(IDirect3DDevice8* pDevice) {
 
 void Shrek2UI::InitializeFonts(IDirect3DDevice8* pDevice)
 {
+	if (!hLargeFont) {
+		hLargeFont = CreateFont(30, 0, 0, 0, 700, 0, 0, 0, 0, 0, 0, PROOF_QUALITY, 0, "Arial");
+		D3DXCreateFont(pDevice, hLargeFont, &shLargeFont);
+	}
+
 	if (!hNormalFont) {
 		hNormalFont = CreateFont(20, 0, 0, 0, 700, 0, 0, 0, 0, 0, 0, PROOF_QUALITY, 0, "Arial");
 		D3DXCreateFont(pDevice, hNormalFont, &shNormalFont);
@@ -54,6 +61,24 @@ void Shrek2UI::RenderRectangle(Shrek2Rect rect, D3DCOLOR color) {
 	GlobalPDevice->Clear(1, &rectangle, D3DCLEAR_TARGET | D3DCLEAR_TARGET, color, 0.0f, 0);
 }
 
+void Shrek2UI::RenderText(Shrek2Rect rect, std::string text, D3DCOLOR color, Shrek2Fonts font, DWORD alignment)
+{
+	RECT textRectangle;
+	SetRect(&textRectangle, rect.X, rect.Y, rect.X2, rect.Y2);
+
+	if (font == Shrek2Fonts::Large)
+	{
+		shLargeFont->DrawText(text.c_str(), -1, &textRectangle, alignment, color);
+	}
+	else if (font == Shrek2Fonts::Medium) 
+	{
+		shNormalFont->DrawText(text.c_str(), -1, &textRectangle, alignment, color);
+	}
+	else if(font == Shrek2Fonts::Small) {
+		shSmallFont->DrawText(text.c_str(), -1, &textRectangle, alignment, color);
+	}
+}
+
 void Shrek2UI::RenderText(Shrek2Rect rect, std::string text, D3DCOLOR color, bool isNormalText)
 {
 	RECT textRectangle;
@@ -64,6 +89,24 @@ void Shrek2UI::RenderText(Shrek2Rect rect, std::string text, D3DCOLOR color, boo
 	}
 	else {
 		shSmallFont->DrawText(text.c_str(), -1, &textRectangle, DT_LEFT, color);
+	}
+}
+
+void Shrek2UI::RenderTextCenter(Shrek2Rect rect, std::string text, D3DCOLOR color, Shrek2Fonts font)
+{
+	RECT textRectangle;
+	SetRect(&textRectangle, rect.X, rect.Y, rect.X2, rect.Y2);
+
+	if (font == Shrek2Fonts::Large)
+	{
+		shLargeFont->DrawText(text.c_str(), -1, &textRectangle, DT_CENTER, color);
+	}
+	else if (font == Shrek2Fonts::Medium)
+	{
+		shNormalFont->DrawText(text.c_str(), -1, &textRectangle, DT_CENTER, color);
+	}
+	else if (font == Shrek2Fonts::Small) {
+		shSmallFont->DrawText(text.c_str(), -1, &textRectangle, DT_CENTER, color);
 	}
 }
 

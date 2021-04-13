@@ -20,6 +20,22 @@ public:
 		DEFINE_MEMBER_N(Shrek2Vector3, Position, 0x150);
 		DEFINE_MEMBER_N(WCHAR*, Name, 0x364);
 	};
+
+	Shrek2Actor() {
+
+	}
+
+	std::string GetName()
+	{
+		if (!Name) return "";
+
+		std::wstring str = reinterpret_cast<wchar_t*>(Name);
+		if (!str.empty())
+		{
+			return Shrek2Utils::WS2String(str);
+		}
+		return "";
+	}
 };
 
 class Shrek2AnyCollection
