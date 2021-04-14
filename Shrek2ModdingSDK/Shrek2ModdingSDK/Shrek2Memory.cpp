@@ -3,8 +3,182 @@
 */
 
 #include "Shrek2ModdingSDK.h"
+#include <excpt.h>
+
+int filter(unsigned int code, struct _EXCEPTION_POINTERS* ep)
+{
+	try {
+		if (code == EXCEPTION_ACCESS_VIOLATION)
+		{
+			Shrek2Logging::LogError("Shrek2Memory", "Access Violation Exception");
+			return EXCEPTION_EXECUTE_HANDLER;
+		}
+		else
+		{
+			Shrek2Logging::LogError("Shrek2Memory", "SEH Exception");
+			return EXCEPTION_CONTINUE_SEARCH;
+		}
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2Memory::Filter", ex.what());
+	}
+}
 
 bool Shrek2Memory::WriteFloat(float fValue, LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+	__try {
+		return WriteFloatSafe(fValue, shModule, baseAddress, offset1, offset2, offset3, offset4);
+	}
+	__except (filter(GetExceptionCode(), GetExceptionInformation()))
+	{
+		return false;
+	}
+}
+
+float Shrek2Memory::ReadFloat(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+	__try {
+		return ReadFloatSafe(shModule, baseAddress, offset1, offset2, offset3, offset4);
+	}
+	__except (filter(GetExceptionCode(), GetExceptionInformation()))
+	{
+		return 0;
+	}
+}
+
+bool Shrek2Memory::WriteInt(int iValue, LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+	__try {
+		return WriteIntSafe(iValue, shModule, baseAddress, offset1, offset2, offset3, offset4);
+	}
+	__except (filter(GetExceptionCode(), GetExceptionInformation()))
+	{
+		return false;
+	}
+}
+
+int Shrek2Memory::ReadInt(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+	__try {
+		return ReadIntSafe(shModule, baseAddress, offset1, offset2, offset3, offset4);
+	}
+	__except (filter(GetExceptionCode(), GetExceptionInformation()))
+	{
+		return 0;
+	}
+}
+
+int Shrek2Memory::ReadInt(LPCSTR shModule, DWORD baseAddress, DWORD offset1) {
+	__try {
+		return ReadIntSafe(shModule, baseAddress, offset1);
+	}
+	__except (filter(GetExceptionCode(), GetExceptionInformation()))
+	{
+		return 0;
+	}
+}
+
+bool Shrek2Memory::WriteShortInt(short int iValue, LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+	__try {
+		return WriteShortIntSafe(iValue, shModule, baseAddress, offset1, offset2, offset3, offset4);
+	}
+	__except (filter(GetExceptionCode(), GetExceptionInformation()))
+	{
+		return false;
+	}
+}
+
+short int Shrek2Memory::ReadShortInt(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+	__try {
+		return ReadShortIntSafe(shModule, baseAddress, offset1, offset2, offset3, offset4);
+	}
+	__except (filter(GetExceptionCode(), GetExceptionInformation()))
+	{
+		return 0;
+	}
+}
+
+bool Shrek2Memory::WriteByte(byte bValue, LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+	__try {
+		return WriteByteSafe(bValue, shModule, baseAddress, offset1, offset2, offset3, offset4);
+	}
+	__except (filter(GetExceptionCode(), GetExceptionInformation()))
+	{
+		return false;
+	}
+}
+
+byte Shrek2Memory::ReadByte(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+	__try {
+		return ReadByteSafe(shModule, baseAddress, offset1, offset2, offset3, offset4);
+	}
+	__except (filter(GetExceptionCode(), GetExceptionInformation()))
+	{
+		return 0;
+	}
+}
+
+bool Shrek2Memory::WriteBool(bool bValue, LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+	__try {
+		return WriteBoolSafe(bValue, shModule, baseAddress, offset1, offset2, offset3, offset4);
+	}
+	__except (filter(GetExceptionCode(), GetExceptionInformation()))
+	{
+		return false;
+	}
+}
+
+bool Shrek2Memory::ReadBool(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+	__try {
+		return ReadBoolSafe(shModule, baseAddress, offset1, offset2, offset3, offset4);
+	}
+	__except (filter(GetExceptionCode(), GetExceptionInformation()))
+	{
+		return false;
+	}
+}
+
+const char* Shrek2Memory::ReadText(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4)
+{
+	__try {
+		return ReadTextSafe(shModule, baseAddress, offset1, offset2, offset3, offset4);
+	}
+	__except (filter(GetExceptionCode(), GetExceptionInformation()))
+	{
+		return NULL;
+	}
+}
+
+char* Shrek2Memory::ReadChar(LPCSTR shModule, DWORD baseAddress, DWORD offset1)
+{
+	__try {
+		return ReadCharSafe(shModule, baseAddress, offset1);
+	}
+	__except (filter(GetExceptionCode(), GetExceptionInformation()))
+	{
+		return NULL;
+	}
+}
+
+DWORD Shrek2Memory::GetAddr(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+	__try {
+		return GetAddrSafe(shModule, baseAddress, offset1, offset2, offset3, offset4);
+	}
+	__except (filter(GetExceptionCode(), GetExceptionInformation()))
+	{
+		return NULL;
+	}
+}
+
+DWORD Shrek2Memory::GetAddr(LPCSTR shModule, DWORD baseAddress, DWORD offset1) {
+	__try {
+		return GetAddrSafe(shModule, baseAddress, offset1);
+	}
+	__except (filter(GetExceptionCode(), GetExceptionInformation()))
+	{
+		return NULL;
+	}
+}
+
+// Safe Memory Functions
+bool Shrek2Memory::WriteFloatSafe(float fValue, LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
 	try {
 		DWORD addr = GetAddr(shModule, baseAddress, offset1, offset2, offset3, offset4);
 		if (addr) {
@@ -20,7 +194,7 @@ bool Shrek2Memory::WriteFloat(float fValue, LPCSTR shModule, DWORD baseAddress, 
 	}
 }
 
-float Shrek2Memory::ReadFloat(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+float Shrek2Memory::ReadFloatSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
 	try {
 		DWORD addr = GetAddr(shModule, baseAddress, offset1, offset2, offset3, offset4);
 		if (addr) {
@@ -36,7 +210,7 @@ float Shrek2Memory::ReadFloat(LPCSTR shModule, DWORD baseAddress, DWORD offset1,
 	}
 }
 
-bool Shrek2Memory::WriteInt(int iValue, LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+bool Shrek2Memory::WriteIntSafe(int iValue, LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
 	try {
 		DWORD addr = GetAddr(shModule, baseAddress, offset1, offset2, offset3, offset4);
 		if (addr) {
@@ -52,7 +226,7 @@ bool Shrek2Memory::WriteInt(int iValue, LPCSTR shModule, DWORD baseAddress, DWOR
 	}
 }
 
-int Shrek2Memory::ReadInt(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+int Shrek2Memory::ReadIntSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
 	try {
 		DWORD addr = GetAddr(shModule, baseAddress, offset1, offset2, offset3, offset4);
 		if (addr) {
@@ -68,7 +242,7 @@ int Shrek2Memory::ReadInt(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWO
 	}
 }
 
-int Shrek2Memory::ReadInt(LPCSTR shModule, DWORD baseAddress, DWORD offset1) {
+int Shrek2Memory::ReadIntSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset1) {
 	try {
 		DWORD addr = GetAddr(shModule, baseAddress, offset1);
 		if (addr) {
@@ -84,7 +258,7 @@ int Shrek2Memory::ReadInt(LPCSTR shModule, DWORD baseAddress, DWORD offset1) {
 	}
 }
 
-bool Shrek2Memory::WriteShortInt(short int iValue, LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+bool Shrek2Memory::WriteShortIntSafe(short int iValue, LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
 	try {
 		DWORD addr = GetAddr(shModule, baseAddress, offset1, offset2, offset3, offset4);
 		if (addr) {
@@ -100,7 +274,7 @@ bool Shrek2Memory::WriteShortInt(short int iValue, LPCSTR shModule, DWORD baseAd
 	}
 }
 
-short int Shrek2Memory::ReadShortInt(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+short int Shrek2Memory::ReadShortIntSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
 	try {
 		DWORD addr = GetAddr(shModule, baseAddress, offset1, offset2, offset3, offset4);
 		if (addr) {
@@ -116,7 +290,7 @@ short int Shrek2Memory::ReadShortInt(LPCSTR shModule, DWORD baseAddress, DWORD o
 	}
 }
 
-bool Shrek2Memory::WriteByte(byte bValue, LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+bool Shrek2Memory::WriteByteSafe(byte bValue, LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
 	try {
 		DWORD addr = GetAddr(shModule, baseAddress, offset1, offset2, offset3, offset4);
 		if (addr) {
@@ -132,7 +306,7 @@ bool Shrek2Memory::WriteByte(byte bValue, LPCSTR shModule, DWORD baseAddress, DW
 	}
 }
 
-byte Shrek2Memory::ReadByte(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+byte Shrek2Memory::ReadByteSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
 	try {
 		DWORD addr = GetAddr(shModule, baseAddress, offset1, offset2, offset3, offset4);
 		if (addr) {
@@ -148,7 +322,7 @@ byte Shrek2Memory::ReadByte(LPCSTR shModule, DWORD baseAddress, DWORD offset1, D
 	}
 }
 
-bool Shrek2Memory::WriteBool(bool bValue, LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+bool Shrek2Memory::WriteBoolSafe(bool bValue, LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
 	try {
 		DWORD addr = GetAddr(shModule, baseAddress, offset1, offset2, offset3, offset4);
 		if (addr) {
@@ -164,7 +338,7 @@ bool Shrek2Memory::WriteBool(bool bValue, LPCSTR shModule, DWORD baseAddress, DW
 	}
 }
 
-bool Shrek2Memory::ReadBool(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+bool Shrek2Memory::ReadBoolSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
 	try {
 		DWORD addr = GetAddr(shModule, baseAddress, offset1, offset2, offset3, offset4);
 		if (addr) {
@@ -180,7 +354,7 @@ bool Shrek2Memory::ReadBool(LPCSTR shModule, DWORD baseAddress, DWORD offset1, D
 	}
 }
 
-std::string Shrek2Memory::ReadText(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4)
+const char* Shrek2Memory::ReadTextSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4)
 {
 	try {
 		DWORD addr = GetAddr(shModule, baseAddress, offset1, offset2, offset3, offset4);
@@ -188,55 +362,20 @@ std::string Shrek2Memory::ReadText(LPCSTR shModule, DWORD baseAddress, DWORD off
 			DWORD addr2 = *(DWORD*)(addr);
 			if (addr2) {
 				std::wstring str = reinterpret_cast<wchar_t*>(addr2);
-				return Shrek2Utils::WS2String(str);
+				auto str2 = Shrek2Utils::WS2String(str);
+				return str2.c_str();
 			}
 		}
-		return "";
+		return NULL;
 	}
 	catch (std::exception& ex)
 	{
 		Shrek2Logging::LogError("Shrek2Memory::ReadText", ex.what());
-		return "";
-	}
-}
-
-std::wstring Convert(const std::wstring& s)
-{
-	try {
-		if (s.empty())
-			return std::wstring();
-
-		int len = WideCharToMultiByte(858, 0, s.c_str(), s.length(), NULL, 0, NULL, NULL);
-		if (len == 0)
-			throw std::runtime_error("WideCharToMultiByte() failed");
-
-		std::vector<char> bytes(len);
-
-		len = WideCharToMultiByte(858, 0, s.c_str(), s.length(), &bytes[0], len, NULL, NULL);
-		if (len == 0)
-			throw std::runtime_error("WideCharToMultiByte() failed");
-
-		len = MultiByteToWideChar(CP_ACP, 0, &bytes[0], bytes.size(), NULL, 0);
-		if (len == 0)
-			throw std::runtime_error("MultiByteToWideChar() failed");
-
-		std::wstring result;
-		result.resize(len);
-
-		len = MultiByteToWideChar(CP_ACP, 0, &bytes[0], bytes.size(), &result[0], len);
-		if (len == 0)
-			throw std::runtime_error("MultiByteToWideChar() failed");
-
-		return result;
-	}
-	catch (std::exception& ex)
-	{
-		Shrek2Logging::LogError("Shrek2Memory::Convert", ex.what());
 		return NULL;
 	}
 }
 
-char* Shrek2Memory::ReadChar(LPCSTR shModule, DWORD baseAddress, DWORD offset1)
+char* Shrek2Memory::ReadCharSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset1)
 {
 	try {
 		DWORD addr = GetAddr(shModule, baseAddress, offset1);
@@ -257,7 +396,7 @@ char* Shrek2Memory::ReadChar(LPCSTR shModule, DWORD baseAddress, DWORD offset1)
 	}
 }
 
-DWORD Shrek2Memory::GetAddr(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
+DWORD Shrek2Memory::GetAddrSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4) {
 	try {
 		DWORD mod = (DWORD)(GetModuleHandle(shModule));
 		DWORD base = *(DWORD*)(mod + baseAddress);
@@ -285,7 +424,7 @@ DWORD Shrek2Memory::GetAddr(LPCSTR shModule, DWORD baseAddress, DWORD offset1, D
 	}
 }
 
-DWORD Shrek2Memory::GetAddr(LPCSTR shModule, DWORD baseAddress, DWORD offset1) {
+DWORD Shrek2Memory::GetAddrSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset1) {
 	try {
 		DWORD mod = (DWORD)(GetModuleHandle(0));
 		DWORD base = *(DWORD*)(mod + baseAddress);
