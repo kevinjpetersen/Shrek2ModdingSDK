@@ -17,7 +17,7 @@ public:
 	static byte ReadByte(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4);
 	static bool WriteBool(bool bValue, LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4);
 	static bool ReadBool(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4);
-	static const char* ReadText(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4);
+	static wchar_t* ReadText(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4);
 	static char* ReadChar(LPCSTR shModule, DWORD baseAddress, DWORD offset1);
 	static DWORD GetAddr(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4);
 	static DWORD GetAddr(LPCSTR shModule, DWORD baseAddress, DWORD offset1);
@@ -33,7 +33,7 @@ public:
 	static byte ReadByteSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4);
 	static bool WriteBoolSafe(bool bValue, LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4);
 	static bool ReadBoolSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4);
-	static const char* ReadTextSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4);
+	static wchar_t* ReadTextSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4);
 	static char* ReadCharSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset1);
 	static DWORD GetAddrSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4);
 	static DWORD GetAddrSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset1);

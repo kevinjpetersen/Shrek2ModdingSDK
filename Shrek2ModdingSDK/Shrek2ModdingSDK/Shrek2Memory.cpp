@@ -135,7 +135,7 @@ bool Shrek2Memory::ReadBool(LPCSTR shModule, DWORD baseAddress, DWORD offset1, D
 	}
 }
 
-const char* Shrek2Memory::ReadText(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4)
+wchar_t* Shrek2Memory::ReadText(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4)
 {
 	__try {
 		return ReadTextSafe(shModule, baseAddress, offset1, offset2, offset3, offset4);
@@ -354,16 +354,18 @@ bool Shrek2Memory::ReadBoolSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset
 	}
 }
 
-const char* Shrek2Memory::ReadTextSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4)
+wchar_t* Shrek2Memory::ReadTextSafe(LPCSTR shModule, DWORD baseAddress, DWORD offset1, DWORD offset2, DWORD offset3, DWORD offset4)
 {
 	try {
 		DWORD addr = GetAddr(shModule, baseAddress, offset1, offset2, offset3, offset4);
 		if (addr) {
 			DWORD addr2 = *(DWORD*)(addr);
 			if (addr2) {
-				std::wstring str = reinterpret_cast<wchar_t*>(addr2);
-				auto str2 = Shrek2Utils::WS2String(str);
-				return str2.c_str();
+				wchar_t* str = reinterpret_cast<wchar_t*>(addr2);
+				if (str) {
+					return str;
+				}
+				return NULL;
 			}
 		}
 		return NULL;
