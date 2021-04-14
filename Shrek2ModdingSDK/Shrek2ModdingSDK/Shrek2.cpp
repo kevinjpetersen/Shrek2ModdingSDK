@@ -211,7 +211,7 @@ LONG Shrek2::GetGameClientWidth()
 POINT Shrek2::GetMousePosition()
 {
 	try {
-		POINT p;
+		POINT p = POINT();
 		if (!WindowHandle) return p;
 
 		if (GetCursorPos(&p))
