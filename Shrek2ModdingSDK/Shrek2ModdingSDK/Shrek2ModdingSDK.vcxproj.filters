@@ -108,6 +108,9 @@
     <ClInclude Include="Shrek2Fonts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Shrek2Logging.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Shrek2Memory.cpp">
@@ -180,6 +183,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Shrek2Inventory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shrek2Logging.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

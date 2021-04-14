@@ -27,14 +27,21 @@ public:
 
 	std::string GetName()
 	{
-		if (!Name) return "";
+		try {
+			if (!Name) return "";
 
-		std::wstring str = reinterpret_cast<wchar_t*>(Name);
-		if (!str.empty())
-		{
-			return Shrek2Utils::WS2String(str);
+			std::wstring str = reinterpret_cast<wchar_t*>(Name);
+			if (!str.empty())
+			{
+				return Shrek2Utils::WS2String(str);
+			}
+			return "";
 		}
-		return "";
+		catch (std::exception& ex)
+		{
+			Shrek2Logging::LogError("Shrek2Actor::GetName", ex.what());
+			return "";
+		}
 	}
 };
 
@@ -114,13 +121,20 @@ public:
 
 	std::string GetName()
 	{
-		if (!Name) return "";
+		try {
+			if (!Name) return "";
 
-		std::wstring str = reinterpret_cast<wchar_t*>(Name);
-		if (!str.empty())
-		{
-			return Shrek2Utils::WS2String(str);
+			std::wstring str = reinterpret_cast<wchar_t*>(Name);
+			if (!str.empty())
+			{
+				return Shrek2Utils::WS2String(str);
+			}
+			return "";
 		}
-		return "";
+		catch (std::exception& ex)
+		{
+			Shrek2Logging::LogError("Shrek2ActorCharacter::GetName", ex.what());
+			return "";
+		}
 	}
 };

@@ -26,9 +26,15 @@ void Shrek2Functions::CCS(std::list<std::string> commands)
 
 void Shrek2Functions::OpenMap(Shrek2Maps map)
 {
-	int mapId = static_cast<int>(map);
-	std::string mapName = MapIdToString(mapId);
-	CC("open " + mapName);
+	try {
+		int mapId = static_cast<int>(map);
+		std::string mapName = MapIdToString(mapId);
+		CC("open " + mapName);
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2Functions::OpenMap", ex.what());
+	}
 }
 
 void Shrek2Functions::OpenMap(std::string mapName)
@@ -62,42 +68,66 @@ void Shrek2Functions::ToggleFreeCam()
 
 void Shrek2Functions::DeleteSaveGame(int slot)
 {
-	_DeleteSaveGame(slot);
+	try {
+		_DeleteSaveGame(slot);
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2Functions::DeleteSaveGame", ex.what());
+	}
 }
 
 void Shrek2Functions::ExecCC(std::string command)
 {
-	std::ofstream execFile(DllName);
-	execFile << command << std::endl;
-	execFile.close();
-	Exec();
+	try {
+		std::ofstream execFile(DllName);
+		execFile << command << std::endl;
+		execFile.close();
+		Exec();
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2Functions::ExecCC", ex.what());
+	}
 }
 
 void Shrek2Functions::ExecCCS(std::list<std::string> commands)
 {
-	std::ofstream execFile(DllName);
-	for (auto const& cmd : commands) {
-		execFile << cmd << std::endl;
+	try {
+		std::ofstream execFile(DllName);
+		for (auto const& cmd : commands) {
+			execFile << cmd << std::endl;
+		}
+		execFile.close();
+		Exec();
 	}
-	execFile.close();
-	Exec();
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2Functions::ExecCCS", ex.what());
+	}
 }
 
 void Shrek2Functions::Exec()
 {
-	INPUT ip;
+	try {
+		INPUT ip;
 
-	ip.type = INPUT_KEYBOARD;
-	ip.ki.wScan = 0;
-	ip.ki.time = 0;
-	ip.ki.dwExtraInfo = 0;
+		ip.type = INPUT_KEYBOARD;
+		ip.ki.wScan = 0;
+		ip.ki.time = 0;
+		ip.ki.dwExtraInfo = 0;
 
-	ip.ki.wVk = 0x87;
-	ip.ki.dwFlags = 0;
-	SendInput(1, &ip, sizeof(INPUT));
+		ip.ki.wVk = 0x87;
+		ip.ki.dwFlags = 0;
+		SendInput(1, &ip, sizeof(INPUT));
 
-	ip.ki.dwFlags = KEYEVENTF_KEYUP;
-	SendInput(1, &ip, sizeof(INPUT));
+		ip.ki.dwFlags = KEYEVENTF_KEYUP;
+		SendInput(1, &ip, sizeof(INPUT));
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2Functions::Exec", ex.what());
+	}
 }
 
 std::string Shrek2Functions::MapIdToString(int mapId)

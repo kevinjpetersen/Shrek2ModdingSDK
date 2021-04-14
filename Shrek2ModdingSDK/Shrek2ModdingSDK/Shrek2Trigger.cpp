@@ -6,68 +6,89 @@
 
 bool Shrek2Trigger::IsPositionZero()
 {
-	if (Position.X != 0) return false;
-	if (Position.Y != 0) return false;
-	if (Position.Z != 0) return false;
-	return true;
+	try {
+		if (Position.X != 0) return false;
+		if (Position.Y != 0) return false;
+		if (Position.Z != 0) return false;
+		return true;
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2Trigger::IsPositionZero", ex.what());
+		return false;
+	}
 }
 
 int Shrek2Trigger::CheckTrigger(std::string name, Shrek2Vector3 valuePosition, Shrek2Vector3 valueSize, bool enableDebugging)
 {
-	bool insideTrigger = IsInsideTrigger(valuePosition, valueSize);
+	try {
+		bool insideTrigger = IsInsideTrigger(valuePosition, valueSize);
 
-	if (insideTrigger)
-	{
-		if (!Triggered)
+		if (insideTrigger)
 		{
-			Triggered = true;
-			if (enableDebugging)
+			if (!Triggered)
 			{
-				std::cout << "Triggered entered '" + name + "' | Type: " + (TriggerOnce ? "TRIGGER_ONCE" : "TRIGGER_EVERY_TIME") << std::endl;
-			}
-			return 1;
-		}
-	}
-	else
-	{
-		if (Triggered)
-		{
-			if (enableDebugging)
-			{
-				std::cout << "Triggered exited '" + name + "' | Type: " + (TriggerOnce ? "TRIGGER_ONCE" : "TRIGGER_EVERY_TIME") << std::endl;
-			}
-			if (!TriggerOnce)
-			{
-				Triggered = false;
-				return 0;
-			}
-			else
-			{
-				TriggeredOnceExit = true;
-				return 0;
+				Triggered = true;
+				if (enableDebugging)
+				{
+					std::cout << "Triggered entered '" + name + "' | Type: " + (TriggerOnce ? "TRIGGER_ONCE" : "TRIGGER_EVERY_TIME") << std::endl;
+				}
+				return 1;
 			}
 		}
+		else
+		{
+			if (Triggered)
+			{
+				if (enableDebugging)
+				{
+					std::cout << "Triggered exited '" + name + "' | Type: " + (TriggerOnce ? "TRIGGER_ONCE" : "TRIGGER_EVERY_TIME") << std::endl;
+				}
+				if (!TriggerOnce)
+				{
+					Triggered = false;
+					return 0;
+				}
+				else
+				{
+					TriggeredOnceExit = true;
+					return 0;
+				}
+			}
+		}
+		return -1;
 	}
-	return -1;
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2Trigger::CheckTrigger", ex.what());
+		return -1;
+	}
 }
 
 bool Shrek2Trigger::IsInsideTrigger(Shrek2Vector3 valuePosition, Shrek2Vector3 valueSize)
 {
-	float aMinX = Position.X - (Size.X / 2);
-	float aMaxX = Position.X + (Size.X / 2);
-	float aMinY = Position.Y - (Size.Y / 2);
-	float aMaxY = Position.Y + (Size.Y / 2);
-	float aMinZ = Position.Z - (Size.Z / 2);
-	float aMaxZ = Position.Z + (Size.Z / 2);
+	try {
+		float aMinX = Position.X - (Size.X / 2);
+		float aMaxX = Position.X + (Size.X / 2);
+		float aMinY = Position.Y - (Size.Y / 2);
+		float aMaxY = Position.Y + (Size.Y / 2);
+		float aMinZ = Position.Z - (Size.Z / 2);
+		float aMaxZ = Position.Z + (Size.Z / 2);
 
-	float bMinX = valuePosition.X - (valueSize.X);
-	float bMaxX = valuePosition.X + (valueSize.X);
-	float bMinY = valuePosition.Y - (valueSize.Y);
-	float bMaxY = valuePosition.Y + (valueSize.Y);
-	float bMinZ = valuePosition.Z - (valueSize.Z);
-	float bMaxZ = valuePosition.Z + (valueSize.Z);
+		float bMinX = valuePosition.X - (valueSize.X);
+		float bMaxX = valuePosition.X + (valueSize.X);
+		float bMinY = valuePosition.Y - (valueSize.Y);
+		float bMaxY = valuePosition.Y + (valueSize.Y);
+		float bMinZ = valuePosition.Z - (valueSize.Z);
+		float bMaxZ = valuePosition.Z + (valueSize.Z);
 
-	return (aMinX <= bMaxX && aMaxX >= bMinX) &&
-		(aMinY <= bMaxY && aMaxY >= bMinY) &&
-		(aMinZ <= bMaxZ && aMaxZ >= bMinZ);
+		return (aMinX <= bMaxX && aMaxX >= bMinX) &&
+			(aMinY <= bMaxY && aMaxY >= bMinY) &&
+			(aMinZ <= bMaxZ && aMaxZ >= bMinZ);
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2Trigger::IsInsideTrigger", ex.what());
+		return false;
+	}
 }

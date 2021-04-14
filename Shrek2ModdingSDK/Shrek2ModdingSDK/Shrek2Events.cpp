@@ -204,19 +204,26 @@ void Shrek2Events::EU_OnCutLogTick()
 
 void Shrek2Events::EventUpdates()
 {
-	if (ReorderEvents) 
-	{
-		ReorderEvents();
+	try {
+		if (ReorderEvents) 
+		{
+			ReorderEvents();
+		}
+		else
+		{
+			EU_OnMapLoad();
+			EU_OnCharacterChanged();
+			EU_OnPlayerInWater();
+			EU_OnPlayerHealthUpdate();
+			EU_OnPlayerJumpMagnet();
+			EU_OnPlayerBouncePad();
+			EU_OnPlayerInAirLand();
+			EU_OnPlayerInfo();
+		}
 	}
-	else
+	catch (std::exception& ex)
 	{
-		EU_OnMapLoad();
-		EU_OnCharacterChanged();
-		EU_OnPlayerInWater();
-		EU_OnPlayerHealthUpdate();
-		EU_OnPlayerJumpMagnet();
-		EU_OnPlayerBouncePad();
-		EU_OnPlayerInAirLand();
-		EU_OnPlayerInfo();
+		Shrek2Logging::LogError("Shrek2Events::EventUpdates", ex.what());
+		Sleep(100);
 	}
 }

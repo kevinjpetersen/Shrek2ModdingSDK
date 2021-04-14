@@ -12,6 +12,7 @@
 #include <d3dx8core.h>
 #include <map>
 #include <list>
+#include "Shrek2Logging.h"
 #include "Shrek2Fonts.h"
 #include "Shrek2Vector2.h"
 #include "Shrek2Vector3.h"

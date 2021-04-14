@@ -11,63 +11,84 @@ bool Shrek2Input::OnKeyPress(Keys key)
 
 bool Shrek2Input::OnKeyPress(std::string keyBindName)
 {
-    if (!IsLoaded) return false;
-    if (LoadedJson.count(keyBindName) == 0) return false;
-    std::string keyBindValue = (std::string)LoadedJson[keyBindName];
+    try {
+        if (!IsLoaded) return false;
+        if (LoadedJson.count(keyBindName) == 0) return false;
+        std::string keyBindValue = (std::string)LoadedJson[keyBindName];
 
-    return OnKeyPress(KeyToVKey(keyBindValue));
+        return OnKeyPress(KeyToVKey(keyBindValue));
+    }
+    catch (std::exception& ex)
+    {
+        Shrek2Logging::LogError("Shrek2Input::OnKeyPress2", ex.what());
+        return false;
+    }
 }
 
 bool Shrek2Input::SimulateKeyPress(Keys key)
 {
-    int vkey = KeyToVKey(key);
+    try {
+        int vkey = KeyToVKey(key);
 
-    INPUT ip;
+        INPUT ip;
 
-    ip.type = INPUT_KEYBOARD;
-    ip.ki.wScan = 0;
-    ip.ki.time = 0;
-    ip.ki.dwExtraInfo = 0;
+        ip.type = INPUT_KEYBOARD;
+        ip.ki.wScan = 0;
+        ip.ki.time = 0;
+        ip.ki.dwExtraInfo = 0;
 
-    ip.ki.wVk = vkey;
-    ip.ki.dwFlags = 0;
-    SendInput(1, &ip, sizeof(INPUT));
+        ip.ki.wVk = vkey;
+        ip.ki.dwFlags = 0;
+        SendInput(1, &ip, sizeof(INPUT));
 
-    ip.ki.dwFlags = KEYEVENTF_KEYUP;
-    SendInput(1, &ip, sizeof(INPUT));
+        ip.ki.dwFlags = KEYEVENTF_KEYUP;
+        SendInput(1, &ip, sizeof(INPUT));
 
-    return true;
+        return true;
+    }
+    catch (std::exception& ex)
+    {
+        Shrek2Logging::LogError("Shrek2Input::SimulateKeyPress", ex.what());
+        return false;
+    }
 }
 
 bool Shrek2Input::OnKeyPress(int vkey)
 {
-    if (vkey == -1) return false;
+    try {
+        if (vkey == -1) return false;
 
-    if (EnableConsoleProtection)
-    {
-        if (GetAsyncKeyState(KeyToVKey(Keys::TAB)) & 1)
+        if (EnableConsoleProtection)
         {
-            AllowKeyInput = false;
-            ClearKeyInputBuffer();
-            return false;
-        }
-        else if (GetAsyncKeyState(KeyToVKey(Keys::ENTER)) & 1)
-        {
-            AllowKeyInput = true;
-            ClearKeyInputBuffer();
-            return false;
-        }
-        else if (GetAsyncKeyState(KeyToVKey(Keys::ESCAPE)) & 1)
-        {
-            AllowKeyInput = true;
-            ClearKeyInputBuffer();
-            return false;
+            if (GetAsyncKeyState(KeyToVKey(Keys::TAB)) & 1)
+            {
+                AllowKeyInput = false;
+                ClearKeyInputBuffer();
+                return false;
+            }
+            else if (GetAsyncKeyState(KeyToVKey(Keys::ENTER)) & 1)
+            {
+                AllowKeyInput = true;
+                ClearKeyInputBuffer();
+                return false;
+            }
+            else if (GetAsyncKeyState(KeyToVKey(Keys::ESCAPE)) & 1)
+            {
+                AllowKeyInput = true;
+                ClearKeyInputBuffer();
+                return false;
+            }
+
+            if (!AllowKeyInput) return false;
         }
 
-        if (!AllowKeyInput) return false;
+        return (GetAsyncKeyState(vkey) & 1);
     }
-
-    return (GetAsyncKeyState(vkey) & 1);
+    catch (std::exception& ex)
+    {
+        Shrek2Logging::LogError("Shrek2Input::OnKeyPress1", ex.what());
+        return false;
+    }
 }
 
 bool Shrek2Input::LoadBinds()
@@ -94,9 +115,10 @@ bool Shrek2Input::LoadBinds()
 
         return true;
     }
-    catch (std::exception ex)
+    catch (std::exception& ex)
     {
         IsLoaded = false;
+        Shrek2Logging::LogError("Shrek2Input::LoadBinds", ex.what());
         std::cout << "Loaded binds: " << (IsLoaded ? "Yes" : "No") << std::endl;
         return false;
     }
@@ -104,16 +126,29 @@ bool Shrek2Input::LoadBinds()
 
 bool Shrek2Input::BindsExists(std::string name)
 {
-    std::ifstream f(name.c_str());
-    return f.good();
+    try {
+        std::ifstream f(name.c_str());
+        return f.good();
+    }
+    catch (std::exception& ex)
+    {
+        Shrek2Logging::LogError("Shrek2Input::BindsExists", ex.what());
+        return false;
+    }
 }
 
 void Shrek2Input::ClearKeyInputBuffer()
 {
-    for (int keyInt = Keys::A; keyInt != Keys::RIGHT_MOUSE_BUTTON; keyInt++)
+    try {
+        for (int keyInt = Keys::A; keyInt != Keys::RIGHT_MOUSE_BUTTON; keyInt++)
+        {
+            Keys key = static_cast<Keys>(keyInt);
+            GetAsyncKeyState(KeyToVKey(key));
+        }
+    }
+    catch (std::exception& ex)
     {
-        Keys key = static_cast<Keys>(keyInt);
-        GetAsyncKeyState(KeyToVKey(key));
+        Shrek2Logging::LogError("Shrek2Input::ClearKeyInputBuffer", ex.what());
     }
 }
 

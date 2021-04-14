@@ -7,139 +7,185 @@
 
 DWORD WINAPI CutLogThread(HINSTANCE hModule)
 {
-	Shrek2& Game = *Shrek2::Instance;
+	try {
+		Shrek2& Game = *Shrek2::Instance;
 
-	while (Game.IsModRunning) {
-		Sleep(1000 / Game.OnCutLogTPS);
-		Game.Events.EU_OnCutLogTick();
+		while (Game.IsModRunning) {
+			try {
+				Sleep(1000 / Game.OnCutLogTPS);
+				Game.Events.EU_OnCutLogTick();
+			}
+			catch (std::exception& ex)
+			{
+				Shrek2Logging::LogError("Shrek2::CutLogThread::Inner", ex.what());
+				Sleep(100);
+			}
+		}
+
+		ExitThread(0);
 	}
-
-	ExitThread(0);
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2::CutLogThread::Outer", ex.what());
+	}
 }
 
 DWORD WINAPI ActorListThread(HINSTANCE hModule)
 {
-	Shrek2& Game = *Shrek2::Instance;
+	try {
+		Shrek2& Game = *Shrek2::Instance;
 
-	while (Game.IsModRunning) {
-		Sleep(1000 / Game.OnActorListTPS);
-		if(Game.Events.OnActorList) Game.Events.OnActorList();
+		while (Game.IsModRunning) {
+			try {
+				Sleep(1000 / Game.OnActorListTPS);
+				if (Game.Events.OnActorList) Game.Events.OnActorList();
+			}
+			catch (std::exception& ex)
+			{
+				Shrek2Logging::LogError("Shrek2::ActorListThread::Inner", ex.what());
+				Sleep(100);
+			}
+		}
+
+		ExitThread(0);
 	}
-
-	ExitThread(0);
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2::ActorListThread::Outer", ex.what());
+	}
 }
 
 
 void Shrek2::Initialize(std::string ModName, bool ShowConsoleByDefault = true)
 {
-	Shrek2::AddConsole = ShowConsoleByDefault;
-	if (ShowConsoleByDefault)
-	{
-		ShowConsole();
-	}
-	else {
-		HideConsole();
-	}
-
-	char dllPath[MAX_PATH];
-	GetModuleFileName(DllHandle, dllPath, MAX_PATH);
-
-	auto path = fs::path(dllPath);
-
-	DllName = path.stem().u8string();
-	DllPath = path.u8string();
-	Shrek2StaticVars::DllFolderPath = path.parent_path().u8string();
-
-	IsModRunning = true;
-	Sounds = Shrek2Sound(Shrek2StaticVars::DllFolderPath);
-	Variables = Shrek2Pointers();
-	Functions = Shrek2Functions(DllName);
-	Config = Shrek2Config(Shrek2StaticVars::DllFolderPath);
-	Storage = Shrek2Storage(Shrek2StaticVars::DllFolderPath);
-	Input.DllPath = Shrek2StaticVars::DllFolderPath;
-	Input.LoadBinds();
-
-	LogToConsole("DllName is: " + DllName);
-
-	Shrek2::WindowHandle = FindWindowA(NULL, "Shrek 2");
-
-	bool findWindow = true;
-	while (findWindow) {
-		HWND wnd = FindWindowA(NULL, "Shrek 2");
-		if (wnd) {
-			Shrek2::WindowHandle = wnd;
-			findWindow = false;
-			break;
+	try {
+		Shrek2::AddConsole = ShowConsoleByDefault;
+		if (ShowConsoleByDefault)
+		{
+			ShowConsole();
+		}
+		else {
+			HideConsole();
 		}
 
-		if (!IsModRunning) return;
-		Sleep(500);
-	}
+		char dllPath[MAX_PATH];
+		GetModuleFileName(DllHandle, dllPath, MAX_PATH);
 
-	GameWindowSize = Shrek2Utils::GetWindowSize(WindowHandle);
+		auto path = fs::path(dllPath);
 
-	LogToConsole("Mod '" + ModName + "' loaded.");
+		DllName = path.stem().u8string();
+		DllPath = path.u8string();
+		Shrek2StaticVars::DllFolderPath = path.parent_path().u8string();
 
-	bool tempIsMinimized = false;
-	QUERY_USER_NOTIFICATION_STATE pquns;
+		IsModRunning = true;
+		Sounds = Shrek2Sound(Shrek2StaticVars::DllFolderPath);
+		Variables = Shrek2Pointers();
+		Functions = Shrek2Functions(DllName);
+		Config = Shrek2Config(Shrek2StaticVars::DllFolderPath);
+		Storage = Shrek2Storage(Shrek2StaticVars::DllFolderPath);
+		Input.DllPath = Shrek2StaticVars::DllFolderPath;
+		Input.LoadBinds();
 
-	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)CutLogThread, NULL, 0, NULL);
-	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ActorListThread, NULL, 0, NULL);
+		LogToConsole("DllName is: " + DllName);
 
-	if (Events.OnStart) Events.OnStart();
-	while (IsModRunning) {
-		Sleep(1000 / OnTickTPS);
+		Shrek2::WindowHandle = FindWindowA(NULL, "Shrek 2");
+
+		bool findWindow = true;
+		while (findWindow) {
+			try {
+				HWND wnd = FindWindowA(NULL, "Shrek 2");
+				if (wnd) {
+					Shrek2::WindowHandle = wnd;
+					findWindow = false;
+					break;
+				}
+
+				if (!IsModRunning) return;
+				Sleep(500);
+			}
+			catch (std::exception& ex)
+			{
+				Shrek2Logging::LogError("Shrek2::Initialize::FindWindow", ex.what());
+				Sleep(500);
+			}
+		}
 
 		GameWindowSize = Shrek2Utils::GetWindowSize(WindowHandle);
-		GameClientSize = Shrek2Utils::GetClientSize(WindowHandle);
-		Shrek2UI::GameWindowSize = GameWindowSize;
 
-		tempIsMinimized = IsIconic(WindowHandle);
+		LogToConsole("Mod '" + ModName + "' loaded.");
 
-		SHQueryUserNotificationState(&pquns);
-		if (pquns == QUNS_BUSY && !IsFullscreen)
-		{
-			IsFullscreen = true;
-			Shrek2UI::TriggerReset();
+		bool tempIsMinimized = false;
+		QUERY_USER_NOTIFICATION_STATE pquns;
+
+		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)CutLogThread, NULL, 0, NULL);
+		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ActorListThread, NULL, 0, NULL);
+
+		if (Events.OnStart) Events.OnStart();
+		while (IsModRunning) {
+			try {
+				Sleep(1000 / OnTickTPS);
+
+				GameWindowSize = Shrek2Utils::GetWindowSize(WindowHandle);
+				GameClientSize = Shrek2Utils::GetClientSize(WindowHandle);
+				Shrek2UI::GameWindowSize = GameWindowSize;
+
+				tempIsMinimized = IsIconic(WindowHandle);
+
+				SHQueryUserNotificationState(&pquns);
+				if (pquns == QUNS_BUSY && !IsFullscreen)
+				{
+					IsFullscreen = true;
+					Shrek2UI::TriggerReset();
+				}
+				else if (pquns != QUNS_BUSY && IsFullscreen)
+				{
+					IsFullscreen = false;
+					Shrek2UI::TriggerReset();
+				}
+
+				if (tempIsMinimized && !IsMinimized) {
+					IsMinimized = true;
+				}
+				else if (!tempIsMinimized && IsMinimized)
+				{
+					IsMinimized = false;
+					Shrek2UI::TriggerReset();
+				}
+
+				if (Shrek2::WindowHandle != GetForegroundWindow()) {
+					continue;
+				}
+
+				if (Triggers.EnableTriggers)
+				{
+					Shrek2Maps map = Shrek2Utils::MapStringToMap(Variables.GetCurrentMap());
+
+					float x = Variables.GetPositionX();
+					float y = Variables.GetPositionY();
+					float z = Variables.GetPositionZ();
+
+					float colHeight = Variables.GetCollisionHeight();
+					float colRadius = Variables.GetCollisionRadius();
+
+					Triggers.CheckTriggers(Shrek2Vector3(x, y, z), map, Shrek2Vector3(colRadius, colRadius, colHeight));
+				}
+				Events.EventUpdates();
+				if (Events.OnTick) Events.OnTick();
+			}
+			catch (std::exception& ex)
+			{
+				Shrek2Logging::LogError("Shrek2::Initialize::MainLoop", ex.what());
+				Sleep(100);
+			}
 		}
-		else if (pquns != QUNS_BUSY && IsFullscreen)
-		{
-			IsFullscreen = false;
-			Shrek2UI::TriggerReset();
-		}
 
-		if (tempIsMinimized && !IsMinimized) {
-			IsMinimized = true;
-		}
-		else if (!tempIsMinimized && IsMinimized)
-		{
-			IsMinimized = false;
-			Shrek2UI::TriggerReset();
-		}
-
-		if (Shrek2::WindowHandle != GetForegroundWindow()) {
-			continue;
-		}
-		
-		if (Triggers.EnableTriggers)
-		{
-			Shrek2Maps map = Shrek2Utils::MapStringToMap(Variables.GetCurrentMap());
-
-			float x = Variables.GetPositionX();
-			float y = Variables.GetPositionY();
-			float z = Variables.GetPositionZ();
-
-			float colHeight = Variables.GetCollisionHeight();
-			float colRadius = Variables.GetCollisionRadius();
-
-			Triggers.CheckTriggers(Shrek2Vector3(x, y, z), map, Shrek2Vector3(colRadius, colRadius, colHeight));
-		}
-		Events.EventUpdates();
-		if (Events.OnTick) Events.OnTick();
+		LogToConsole("Mod '" + ModName + "' unloaded.");
+		return;
 	}
-
-	LogToConsole("Mod '" + ModName + "' unloaded.");
-	return;
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2::Initialize::Outer", ex.what());
+	}
 }
 
 void Shrek2::LogToConsole(std::string logMessage)
@@ -164,17 +210,24 @@ LONG Shrek2::GetGameClientWidth()
 
 POINT Shrek2::GetMousePosition()
 {
-	POINT p;
-	if (!WindowHandle) return p;
+	try {
+		POINT p;
+		if (!WindowHandle) return p;
 
-	if (GetCursorPos(&p))
-	{
-		if (ScreenToClient(WindowHandle, &p))
+		if (GetCursorPos(&p))
 		{
-			return p;
+			if (ScreenToClient(WindowHandle, &p))
+			{
+				return p;
+			}
 		}
+		return p;
 	}
-	return p;
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2::GetMousePosition", ex.what());
+		return POINT();
+	}
 }
 
 void Shrek2::Wait(unsigned int waitAmountInMs)
@@ -184,47 +237,86 @@ void Shrek2::Wait(unsigned int waitAmountInMs)
 
 task<void> Shrek2::Delay(unsigned int delayAmountInMs)
 {
-	task_completion_event<void> tce;
-	auto fire_once = new timer<int>(delayAmountInMs, 0, nullptr, false);
+	try {
+		task_completion_event<void> tce;
+		auto fire_once = new timer<int>(delayAmountInMs, 0, nullptr, false);
 
-	auto callback = new call<int>([tce](int)
-		{
-			tce.set();
-		});
+		auto callback = new call<int>([tce](int)
+			{
+				tce.set();
+			});
 
-	fire_once->link_target(callback);
-	fire_once->start();
+		fire_once->link_target(callback);
+		fire_once->start();
 
-	task<void> event_set(tce);
+		task<void> event_set(tce);
 
-	return event_set.then([callback, fire_once]()
-		{
-			delete callback;
-			delete fire_once;
-		});
+		return event_set.then([callback, fire_once]()
+			{
+				delete callback;
+				delete fire_once;
+			});
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2::Delay", ex.what());
+		return task<void>();
+	}
 }
 
 void Shrek2::HideConsole()
 {
-	::ShowWindow(::GetConsoleWindow(), SW_HIDE);
+	try {
+		::ShowWindow(::GetConsoleWindow(), SW_HIDE);
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2::HideConsole", ex.what());
+	}
 }
 
 void Shrek2::ShowConsole()
 {
-	::ShowWindow(::GetConsoleWindow(), SW_SHOW);
+	try {
+		::ShowWindow(::GetConsoleWindow(), SW_SHOW);
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2::ShowConsole", ex.what());
+	}
 }
 
 bool Shrek2::IsConsoleVisible()
 {
-	return ::IsWindowVisible(::GetConsoleWindow()) != FALSE;
+	try {
+		return ::IsWindowVisible(::GetConsoleWindow()) != FALSE;
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2::IsConsoleVisible", ex.what());
+	}
 }
 
 LONG Shrek2::GetGameWindowHeight()
 {
-	return GameWindowSize.bottom - GameWindowSize.top;
+	try {
+		return GameWindowSize.bottom - GameWindowSize.top;
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2::GetGameWindowHeight", ex.what());
+		return 0;
+	}
 }
 
 LONG Shrek2::GetGameWindowWidth()
 {
-	return GameWindowSize.right - GameWindowSize.left;
+	try {
+		return GameWindowSize.right - GameWindowSize.left;
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2::GetGameWindowWidth", ex.what());
+		return 0;
+	}
 }

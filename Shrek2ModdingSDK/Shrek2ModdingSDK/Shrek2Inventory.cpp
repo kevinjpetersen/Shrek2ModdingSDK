@@ -52,10 +52,16 @@ int Shrek2Inventory::GetLovePotions()
 
 void Shrek2Inventory::SetCoins(int newValue)
 {
-	bool wasSet = SetInventoryItem(Shrek2CollectionTypes::CoinCollection, newValue);
-	if (!wasSet)
+	try {
+		bool wasSet = SetInventoryItem(Shrek2CollectionTypes::CoinCollection, newValue);
+		if (!wasSet)
+		{
+			Shrek2::Instance->Functions.CC("addcoins " + std::to_string(newValue));
+		}
+	}
+	catch (std::exception& ex)
 	{
-		Shrek2::Instance->Functions.CC("addcoins " + std::to_string(newValue));
+		Shrek2Logging::LogError("Shrek2Inventory::SetCoins", ex.what());
 	}
 }
 
@@ -106,23 +112,37 @@ void Shrek2Inventory::SetLovePotions(int newValue)
 
 int Shrek2Inventory::GetInventoryItem(Shrek2CollectionTypes itemType)
 {
-	auto collection1 = Shrek2ActorList::GetCollection(itemType);
-	if (collection1 != NULL) {
-		return collection1->Items;
+	try {
+		auto collection1 = Shrek2ActorList::GetCollection(itemType);
+		if (collection1 != NULL) {
+			return collection1->Items;
+		}
+		return 0;
 	}
-	return 0;
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2Inventory::GetInventoryItem", ex.what());
+		return 0;
+	}
 }
 
 bool Shrek2Inventory::SetInventoryItem(Shrek2CollectionTypes itemType, int newValue)
 {
-	auto collection1 = Shrek2ActorList::GetCollection(itemType);
+	try {
+		auto collection1 = Shrek2ActorList::GetCollection(itemType);
 
-	if (collection1 != NULL) {
-		if (collection1->Items)
-		{
-			collection1->Items = newValue;
-			return true;
+		if (collection1 != NULL) {
+			if (collection1->Items)
+			{
+				collection1->Items = newValue;
+				return true;
+			}
 		}
+		return false;
 	}
-	return false;
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2Inventory::SetInventoryItem", ex.what());
+		return false;
+	}
 }

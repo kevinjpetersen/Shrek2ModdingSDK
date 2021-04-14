@@ -6,5 +6,11 @@
 
 void Shrek2Texture::SetIDirect3DTexture(IDirect3DDevice8* pDevice)
 {
-	D3DXCreateTextureFromFile(pDevice, TextureFileLocation.c_str(), &Texture);
+	try {
+		D3DXCreateTextureFromFile(pDevice, TextureFileLocation.c_str(), &Texture);
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2Texture::SetIDirect3DTexture", ex.what());
+	}
 }

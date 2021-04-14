@@ -19,9 +19,10 @@ bool Shrek2Storage::Load()
 
 		return true;
 	}
-	catch (std::exception ex)
+	catch (std::exception& ex)
 	{
 		IsLoaded = false;
+		Shrek2Logging::LogError("Shrek2Storage::Load", ex.what());
 		return false;
 	}
 }
@@ -38,8 +39,9 @@ bool Shrek2Storage::Save()
 
 		return true;
 	}
-	catch (std::exception ex)
+	catch (std::exception& ex)
 	{
+		Shrek2Logging::LogError("Shrek2Storage::Save", ex.what());
 		return false;
 	}
 }
@@ -111,6 +113,13 @@ bool Shrek2Storage::SetLong(std::string fieldName, long fieldValue)
 
 bool Shrek2Storage::SavedVariablesExists(std::string name)
 {
-	std::ifstream f(name.c_str());
-	return f.good();
+	try {
+		std::ifstream f(name.c_str());
+		return f.good();
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2Storage::SavedVariablesExists", ex.what());
+		return false;
+	}
 }

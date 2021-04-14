@@ -19,9 +19,10 @@ bool Shrek2Config::Load()
 
 		return true;
 	}
-	catch (std::exception ex)
+	catch (std::exception& ex)
 	{
 		IsLoaded = false;
+		Shrek2Logging::LogError("Shrek2Config::Load", ex.what());
 		return false;
 	}
 }

@@ -116,6 +116,7 @@
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WholeProgramOptimization>true</WholeProgramOptimization>
+      <ExceptionHandling>Async</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -174,6 +175,7 @@
     <ClInclude Include="Shrek2Events.h" />
     <ClInclude Include="Shrek2Fonts.h" />
     <ClInclude Include="Shrek2Inventory.h" />
+    <ClInclude Include="Shrek2Logging.h" />
     <ClInclude Include="Shrek2Storage.h" />
     <ClInclude Include="Shrek2Input.h" />
     <ClInclude Include="Shrek2Maps.h" />
@@ -202,6 +204,7 @@
     <ClCompile Include="Shrek2ActorList.cpp" />
     <ClCompile Include="Shrek2Events.cpp" />
     <ClCompile Include="Shrek2Inventory.cpp" />
+    <ClCompile Include="Shrek2Logging.cpp" />
     <ClCompile Include="Shrek2Storage.cpp" />
     <ClCompile Include="Shrek2Input.cpp" />
     <ClCompile Include="Shrek2Maps.cpp" />

@@ -12,8 +12,14 @@ public:
 	Shrek2Functions() {
 	}
 	Shrek2Functions(std::string dllName) {
-		_DeleteSaveGame = (Shrek2DeleteSaveGame)GetProcAddress(GetModuleHandle(TEXT("Core.dll")), "?KWDeleteSaveGame@@YAXH@Z");
-		DllName = dllName;
+		try {
+			_DeleteSaveGame = (Shrek2DeleteSaveGame)GetProcAddress(GetModuleHandle(TEXT("Core.dll")), "?KWDeleteSaveGame@@YAXH@Z");
+			DllName = dllName;
+		}
+		catch (std::exception& ex)
+		{
+			Shrek2Logging::LogError("Shrek2Functions::Constructor", ex.what());
+		}
 	}
 	void ExecuteConsoleCommand(std::string command);
 	void ExecuteConsoleCommands(std::list<std::string> commands);
