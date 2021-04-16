@@ -2,7 +2,12 @@
 enum class Shrek2ActorTypes {
 	Coin = 116,
 	CoinStack = 5285,
-	BaseCam = 4441
+	BaseCam = 4441,
+	Donkey = 163,
+	BreakableCrate = 8566,
+	PunchingBag = 7274,
+	Shamrock = 1790,
+	BriarPatch = 247
 };
 
 enum class Shrek2CharacterTypes {

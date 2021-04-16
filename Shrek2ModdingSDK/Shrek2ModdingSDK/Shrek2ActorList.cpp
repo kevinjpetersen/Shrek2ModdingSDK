@@ -86,6 +86,66 @@ Shrek2Actor* Shrek2ActorList::GetActor(int classId)
 	}
 }
 
+std::vector<Shrek2Actor*> Shrek2ActorList::GetActors(std::vector<Shrek2ActorTypes> actorTypes)
+{
+	try {
+		auto actors = FindActors();
+		if (actors.empty()) return {};
+
+		std::vector<Shrek2Actor*> foundActors = {};
+
+		for (Shrek2Actor* actor : actors)
+		{
+			for (Shrek2ActorTypes actorType : actorTypes)
+			{
+				if (actor->ClassInfo)
+				{
+					if (actor->ClassInfo->ClassID == static_cast<int>(actorType)) {
+						foundActors.push_back(actor);
+					}
+				}
+			}
+		}
+
+		return foundActors;
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2ActorList::GetActors4", ex.what());
+		return {};
+	}
+}
+
+std::vector<Shrek2Actor*> Shrek2ActorList::GetActors(std::vector<int> classIds)
+{
+	try {
+		auto actors = FindActors();
+		if (actors.empty()) return {};
+
+		std::vector<Shrek2Actor*> foundActors = {};
+
+		for (Shrek2Actor* actor : actors)
+		{
+			for (int classId : classIds)
+			{
+				if (actor->ClassInfo)
+				{
+					if (actor->ClassInfo->ClassID == classId) {
+						foundActors.push_back(actor);
+					}
+				}
+			}
+		}
+
+		return foundActors;
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2ActorList::GetActors5", ex.what());
+		return {};
+	}
+}
+
 Shrek2ActorCharacter* Shrek2ActorList::GetCharacter(Shrek2CharacterTypes characterType)
 {
 	try {

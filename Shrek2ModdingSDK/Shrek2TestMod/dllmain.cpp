@@ -9,44 +9,88 @@
 
 Shrek2 Game = Shrek2();
 
+bool isCarrying = false;
+
+Shrek2Vector3 CarriedPosition = Shrek2Vector3(0, 0, 0);
+Shrek2Actor* CarriedActor;
+
+float CalculateDistance(Shrek2Vector3 p1, Shrek2Vector3 p2)
+{
+	float diffX = p1.X - p2.X;
+	float diffY = p1.Y - p2.Y;
+	float diffZ = p1.Z - p2.Z;
+	return sqrt((diffY * diffY) + (diffX * diffX) + (diffZ * diffZ));
+}
+
+void OnActorList()
+{
+	if (isCarrying)
+	{
+		auto shrek = Game.Actors.GetCharacter(Shrek2CharacterTypes::Shrek);
+		if (shrek)
+		{
+			if (CarriedActor)
+			{
+				CarriedPosition = Shrek2Vector3(shrek->Position.X, shrek->Position.Y, shrek->Position.Z + 100);
+				CarriedActor->Position = CarriedPosition;
+			}
+		}
+	}
+}
 
 void OnTick()
 {
-	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
-		system("cls");
-		auto cutcontrollers = Game.Actors.GetActors(4088);
-		if (!cutcontrollers.empty())
+	if (Game.Input.OnKeyPress(Shrek2Input::E))
+	{
+		auto shrek = Game.Actors.GetCharacter(Shrek2CharacterTypes::Shrek);
+		if (shrek)
 		{
-			for (int i = 0; i < cutcontrollers.size(); i++)
+			auto actors = Game.Actors.GetActors({ 
+				Shrek2ActorTypes::Coin, 
+				Shrek2ActorTypes::CoinStack, 
+				Shrek2ActorTypes::Donkey, 
+				Shrek2ActorTypes::PunchingBag, 
+				Shrek2ActorTypes::Shamrock, 
+				Shrek2ActorTypes::BriarPatch, 
+				Shrek2ActorTypes::BreakableCrate 
+			});
+
+			if (!actors.empty())
 			{
-				auto cc = cutcontrollers[i];
-				if (!cc->GetName().empty()) {
-					Game.LogToConsole("Name: " + cc->GetName());
-					std::cout << "Addr: " << &cutcontrollers[i] << std::endl;
-					Game.LogToConsole("------------");
+				float currentDistance = 9999;
+				for (int i = 0; i < actors.size(); i++)
+				{
+					auto actor = actors[i];
+
+					float distance = CalculateDistance(shrek->Position, actor->Position);
+					if (distance > 150) continue;
+
+					if (distance <= currentDistance)
+					{
+						currentDistance = distance;
+						CarriedActor = actor;
+					}
+				}
+
+				if (CarriedActor)
+				{
+					isCarrying = true;
+					shrek->CarriedActor = CarriedActor;
 				}
 			}
 		}
-		else {
-			Game.LogToConsole("No KWCutControllerII's currently active.");
-		}
+	}
+
+	if (Game.Input.OnKeyPress(Shrek2Input::LEFT_MOUSE_BUTTON))
+	{
+		isCarrying = false;
+		CarriedActor = NULL;
 	}
 }
 
 void RenderUI()
 {
 	
-}
-
-void OnActorList()
-{
-	/*auto coin = Game.Actors.GetActor(Shrek2ActorTypes::Coin);
-	if (coin)
-	{
-		auto pos = Shrek2Vector3(Game.Variables.GetPosition());
-		pos.Z += 130;
-		coin->Position = pos;
-	}*/
 }
 
 void OnStart()
