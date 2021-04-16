@@ -162,6 +162,7 @@ public:
 		DEFINE_MEMBER_N(FLOAT, AttackAngle, 0x10A4);
 		DEFINE_MEMBER_N(FLOAT, SpecialAttackTime, 0x10A8);
 		DEFINE_MEMBER_N(INT32, LastState, 0x5A4);
+		DEFINE_MEMBER_N(void*, CarriedActor, 0x888);
 	};
 
 	void SetUnlit(bool isUnlit)
