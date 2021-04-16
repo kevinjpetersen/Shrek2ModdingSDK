@@ -63,7 +63,7 @@ void OnTick()
 					auto actor = actors[i];
 
 					float distance = CalculateDistance(shrek->Position, actor->Position);
-					if (distance > 150) continue;
+					if (distance > 200) continue;
 
 					if (distance <= currentDistance)
 					{
