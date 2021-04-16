@@ -61,6 +61,56 @@ public:
 	};
 };
 
+class Shrek2ActorCutController
+{
+public:
+	union {
+		DEFINE_MEMBER_N(Shrek2ActorClassInfo*, ClassInfo, 0x24);
+		DEFINE_MEMBER_N(Shrek2Vector3, Position, 0x150);
+		DEFINE_MEMBER_N(WCHAR*, Tag, 0x76C);
+		DEFINE_MEMBER_N(void*, CurrentAction1, 0x754);
+		DEFINE_MEMBER_N(void*, CurrentAction2, 0x7DC);
+		DEFINE_MEMBER_N(void*, CurrentAnimation, 0x760);
+
+	};
+
+	Shrek2ActorCutController() {
+
+	}
+
+	void CancelAnimation()
+	{
+		if (Shrek2Utils::DoesEqual(GetTag(), "MAIN")) return;
+		std::cout << "CANCELANIMATION -- Called Get Tag" << std::endl;
+
+		CurrentAction1 = CurrentAnimation;
+		std::cout << "CANCELANIMATION -- Called CurrentAction 1" << std::endl;
+
+		CurrentAction2 = CurrentAnimation;
+		std::cout << "CANCELANIMATION -- Called CurrentAction 2" << std::endl;
+
+	}
+
+	std::string GetTag()
+	{
+		try {
+			if (!Tag) return "";
+
+			std::wstring str = reinterpret_cast<wchar_t*>(Tag);
+			if (!str.empty())
+			{
+				return Shrek2Utils::WS2String(str);
+			}
+			return "";
+		}
+		catch (std::exception& ex)
+		{
+			Shrek2Logging::LogError("Shrek2Actor::GetTag", ex.what());
+			return "";
+		}
+	}
+};
+
 class Shrek2ActorCharacter
 {
 public:
