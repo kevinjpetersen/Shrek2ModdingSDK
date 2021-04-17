@@ -26,3 +26,27 @@ public:
 	}
 };
 
+
+class Shrek2Vector3Int
+{
+public:
+	int X;
+	int Y;
+	int Z;
+
+	Shrek2Vector3Int() {}
+	Shrek2Vector3Int(int x, int y, int z)
+	{
+		X = x;
+		Y = y;
+		Z = z;
+	}
+
+	Shrek2Vector3Int(int size)
+	{
+		X = size;
+		Y = size;
+		Z = size;
+	}
+};
+

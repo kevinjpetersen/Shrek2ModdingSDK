@@ -256,3 +256,30 @@ bool Shrek2Utils::Overlap(Shrek2Vector2 point, Shrek2Vector2 position, Shrek2Vec
 		return false;
 	}
 }
+
+int Shrek2Utils::GameToCharacterType(int gameCharacterId)
+{
+	switch (gameCharacterId)
+	{
+	case 1: return static_cast<int>(Shrek2CharacterTypes::Shrek);
+	case 2: return static_cast<int>(Shrek2CharacterTypes::Donkey);
+	case 3: return static_cast<int>(Shrek2CharacterTypes::PIB);
+	case 4: return static_cast<int>(Shrek2CharacterTypes::Steed);
+	case 5: return static_cast<int>(Shrek2CharacterTypes::ShrekHuman);
+	default: static_cast<int>(Shrek2CharacterTypes::Unknown);
+	}
+}
+
+std::string Shrek2Utils::GameToCharacterName(int gameCharacterId)
+{
+	switch (gameCharacterId)
+	{
+	case 1: return "Shrek";
+	case 2: return "Donkey";
+	case 3: return "PIB";
+	case 4: return "Steed";
+	case 5: return "Shrek Human";
+	default: "Unknown";
+	}
+}
+

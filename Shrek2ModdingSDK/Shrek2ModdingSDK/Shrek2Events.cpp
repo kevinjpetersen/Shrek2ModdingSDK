@@ -103,9 +103,9 @@ void Shrek2Events::EU_OnPlayerInfo()
 	float posY = Variables.GetPositionY();
 	float posZ = Variables.GetPositionZ();
 
-	float rotX = Variables.GetRotationX();
-	float rotY = Variables.GetRotationY();
-	float rotZ = Variables.GetRotationZ();
+	short rotX = Variables.GetRotationX();
+	short rotY = Variables.GetRotationY();
+	short rotZ = Variables.GetRotationZ();
 
 
 	if (OldPlayerPositionX == -1) OldPlayerPositionX = posX;
@@ -127,7 +127,7 @@ void Shrek2Events::EU_OnPlayerInfo()
 
 	if (rotX != OldPlayerRotationX || rotY != OldPlayerRotationY || rotZ != OldPlayerRotationZ) {
 		// Rotation changed
-		if (abs(rotX - OldPlayerRotationX) > 15 || abs(rotY - OldPlayerRotationY) > 15 || abs(rotZ - OldPlayerRotationZ) > 15) {
+		if (abs(rotX - OldPlayerRotationX) > 5 || abs(rotY - OldPlayerRotationY) > 5 || abs(rotZ - OldPlayerRotationZ) > 5) {
 			if (OnPlayerRotate) OnPlayerRotate(rotX, rotY, rotZ);
 		}
 

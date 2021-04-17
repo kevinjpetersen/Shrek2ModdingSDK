@@ -29,9 +29,9 @@ private:
 	float OldPlayerPositionY = -1;
 	float OldPlayerPositionZ = -1;
 
-	float OldPlayerRotationX = -1;
-	float OldPlayerRotationY = -1;
-	float OldPlayerRotationZ = -1;
+	short OldPlayerRotationX = -1;
+	short OldPlayerRotationY = -1;
+	short OldPlayerRotationZ = -1;
 
 	// OnMapLoad
 	std::string OldMap = "DEFAULT";
@@ -69,7 +69,7 @@ public:
 	/*DONE*/ void (*OnPlayerDie)(); // Fires ONCE when the Player dies
 	/*DONE*/ void (*OnPlayerRespawn)(); // Fires ONCE when the Player respawns
 	/*DONE*/ void (*OnPlayerMove)(float x, float y, float z); // Fires EVERY TIME the Player's Position changes
-	/*DONE*/ void (*OnPlayerRotate)(float x, float y, float z); // Fires EVERY TIME the Player's Rotation changes
+	/*DONE*/ void (*OnPlayerRotate)(short x, short y, short z); // Fires EVERY TIME the Player's Rotation changes
 	/*UNREADY*/ void (*OnPlayerClimb)(); // Fires ONCE when the Player starts climbing
 	/*UNREADY*/ void (*OnPlayerClimbDone)(); // Fires ONCE when the Player is done climbing
 	/*DONE*/ void (*OnPlayerInWaterEnter)(); // Fires ONCE when the Player enters the water

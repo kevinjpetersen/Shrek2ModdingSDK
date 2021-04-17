@@ -9,7 +9,6 @@ public:
 	static std::string FloatToLPCSTR(float fValue);
 	static std::string FloatToLPCSTRRaw(float fValue);
 	static std::string IntToLPCSTRRaw(int fValue);
-	static void SaveToDisk(std::string data, std::string fileName);
 	static std::string WS2String(const std::wstring& wstr);
 	static Shrek2Maps MapStringToMap(std::string map);
 	static std::string StringToLower(std::string str);
@@ -22,5 +21,7 @@ public:
 	static bool Contains(std::string source, std::string find);
 	static bool ContainsForced(std::string source, std::string find);
 	static bool Overlap(Shrek2Vector2 point, Shrek2Vector2 position, Shrek2Vector2 size);
+	static int GameToCharacterType(int gameCharacterId);
+	static std::string GameToCharacterName(int gameCharacterId);
 };
 

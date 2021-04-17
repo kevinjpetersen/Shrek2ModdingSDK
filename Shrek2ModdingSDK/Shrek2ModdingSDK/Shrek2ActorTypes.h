@@ -11,6 +11,7 @@ enum class Shrek2ActorTypes {
 };
 
 enum class Shrek2CharacterTypes {
+	Unknown = -999,
 	Shrek = 79,
 	Donkey = 163,
 	PIB = 242,
