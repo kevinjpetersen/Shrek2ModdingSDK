@@ -39,6 +39,7 @@ public:
 	void Wait(unsigned int waitAmountInMs);
 	RECT GameWindowSize;
 	RECT GameClientSize;
+	bool PauseGameOnFocusLost = true;
 
 	int OnTickTPS = 1000;
 	int OnCutLogTPS = 1000;

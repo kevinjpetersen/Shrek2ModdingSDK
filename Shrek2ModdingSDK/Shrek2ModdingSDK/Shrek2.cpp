@@ -122,6 +122,8 @@ void Shrek2::Initialize(std::string ModName, bool ShowConsoleByDefault = true)
 		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)CutLogThread, NULL, 0, NULL);
 		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ActorListThread, NULL, 0, NULL);
 
+		bool IsGameFocused = true;
+
 		if (Events.OnStart) Events.OnStart();
 		while (IsModRunning) {
 			try {
@@ -155,7 +157,22 @@ void Shrek2::Initialize(std::string ModName, bool ShowConsoleByDefault = true)
 				}
 
 				if (Shrek2::WindowHandle != GetForegroundWindow()) {
+					if (IsGameFocused)
+					{
+						IsGameFocused = false;
+						if (!PauseGameOnFocusLost) {
+							LogToConsole("Game Paused -- Setting Pauser to None");
+							Functions.CC("set levelinfo pauser none");
+						}
+					}
 					continue;
+				}
+				
+				if (!IsGameFocused) {
+					IsGameFocused = true;
+					if (!PauseGameOnFocusLost) {
+						LogToConsole("Game Unpaused");
+					}
 				}
 
 				if (Triggers.EnableTriggers)
