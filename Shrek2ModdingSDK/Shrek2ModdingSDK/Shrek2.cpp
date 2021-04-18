@@ -110,6 +110,8 @@ void Shrek2::Initialize(std::string ModName, bool ShowConsoleByDefault = true)
 			}
 		}
 
+		Input.WindowHandle = Shrek2::WindowHandle;
+		Functions.WindowHandle = Shrek2::WindowHandle;
 		GameWindowSize = Shrek2Utils::GetWindowSize(WindowHandle);
 
 		LogToConsole("Mod '" + ModName + "' loaded.");

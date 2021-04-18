@@ -33,6 +33,7 @@ public:
 	void ToggleFreeCam();
 	void DeleteSaveGame(int slot);
 	std::string MapIdToString(int mapId);
+	HWND WindowHandle;
 private:
 	void ExecCC(std::string command);
 	void ExecCCS(std::list<std::string> commands);

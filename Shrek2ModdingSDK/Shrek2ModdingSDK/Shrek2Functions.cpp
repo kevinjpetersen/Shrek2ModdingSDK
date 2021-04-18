@@ -110,19 +110,8 @@ void Shrek2Functions::ExecCCS(std::list<std::string> commands)
 void Shrek2Functions::Exec()
 {
 	try {
-		INPUT ip;
-
-		ip.type = INPUT_KEYBOARD;
-		ip.ki.wScan = 0;
-		ip.ki.time = 0;
-		ip.ki.dwExtraInfo = 0;
-
-		ip.ki.wVk = 0x87;
-		ip.ki.dwFlags = 0;
-		SendInput(1, &ip, sizeof(INPUT));
-
-		ip.ki.dwFlags = KEYEVENTF_KEYUP;
-		SendInput(1, &ip, sizeof(INPUT));
+		PostMessage(WindowHandle, WM_KEYDOWN, (int)0x87, 0);
+		PostMessage(WindowHandle, WM_KEYUP, (int)0x87, 0);
 	}
 	catch (std::exception& ex)
 	{

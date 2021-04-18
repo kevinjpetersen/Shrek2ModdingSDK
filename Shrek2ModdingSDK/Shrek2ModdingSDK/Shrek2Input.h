@@ -18,6 +18,7 @@ public:
 	bool EnableConsoleProtection = true;
 	
 	std::string DllPath;
+	HWND WindowHandle;
 	bool LoadBinds();
 private:
 	bool OnKeyPress(int vkey);
