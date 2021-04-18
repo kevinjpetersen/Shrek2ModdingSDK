@@ -283,3 +283,8 @@ std::string Shrek2Utils::GameToCharacterName(int gameCharacterId)
 	}
 }
 
+bool Shrek2Utils::ContainsInVector(std::vector<std::string> list, std::string value)
+{
+	return (std::find(list.begin(), list.end(), value) != list.end());
+}
+

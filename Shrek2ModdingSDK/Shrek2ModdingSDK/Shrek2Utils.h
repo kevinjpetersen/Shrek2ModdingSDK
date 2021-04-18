@@ -23,5 +23,6 @@ public:
 	static bool Overlap(Shrek2Vector2 point, Shrek2Vector2 position, Shrek2Vector2 size);
 	static int GameToCharacterType(int gameCharacterId);
 	static std::string GameToCharacterName(int gameCharacterId);
+	static bool ContainsInVector(std::vector<std::string> list, std::string value);
 };
 
