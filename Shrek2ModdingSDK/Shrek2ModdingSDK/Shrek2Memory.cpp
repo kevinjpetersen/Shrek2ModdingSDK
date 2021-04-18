@@ -383,11 +383,8 @@ char* Shrek2Memory::ReadCharSafe(LPCSTR shModule, DWORD baseAddress, DWORD offse
 		DWORD addr = GetAddr(shModule, baseAddress, offset1);
 
 		if (addr) {
-
 			char* str = reinterpret_cast<char*>(addr);
-			char dest[4096];
-			std::memcpy(dest, str, sizeof dest);
-			return dest;
+			return str;
 		}
 		return NULL;
 	}

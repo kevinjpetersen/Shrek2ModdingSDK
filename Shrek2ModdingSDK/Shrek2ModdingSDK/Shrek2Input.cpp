@@ -197,6 +197,7 @@ int Shrek2Input::KeyToVKey(Keys key)
     case Keys::ESCAPE: return 0x1B;
     case Keys::LEFT_MOUSE_BUTTON: return 0x01;
     case Keys::RIGHT_MOUSE_BUTTON: return 0x02;
+    case Keys::END: return 0x23;
     default: return -1;
     }
 }

@@ -43,6 +43,7 @@ public:
 	int OnTickTPS = 1000;
 	int OnCutLogTPS = 1000;
 	int OnActorListTPS = 240;
+	std::string ExeName = "Shrek 2 Modded.exe";
 private:
 	bool IsMinimized = false;
 	bool IsFullscreen = false;
