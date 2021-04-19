@@ -24,7 +24,7 @@ float CalculateDistance(Shrek2Vector3 p1, Shrek2Vector3 p2)
 
 void OnActorList()
 {
-	if (isCarrying)
+	/*if (isCarrying)
 	{
 		auto shrek = Game.Actors.GetCharacter(Shrek2CharacterTypes::Shrek);
 		if (shrek)
@@ -35,14 +35,28 @@ void OnActorList()
 				CarriedActor->Position = CarriedPosition;
 			}
 		}
-	}
+	}*/
 }
 
 void OnTick()
 {
 	if (Game.Input.OnKeyPress(Shrek2Input::E))
 	{
-		auto shrek = Game.Actors.GetCharacter(Shrek2CharacterTypes::Shrek);
+		auto actors = Game.Actors.GetActors();
+		if (!actors.empty())
+		{
+			for (int i = 0; i < actors.size(); i++)
+			{
+				auto actor = actors[i];
+				std::cout << actor << std::endl;
+			}
+		}
+		else {
+			std::cout << "No Actors" << std::endl;
+		}
+
+
+		/*auto shrek = Game.Actors.GetCharacter(Shrek2CharacterTypes::Shrek);
 		if (shrek)
 		{
 			auto actors = Game.Actors.GetActors({ 
@@ -78,14 +92,14 @@ void OnTick()
 					shrek->CarriedActor = CarriedActor;
 				}
 			}
-		}
+		}*/
 	}
 
-	if (Game.Input.OnKeyPress(Shrek2Input::LEFT_MOUSE_BUTTON))
+	/*if (Game.Input.OnKeyPress(Shrek2Input::LEFT_MOUSE_BUTTON))
 	{
 		isCarrying = false;
 		CarriedActor = NULL;
-	}
+	}*/
 }
 
 void RenderUI()
