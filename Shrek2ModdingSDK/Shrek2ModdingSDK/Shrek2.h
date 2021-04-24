@@ -45,12 +45,12 @@ public:
 	int OnCutLogTPS = 1000;
 	int OnActorListTPS = 240;
 	std::string ExeName = "Shrek 2 Modded.exe";
+	HWND WindowHandle;
 private:
 	bool IsMinimized = false;
 	bool IsFullscreen = false;
 	bool AddConsole;
 	HMODULE DllHandle;
-	HWND WindowHandle;
 	std::string DllName;
 	std::string DllPath;
 };
