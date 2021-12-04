@@ -21,7 +21,7 @@
         WindowStartupLocation="CenterScreen"
         Initialized="Window_Initialized"
         Closed="Window_Closed"
-        Icon="pack://siteoforigin:,,,/Resources/s2mmlogo.png">
+        Icon="/Resources/s2mmlogo.png">
     <materialDesign:DialogHost>
         <Grid>
             <Grid.RowDefinitions>
