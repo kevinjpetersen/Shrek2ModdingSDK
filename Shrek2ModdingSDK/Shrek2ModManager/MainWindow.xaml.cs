@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace Shrek2ModManager
     public partial class MainWindow : Window
     {
         public ObservableCollection<Shrek2ModListItem> ModItems { get; } = new ObservableCollection<Shrek2ModListItem>();
+        public RemoveModWindow RemoveModWindow { get; set; }
 
         public MainWindow()
         {
@@ -30,6 +32,12 @@ namespace Shrek2ModManager
 
         private void Window_Initialized(object sender, EventArgs e)
         {
+            RemoveModWindow = new RemoveModWindow();
+            RemoveModWindow.CloseModal = () =>
+            {
+                DialogHost.Close(null);
+            };
+
             ModItems.Add(new Shrek2ModListItem($"Backflip Mod", "This will allow you to backflip when jumping."));
             ModItems.Add(new Shrek2ModListItem($"Better Ghost Mod", "This adds a better ghosting mechanic."));
             ModItems.Add(new Shrek2ModListItem($"MasterToolz"));
@@ -46,9 +54,28 @@ namespace Shrek2ModManager
             var tag = ((Button)sender).Tag.ToString();
             var modItem = ModItems.First(p => p.UUID == tag);
 
-            MessageBox.Show(ModItems.Count(p => p.IsChecked).ToString());
-
+            //MessageBox.Show(ModItems.Count(p => p.IsChecked).ToString());
 
         }
+
+        private void Specific_Mod_Remove_Click(object sender, RoutedEventArgs e)
+        {
+            var tag = ((Button)sender).Tag.ToString();
+            var modItem = ModItems.First(p => p.UUID == tag);
+
+            RemoveModWindow.SetModTitle(modItem.Title);
+            RemoveModWindow.RemovedMod = () =>
+            {
+                ModItems.Remove(modItem);
+            };
+
+            DialogHost.Show(RemoveModWindow.Content);
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
     }
 }
