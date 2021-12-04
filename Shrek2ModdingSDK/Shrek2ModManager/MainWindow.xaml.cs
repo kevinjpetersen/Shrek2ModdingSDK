@@ -23,28 +23,39 @@ namespace Shrek2ModManager
     public partial class MainWindow : Window
     {
         public ObservableCollection<Shrek2ModListItem> ModItems { get; } = new ObservableCollection<Shrek2ModListItem>();
-        public RemoveModWindow RemoveModWindow { get; set; }
+        public RemoveModWindow? RemoveModWindow { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
         private void Window_Initialized(object sender, EventArgs e)
         {
-            RemoveModWindow = new RemoveModWindow();
-            RemoveModWindow.CloseModal = () =>
+            RemoveModWindow = new RemoveModWindow
             {
-                DialogHost.Close(null);
+                CloseModal = () =>
+                {
+                    DialogHost.Close(null);
+                }
             };
 
-            ModItems.Add(new Shrek2ModListItem($"Backflip Mod", "This will allow you to backflip when jumping."));
-            ModItems.Add(new Shrek2ModListItem($"Better Ghost Mod", "This adds a better ghosting mechanic."));
-            ModItems.Add(new Shrek2ModListItem($"MasterToolz"));
-            ModItems.Add(new Shrek2ModListItem($"Chaos Mod v2"));
-            ModItems.Add(new Shrek2ModListItem($"Randomizer Mod"));
-            ModItems.Add(new Shrek2ModListItem($"Infinite Coins Mod"));
-            ModItems.Add(new Shrek2ModListItem($"Replay Mod"));
+            var mods = Shrek2MM.LoadMods();
+            if(mods == null)
+            {
+                MessageBox.Show("Failed to load Added Mods correctly, this might indicate that the JSON file is corrupted or damaged! Please close this application and ensure the JSON file isn't damaged in any way before proceeding.");
+                Add_Mod_Button.IsEnabled = false;
+                Play_Button.IsEnabled = false;
+                ModItemsList.ItemsSource = ModItems;
+                return;
+            }
+
+            mods.ForEach(mod => ModItems.Add(mod));
 
             ModItemsList.ItemsSource = ModItems;
         }
@@ -63,19 +74,26 @@ namespace Shrek2ModManager
             var tag = ((Button)sender).Tag.ToString();
             var modItem = ModItems.First(p => p.UUID == tag);
 
+            if(RemoveModWindow == null) return;
+
             RemoveModWindow.SetModTitle(modItem.Title);
             RemoveModWindow.RemovedMod = () =>
             {
                 ModItems.Remove(modItem);
+                var saved = Shrek2MM.SaveMods(ModItems.ToList());
+                if (saved == false) MessageBox.Show("Failed to update mod list, this can be becaues of read/write permissions.");
             };
 
             DialogHost.Show(RemoveModWindow.Content);
         }
 
-        private void Window_Closed(object sender, EventArgs e)
+        private void Specific_Mod_ToggleIsActive_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
-        }
+            var tag = ((CheckBox)sender).Tag.ToString();
+            var modItem = ModItems.First(p => p.UUID == tag);
 
+            var saved = Shrek2MM.SaveMods(ModItems.ToList());
+            if (saved == false) MessageBox.Show("Failed to update mod list, this can be becaues of read/write permissions.");
+        }
     }
 }

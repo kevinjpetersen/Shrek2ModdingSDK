@@ -31,7 +31,7 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Orientation="Horizontal">
-                <Button VerticalAlignment="Top" Style="{DynamicResource MaterialDesignRaisedButton}" Foreground="#fff" Margin="10,10,0,0">Add mod</Button>
+                <Button Name="Add_Mod_Button" VerticalAlignment="Top" Style="{DynamicResource MaterialDesignRaisedButton}" Foreground="#fff" Margin="10,10,0,0">Add mod</Button>
                 <Button VerticalAlignment="Top" Style="{DynamicResource MaterialDesignRaisedButton}" Foreground="#fff" Margin="10,10,0,0">Settings</Button>
             </StackPanel>
 
@@ -56,7 +56,7 @@
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
-                                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsChecked}" materialDesign:CheckBoxAssist.CheckBoxSize="30" />
+                                        <CheckBox VerticalAlignment="Center" Name="Specific_Mod_ToggleIsActive" Click="Specific_Mod_ToggleIsActive_Click" Tag="{Binding UUID}" IsChecked="{Binding IsActive}" materialDesign:CheckBoxAssist.CheckBoxSize="30" />
                                         <StackPanel Margin="8,0,0,0" Grid.Column="1">
                                             <TextBlock FontSize="20" FontWeight="Bold" Text="{Binding Title}" />
                                             <TextBlock FontSize="15" Text="{Binding Description}" TextTrimming="WordEllipsis" />
@@ -76,7 +76,7 @@
             </Grid>
 
             <StackPanel Grid.Row="2">
-                <Button Style="{DynamicResource MaterialDesignRaisedButton}" Height="55" FontSize="30" Foreground="#fff" Margin="10,10,10,0">Play</Button>
+                <Button x:Name="Play_Button" Style="{DynamicResource MaterialDesignRaisedButton}" Height="55" FontSize="30" Foreground="#fff" Margin="10,10,10,0">Play</Button>
             </StackPanel>
         </Grid>
     </materialDesign:DialogHost>
