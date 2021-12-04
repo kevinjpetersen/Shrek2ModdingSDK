@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +24,11 @@ namespace Shrek2ModManager
         {
             DataContext = new Shrek2DataContext();
             InitializeComponent();
+        }
+
+        private void Specific_Mod_Settings_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
