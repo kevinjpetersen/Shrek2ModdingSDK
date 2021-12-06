@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -94,6 +95,17 @@ namespace Shrek2ModManager
 
             var saved = Shrek2MM.SaveMods(ModItems.ToList());
             if (saved == false) MessageBox.Show("Failed to update mod list, this can be becaues of read/write permissions.");
+        }
+
+        private void Add_Mod_Button_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Shrek 2 Mod File (.dll)|*.dll|Shrek 2 Mod Zip (.zip)|*.zip";
+            ofd.ShowDialog();
+
+            if(string.IsNullOrEmpty(ofd.FileName)) return;
+
+            MessageBox.Show(ofd.FileName);
         }
     }
 }

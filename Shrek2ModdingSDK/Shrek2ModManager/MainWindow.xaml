@@ -31,7 +31,7 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Orientation="Horizontal">
-                <Button Name="Add_Mod_Button" VerticalAlignment="Top" Style="{DynamicResource MaterialDesignRaisedButton}" Foreground="#fff" Margin="10,10,0,0">Add mod</Button>
+                <Button Name="Add_Mod_Button" Click="Add_Mod_Button_Click" VerticalAlignment="Top" Style="{DynamicResource MaterialDesignRaisedButton}" Foreground="#fff" Margin="10,10,0,0">Add mod</Button>
                 <Button VerticalAlignment="Top" Style="{DynamicResource MaterialDesignRaisedButton}" Foreground="#fff" Margin="10,10,0,0">Settings</Button>
             </StackPanel>
 
