@@ -10,8 +10,8 @@ namespace Shrek2ModManager
 {
     public class Shrek2ModListItem
     {
-        public string Title { get; }
-        public string Description { get; }
+        public string Title { get; set; }
+        public string Description { get; set; }
         public string FileName { get; set; }
         public ModTypes ModType { get; set; }
         public bool IsActive { get; set; }

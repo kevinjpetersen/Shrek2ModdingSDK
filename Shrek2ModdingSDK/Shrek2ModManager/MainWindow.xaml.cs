@@ -26,6 +26,7 @@ namespace Shrek2ModManager
     {
         public ObservableCollection<Shrek2ModListItem> ModItems { get; } = new ObservableCollection<Shrek2ModListItem>();
         public RemoveModWindow? RemoveModWindow { get; set; }
+        public EditModWindow? EditModWindow { get; set; }
 
         public MainWindow()
         {
@@ -40,6 +41,14 @@ namespace Shrek2ModManager
         private async void Window_Initialized(object sender, EventArgs e)
         {
             RemoveModWindow = new RemoveModWindow
+            {
+                CloseModal = () =>
+                {
+                    DialogHost.Close(null);
+                }
+            };
+
+            EditModWindow = new EditModWindow
             {
                 CloseModal = () =>
                 {
@@ -77,8 +86,26 @@ namespace Shrek2ModManager
             var tag = ((Button)sender).Tag.ToString();
             var modItem = ModItems.First(p => p.UUID == tag);
 
-            //MessageBox.Show(ModItems.Count(p => p.IsChecked).ToString());
+            if (EditModWindow == null) return;
 
+            EditModWindow.InitEditMod(modItem);
+            EditModWindow.EditedMod = (updatedMod) =>
+            {
+                if (updatedMod == null) return;
+
+                var modItemsList = ModItems.ToList();
+
+                var index = modItemsList.FindIndex(p => p.UUID == updatedMod.UUID);
+                modItemsList[index] = updatedMod;
+
+                var saved = Shrek2MM.SaveMods(modItemsList);
+                if (saved == false) MessageBox.Show("Failed to update mod list, this can be becaues of read/write permissions.");
+
+                ModItems.Clear();
+                modItemsList.ForEach(mod => ModItems.Add(mod));
+            };
+
+            DialogHost.Show(EditModWindow.Content);
         }
 
         private void Specific_Mod_Remove_Click(object sender, RoutedEventArgs e)

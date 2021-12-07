@@ -35,4 +35,17 @@
     <Resource Include="Resources\s2mmlogo.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="EditModWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="EditModWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>
