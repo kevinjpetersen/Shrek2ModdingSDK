@@ -15,8 +15,8 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="RemoveModWindow">
     <Grid>
-        <StackPanel Margin="16">
-            <TextBlock Name="RemoveMod_Text" />
+        <StackPanel Margin="16" MaxWidth="250">
+            <TextBlock FontSize="17" TextWrapping="WrapWithOverflow" TextAlignment="Center" Name="RemoveMod_Text" />
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Click="Remove_Click" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="#e7447a" IsDefault="True" Margin="0 8 8 0" Content="YES"></Button>
