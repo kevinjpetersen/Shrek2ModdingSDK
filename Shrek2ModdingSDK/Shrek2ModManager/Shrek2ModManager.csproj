@@ -13,11 +13,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Shrek2ModLoader.zip" />
     <None Remove="s2mmlogo.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="s2mmlogo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Shrek2ModLoader.zip" />
   </ItemGroup>
 
   <ItemGroup>

@@ -12,19 +12,24 @@ namespace Shrek2ModManager
     {
         public string Title { get; }
         public string Description { get; }
-        public string DllName { get; set; }
-
-        // Used to determine whether to load the mod or not
+        public string FileName { get; set; }
+        public ModTypes ModType { get; set; }
         public bool IsActive { get; set; }
-
         public string UUID { get; set; }
 
-        public Shrek2ModListItem(string title, string description = "No description found.")
+        public enum ModTypes
+        {
+            ModFile, ModZip
+        }
+
+        public Shrek2ModListItem(string title, ModTypes modType, bool isActive, string uuid, string description = "No description found.")
         {
             Title = title;
-            DllName = $"{title.Replace(" ", "")}.dll";
+            FileName = $"{uuid}.{(modType == ModTypes.ModFile ? "dll" : "zip")}";
+            ModType = modType;
             Description = description;
-            UUID = Guid.NewGuid().ToString();
+            IsActive = isActive;
+            UUID = uuid;
         }
     }
 }
