@@ -10,6 +10,7 @@
 	<AssemblyName>Shrek 2 Mod Manager</AssemblyName>
 	<ApplicationIcon>s2mmlogo.ico</ApplicationIcon>
 	<ApplicationManifest>app.manifest</ApplicationManifest>
+	<UseWindowsForms>True</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,12 +37,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="SettingsWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="EditModWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="SettingsWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="EditModWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>

@@ -27,6 +27,7 @@ namespace Shrek2ModManager
         public ObservableCollection<Shrek2ModListItem> ModItems { get; } = new ObservableCollection<Shrek2ModListItem>();
         public RemoveModWindow? RemoveModWindow { get; set; }
         public EditModWindow? EditModWindow { get; set; }
+        public SettingsWindow? SettingsWindow { get; set; }
 
         public MainWindow()
         {
@@ -49,6 +50,14 @@ namespace Shrek2ModManager
             };
 
             EditModWindow = new EditModWindow
+            {
+                CloseModal = () =>
+                {
+                    DialogHost.Close(null);
+                }
+            };
+
+            SettingsWindow = new SettingsWindow
             {
                 CloseModal = () =>
                 {
@@ -182,6 +191,38 @@ namespace Shrek2ModManager
                 Shrek2Utils.LogError(ex);
                 MessageBox.Show("Error occured when trying to add a mod. For more details check the Error Log in 'This PC/My Documents/Shrek 2 Mod Manager'.");
             }
+        }
+
+        private void Settings_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (SettingsWindow == null) return;
+            SettingsWindow.Init();
+            DialogHost.Show(SettingsWindow.Content);
+        }
+
+        private void Play_Mods_Click(object sender, RoutedEventArgs e)
+        {
+            var settings = Shrek2MM.LoadSettings();
+
+            if(settings == null || string.IsNullOrWhiteSpace(settings.GameFolderPath))
+            {
+                MessageBox.Show("Unable to 'Play' yet as you have not set up Settings correctly yet. Please ensure your Game Folder is selected before proceeding!");
+                return;
+            }
+
+            if(ModItems == null || ModItems.Count <= 0)
+            {
+                MessageBox.Show("You currently have no added mods in the Shrek 2 Mod Manager so you cannot 'Play' yet.");
+                return;
+            }
+
+            if (ModItems.Any(p => p.IsActive) == false)
+            {
+                MessageBox.Show("You have no Enabled Mods in the Shrek 2 Mod Manager. Ensure atleast 1 mod is enabled before proceeding.");
+                return;
+            }
+
+            MessageBox.Show("[INSTALLING STUFF & LAUNCHING GAME]");
         }
     }
 }

@@ -32,7 +32,7 @@
 
             <StackPanel Grid.Row="0" Orientation="Horizontal">
                 <Button Name="Add_Mod_Button" Click="Add_Mod_Button_Click" VerticalAlignment="Top" Style="{DynamicResource MaterialDesignRaisedButton}" Foreground="#fff" Margin="10,10,0,0">Add mod</Button>
-                <Button VerticalAlignment="Top" Style="{DynamicResource MaterialDesignRaisedButton}" Foreground="#fff" Margin="10,10,0,0">Settings</Button>
+                <Button Click="Settings_Button_Click" VerticalAlignment="Top" Style="{DynamicResource MaterialDesignRaisedButton}" Foreground="#fff" Margin="10,10,0,0">Settings</Button>
             </StackPanel>
 
             <Grid Grid.Row="1">
@@ -76,7 +76,7 @@
             </Grid>
 
             <StackPanel Grid.Row="2">
-                <Button x:Name="Play_Button" Style="{DynamicResource MaterialDesignRaisedButton}" Height="55" FontSize="30" Foreground="#fff" Margin="10,10,10,0">Play</Button>
+                <Button x:Name="Play_Button" Click="Play_Mods_Click" Style="{DynamicResource MaterialDesignRaisedButton}" Height="55" FontSize="30" Foreground="#fff" Margin="10,10,10,0">Play</Button>
             </StackPanel>
         </Grid>
     </materialDesign:DialogHost>

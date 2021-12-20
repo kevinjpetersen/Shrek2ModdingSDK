@@ -27,6 +27,20 @@ namespace Shrek2ModManager
             return items;
         }
 
+        private static string SettingsToJSON(Shrek2MMSettings settings)
+        {
+            if (settings == null) return "{}";
+
+            return JsonConvert.SerializeObject(settings, Formatting.Indented);
+        }
+
+        private static Shrek2MMSettings? JSONToSettings(string json)
+        {
+            if (string.IsNullOrEmpty(json)) return new Shrek2MMSettings();
+
+            return JsonConvert.DeserializeObject<Shrek2MMSettings>(json);
+        }
+
         public static bool SaveMods(List<Shrek2ModListItem> items)
         {
             try
@@ -54,6 +68,41 @@ namespace Shrek2ModManager
 
                 var json = File.ReadAllText(Path.Combine(Shrek2Utils.GetDataFolderPath(), Shrek2Utils.SHREK2MM_FILE_ADDED_MODS));
                 return JSONToList(json);
+            }
+            catch (Exception ex)
+            {
+                Shrek2Utils.LogError(ex);
+                return null;
+            }
+        }
+
+        public static bool SaveSettings(Shrek2MMSettings settings)
+        {
+            try
+            {
+                Shrek2Utils.EnsureDataFolderExists();
+
+                var json = SettingsToJSON(settings);
+                File.WriteAllText(Path.Combine(Shrek2Utils.GetDataFolderPath(), Shrek2Utils.SHREK2MM_FILE_SETTINGS), json);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Shrek2Utils.LogError(ex);
+                return false;
+            }
+        }
+
+        public static Shrek2MMSettings? LoadSettings()
+        {
+            try
+            {
+                Shrek2Utils.EnsureDataFolderExists();
+
+                if (File.Exists(Path.Combine(Shrek2Utils.GetDataFolderPath(), Shrek2Utils.SHREK2MM_FILE_SETTINGS)) == false) return new Shrek2MMSettings();
+
+                var json = File.ReadAllText(Path.Combine(Shrek2Utils.GetDataFolderPath(), Shrek2Utils.SHREK2MM_FILE_SETTINGS));
+                return JSONToSettings(json);
             }
             catch (Exception ex)
             {

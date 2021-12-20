@@ -12,6 +12,7 @@ namespace Shrek2ModManager
     public class Shrek2Utils
     {
         public const string SHREK2MM_FILE_ADDED_MODS = "added_mods.json";
+        public const string SHREK2MM_FILE_SETTINGS = "settings.json";
         public const string SHREK2MM_FILE_LOG_ERRORS = "log_errors.txt";
         public const string SHREK2MM_FILE_MOD_LOADER_ZIP = "Shrek2ModLoader.zip";
 
