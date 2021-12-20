@@ -30,6 +30,8 @@ namespace Shrek2ModManager
         public EditModWindow? EditModWindow { get; set; }
         public SettingsWindow? SettingsWindow { get; set; }
 
+        public Process GameProcess { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -77,7 +79,7 @@ namespace Shrek2ModManager
             }
 
             var extractedModLoader = await Shrek2MM.ExtractModLoader();
-            if(extractedModLoader == false)
+            if (extractedModLoader == false)
             {
                 MessageBox.Show("Couldn't extract the Mod Loader which is embedded in the Shrek 2 Mod Manager Program. Please check that the program has permissions to read/write on disk, and if the issue still persists please contact the developer.");
                 Add_Mod_Button.IsEnabled = false;
@@ -130,7 +132,7 @@ namespace Shrek2ModManager
             {
                 var deleted = Shrek2MM.DeleteModFromDataFolder(modItem.FileName);
 
-                if(deleted == false) MessageBox.Show("Failed to delete the mod file/zip from Data folder, this can be becaues of read/write permissions. You can delete this file yourself if you go to 'Your PC/My Documents/Shrek 2 Mod Manager/Added mods'.");
+                if (deleted == false) MessageBox.Show("Failed to delete the mod file/zip from Data folder, this can be becaues of read/write permissions. You can delete this file yourself if you go to 'Your PC/My Documents/Shrek 2 Mod Manager/Added mods'.");
 
                 ModItems.Remove(modItem);
                 var saved = Shrek2MM.SaveMods(ModItems.ToList());
@@ -168,7 +170,7 @@ namespace Shrek2ModManager
 
                 var copied = Shrek2MM.CopyModToDataFolder(ofd.FileName, uuid);
 
-                if(copied == false)
+                if (copied == false)
                 {
                     MessageBox.Show("Couldn't add the selected mod. Please check that the program has permissions to read/write on disk, and if the issue still persists please contact the developer.");
                     return;
@@ -181,13 +183,13 @@ namespace Shrek2ModManager
                     uuid
                 ));
 
-                if(Shrek2MM.SaveMods(ModItems.ToList()) == false)
+                if (Shrek2MM.SaveMods(ModItems.ToList()) == false)
                 {
                     MessageBox.Show("Failed to save the selected mod you wanted to add. We correctly copied the mod data but we couldn't save the metadata. Please check that the program has permissions to read/write on disk, and if the issue still persists please contact the developer.");
                     return;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Shrek2Utils.LogError(ex);
                 MessageBox.Show("Error occured when trying to add a mod. For more details check the Error Log in 'This PC/My Documents/Shrek 2 Mod Manager'.");
@@ -205,13 +207,13 @@ namespace Shrek2ModManager
         {
             var settings = Shrek2MM.LoadSettings();
 
-            if(settings == null || string.IsNullOrWhiteSpace(settings.GameFolderPath))
+            if (settings == null || string.IsNullOrWhiteSpace(settings.GameFolderPath))
             {
                 MessageBox.Show("Unable to 'Play' yet as you have not set up Settings correctly yet. Please ensure your Game Folder is selected before proceeding!");
                 return;
             }
 
-            if(ModItems == null || ModItems.Count <= 0)
+            if (ModItems == null || ModItems.Count <= 0)
             {
                 MessageBox.Show("You currently have no added mods in the Shrek 2 Mod Manager so you cannot 'Play' yet.");
                 return;
@@ -225,19 +227,19 @@ namespace Shrek2ModManager
 
             var installed = Shrek2MM.InstallModLoader(settings.GameFolderPath);
 
-            if(installed == false)
+            if (installed == false)
             {
                 MessageBox.Show("Failed to install Mod Loader into the selected Game Folder you chose in Settings. This could be a Read/write Permission issue. Check the error_log in 'Documents/Shrek 2 Mod Manager' for more details.");
                 return;
             }
 
-            if(Shrek2MM.ReinstallMods(settings.GameFolderPath, ModItems.Where(p => p.IsActive).ToList()) == false)
+            if (Shrek2MM.ReinstallMods(settings.GameFolderPath, ModItems.Where(p => p.IsActive).ToList()) == false)
             {
                 MessageBox.Show("Failed to install the enabled mods. This could be a Read/write Permission issue. Check the error_log in 'Documents/Shrek 2 Mod Manager' for more details.");
                 return;
             }
 
-            if(Shrek2MM.UpdateDefUserFile(settings.GameFolderPath, ModItems.Where(p => p.IsActive).ToList()) == false)
+            if (Shrek2MM.UpdateDefUserFile(settings.GameFolderPath, ModItems.Where(p => p.IsActive).ToList()) == false)
             {
                 MessageBox.Show("Failed to update DefUser.ini file, this could be a Read/write Permission issue. Check the error_log in 'Documents/Shrek 2 Mod Manager' for more details.");
                 return;
@@ -245,7 +247,20 @@ namespace Shrek2ModManager
 
 
 
-            Process.Start(Shrek2Utils.GetModdedGameExeFilePath(settings.GameFolderPath), settings.DisplayMode == 0 ? "-windowed" : "");
+            GameProcess = Process.Start(Shrek2Utils.GetModdedGameExeFilePath(settings.GameFolderPath), settings.DisplayMode == 0 ? "-windowed" : "");
+            GameProcess.EnableRaisingEvents = true;
+
+            Play_Button.IsEnabled = false;
+            Play_Button.Content = "Running";
+
+            GameProcess.Exited += (sender, e) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    Play_Button.IsEnabled = true;
+                    Play_Button.Content = "Play";
+                });
+            };
         }
     }
 }
