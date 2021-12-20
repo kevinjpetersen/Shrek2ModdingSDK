@@ -9,7 +9,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shrek2ModdingSDK", "Shrek2M
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shrek2TestMod", "..\Shrek2TestProjects\Shrek2TestMod\Shrek2TestMod.vcxproj", "{2F7CC65D-1146-4858-A873-9F6078119462}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shrek2ModManager", "Shrek2ModManager\Shrek2ModManager.csproj", "{4C5D29FF-286A-4EB6-A0A5-9DD76D290C93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shrek2ModManager", "Shrek2ModManager\Shrek2ModManager.csproj", "{4C5D29FF-286A-4EB6-A0A5-9DD76D290C93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,7 +41,7 @@ Global
 		{74978593-E38D-4615-B57F-DFB71B39EF8E}.Release|x64.Build.0 = Release|x64
 		{74978593-E38D-4615-B57F-DFB71B39EF8E}.Release|x86.ActiveCfg = Release|Win32
 		{74978593-E38D-4615-B57F-DFB71B39EF8E}.Release|x86.Build.0 = Release|Win32
-		{2F7CC65D-1146-4858-A873-9F6078119462}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{2F7CC65D-1146-4858-A873-9F6078119462}.Debug|Any CPU.ActiveCfg = Release|Win32
 		{2F7CC65D-1146-4858-A873-9F6078119462}.Debug|x64.ActiveCfg = Debug|x64
 		{2F7CC65D-1146-4858-A873-9F6078119462}.Debug|x64.Build.0 = Debug|x64
 		{2F7CC65D-1146-4858-A873-9F6078119462}.Debug|x86.ActiveCfg = Debug|Win32

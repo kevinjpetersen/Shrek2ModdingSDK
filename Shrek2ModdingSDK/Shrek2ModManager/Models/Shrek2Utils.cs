@@ -16,16 +16,44 @@ namespace Shrek2ModManager
         public const string SHREK2MM_FILE_LOG_ERRORS = "log_errors.txt";
         public const string SHREK2MM_FILE_MOD_LOADER_ZIP = "Shrek2ModLoader.zip";
 
+        public const string SHREK2MM_MODLOADER_FILE_EXE = "Shrek 2 Modded.exe";
+        public const string SHREK2MM_MODLOADER_FILE_INT = "Shrek 2 Modded.int";
+        public const string SHREK2MM_MODLOADER_FILE_DLL = "Shrek2ModLoader.dll";
+        public const string SHREK2MM_DEF_USER_FILE = "DefUser.ini";
+        public const string SHREK2MM_DEF_USER_BACKUP_FILE = "Backup_DefUser.ini";
+
         public const string SHREK2MM_FOLDER_ADDED_MODS = "Added mods";
+        public const string SHREK2MM_FOLDER_GAME_SYSTEM = "System";
+        public const string SHREK2MM_FOLDER_GAME_SYSTEM_MODS = "Shrek 2 Mods";
 
         public static string GetDataFolderPath()
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Shrek 2 Mod Manager");
         }
 
+        public static string GetModLoaderZipFilePath()
+        {
+            return Path.Combine(GetDataFolderPath(), SHREK2MM_FILE_MOD_LOADER_ZIP);
+        }
+
         public static string GetAddedModsFolderPath()
         {
             return Path.Combine(GetDataFolderPath(), SHREK2MM_FOLDER_ADDED_MODS);
+        }
+
+        public static string GetModdedGameExeFilePath(string gameFolderPath)
+        {
+            return Path.Combine(gameFolderPath, SHREK2MM_FOLDER_GAME_SYSTEM, SHREK2MM_MODLOADER_FILE_EXE);
+        }
+
+        public static string GetGameSystemFolderPath(string gameFolderPath)
+        {
+            return Path.Combine(gameFolderPath, SHREK2MM_FOLDER_GAME_SYSTEM);
+        }
+
+        public static string GetGameSystemModsFolderPath(string gameFolderPath)
+        {
+            return Path.Combine(gameFolderPath, SHREK2MM_FOLDER_GAME_SYSTEM, SHREK2MM_FOLDER_GAME_SYSTEM_MODS);
         }
 
         public static void EnsureDataFolderExists()

@@ -13,7 +13,11 @@ bool freecamOn = false;
 
 void OnTick()
 {
-	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
+	if (Game.Input.OnKeyPress(Shrek2Input::H)) {
+		Game.Variables.SetPlayerHealth(9999);
+	}
+
+	/*if (Game.Input.OnKeyPress(Shrek2Input::G)) {
 		freecamOn = !freecamOn;
 		auto X = Game.Variables.GetCamPositionX();
 		auto Y = Game.Variables.GetCamPositionY();
@@ -45,7 +49,7 @@ void OnTick()
 				"slomo 2"
 			});
 		}
-	}
+	}*/
 }
 
 void RenderUI()
@@ -65,7 +69,7 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	Game.Events.OnStart = OnStart;
 	Game.Events.OnTick = OnTick;
 
-	Game.Initialize("Shrek 2 Better Ghost", true);
+	Game.Initialize("Shrek 2 Health Mod", false);
 
 	FreeLibraryAndExitThread(hModule, 0);
 	return 0;

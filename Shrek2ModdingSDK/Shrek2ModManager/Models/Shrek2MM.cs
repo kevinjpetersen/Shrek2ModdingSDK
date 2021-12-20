@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ICSharpCode.SharpZipLib.Zip;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -178,6 +179,138 @@ namespace Shrek2ModManager
                 }
 
                 return false;
+            }
+            catch (Exception ex)
+            {
+                Shrek2Utils.LogError(ex);
+                return false;
+            }
+        }
+
+        public static bool InstallModLoader(string gameFolderPath)
+        {
+            try
+            {
+                if (IsModLoaderInstalled(gameFolderPath)) return true;
+
+                if (Directory.Exists(gameFolderPath) == false) return false;
+                if (Directory.Exists(Shrek2Utils.GetGameSystemFolderPath(gameFolderPath)) == false) return false;
+
+                if (Directory.Exists(Shrek2Utils.GetGameSystemModsFolderPath(gameFolderPath)) == false)
+                {
+                    Directory.CreateDirectory(Shrek2Utils.GetGameSystemModsFolderPath(gameFolderPath));
+                }
+
+                var zipFilePath = Shrek2Utils.GetModLoaderZipFilePath();
+                var targetDir = Shrek2Utils.GetGameSystemFolderPath(gameFolderPath);
+                FastZip fastZip = new FastZip();
+
+                fastZip.ExtractZip(zipFilePath, targetDir, null);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Shrek2Utils.LogError(ex);
+                return false;
+            }
+        }
+
+        public static bool IsModLoaderInstalled(string gameFolderPath)
+        {
+            try
+            {
+                if (Directory.Exists(gameFolderPath) == false) return false;
+                if (Directory.Exists(Shrek2Utils.GetGameSystemFolderPath(gameFolderPath)) == false) return false;
+                if (File.Exists(Path.Combine(Shrek2Utils.GetGameSystemFolderPath(gameFolderPath), Shrek2Utils.SHREK2MM_MODLOADER_FILE_EXE)) == false) return false;
+                if (File.Exists(Path.Combine(Shrek2Utils.GetGameSystemFolderPath(gameFolderPath), Shrek2Utils.SHREK2MM_MODLOADER_FILE_INT)) == false) return false;
+                if (File.Exists(Path.Combine(Shrek2Utils.GetGameSystemFolderPath(gameFolderPath), Shrek2Utils.SHREK2MM_MODLOADER_FILE_DLL)) == false) return false;
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Shrek2Utils.LogError(ex);
+                return false;
+            }
+        }
+
+        public static bool ReinstallMods(string gameFolderPath, List<Shrek2ModListItem> mods)
+        {
+            try
+            {
+                if (IsModLoaderInstalled(gameFolderPath) == false) return false;
+
+                if (Directory.Exists(Shrek2Utils.GetGameSystemModsFolderPath(gameFolderPath)) == false)
+                {
+                    Directory.CreateDirectory(Shrek2Utils.GetGameSystemModsFolderPath(gameFolderPath));
+                }
+                else
+                {
+                    Directory.Delete(Shrek2Utils.GetGameSystemModsFolderPath(gameFolderPath), true);
+                    Directory.CreateDirectory(Shrek2Utils.GetGameSystemModsFolderPath(gameFolderPath));
+                }
+
+                if (mods == null || mods.Count <= 0) return false;
+
+                foreach(var mod in mods)
+                {
+                    Directory.CreateDirectory(Path.Combine(Shrek2Utils.GetGameSystemModsFolderPath(gameFolderPath), mod.UUID));
+                    File.Copy(Path.Combine(Shrek2Utils.GetAddedModsFolderPath(), mod.FileName), Path.Combine(Shrek2Utils.GetGameSystemModsFolderPath(gameFolderPath), mod.UUID, mod.FileName));
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Shrek2Utils.LogError(ex);
+                return false;
+            }
+        }
+
+        public static bool UpdateDefUserFile(string gameFolderPath, List<Shrek2ModListItem> mods)
+        {
+            try
+            {
+                if (mods == null || mods.Count <= 0) return false;
+                if (IsModLoaderInstalled(gameFolderPath) == false) return false;
+
+                var backupDefUserFilePath = Path.Combine(Shrek2Utils.GetGameSystemFolderPath(gameFolderPath), Shrek2Utils.SHREK2MM_DEF_USER_BACKUP_FILE);
+                var defUserFilePath = Path.Combine(Shrek2Utils.GetGameSystemFolderPath(gameFolderPath), Shrek2Utils.SHREK2MM_DEF_USER_FILE);
+
+                if (File.Exists(backupDefUserFilePath) == false)
+                {
+                    File.Copy(defUserFilePath, backupDefUserFilePath, true);
+                }
+
+                var lines = File.ReadAllLines(defUserFilePath);
+
+                string execString = "";
+                int x = 1;
+                foreach (var installedMod in mods)
+                {
+                    if (x == mods.Count)
+                    {
+                        execString += "exec " + installedMod.UUID.Replace(" ", "");
+                    }
+                    else
+                    {
+                        execString += "exec " + installedMod.UUID.Replace(" ", "") + " | ";
+                    }
+
+                    x++;
+                }
+
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    if (lines[i].Contains("F24="))
+                    {
+                        lines[i] = "F24=" + execString;
+                    }
+                }
+
+                File.WriteAllLines(defUserFilePath, lines);
+                return true;
             }
             catch (Exception ex)
             {

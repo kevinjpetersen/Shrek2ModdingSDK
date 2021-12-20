@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -222,7 +223,29 @@ namespace Shrek2ModManager
                 return;
             }
 
-            MessageBox.Show("[INSTALLING STUFF & LAUNCHING GAME]");
+            var installed = Shrek2MM.InstallModLoader(settings.GameFolderPath);
+
+            if(installed == false)
+            {
+                MessageBox.Show("Failed to install Mod Loader into the selected Game Folder you chose in Settings. This could be a Read/write Permission issue. Check the error_log in 'Documents/Shrek 2 Mod Manager' for more details.");
+                return;
+            }
+
+            if(Shrek2MM.ReinstallMods(settings.GameFolderPath, ModItems.Where(p => p.IsActive).ToList()) == false)
+            {
+                MessageBox.Show("Failed to install the enabled mods. This could be a Read/write Permission issue. Check the error_log in 'Documents/Shrek 2 Mod Manager' for more details.");
+                return;
+            }
+
+            if(Shrek2MM.UpdateDefUserFile(settings.GameFolderPath, ModItems.Where(p => p.IsActive).ToList()) == false)
+            {
+                MessageBox.Show("Failed to update DefUser.ini file, this could be a Read/write Permission issue. Check the error_log in 'Documents/Shrek 2 Mod Manager' for more details.");
+                return;
+            }
+
+
+
+            Process.Start(Shrek2Utils.GetModdedGameExeFilePath(settings.GameFolderPath), settings.DisplayMode == 0 ? "-windowed" : "");
         }
     }
 }
