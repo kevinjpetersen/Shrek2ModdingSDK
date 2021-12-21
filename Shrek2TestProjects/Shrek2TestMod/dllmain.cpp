@@ -13,9 +13,9 @@ bool freecamOn = false;
 
 void OnTick()
 {
-	if (Game.Input.OnKeyPress(Shrek2Input::H)) {
+	/*if (Game.Input.OnKeyPress(Shrek2Input::H)) {
 		Game.Variables.SetPlayerHealth(9999);
-	}
+	}*/
 
 	/*if (Game.Input.OnKeyPress(Shrek2Input::G)) {
 		freecamOn = !freecamOn;
@@ -54,11 +54,15 @@ void OnTick()
 
 void RenderUI()
 {
-
+	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("PogU"), Shrek2Position(50, 50), 0);
+	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("KEKW"), Shrek2Position(100, 50), 0);
 }
 
 void OnStart()
 {
+	Shrek2Textures::AddTexture("Images/pogu.png", "PogU");
+	Shrek2Textures::AddTexture("Images/kekw.png", "KEKW");
+
 	Shrek2UI::GameWindowSize = Game.GameWindowSize;
 	Shrek2UI::RenderUI = RenderUI;
 	Shrek2UI::Initialize();
@@ -69,7 +73,7 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	Game.Events.OnStart = OnStart;
 	Game.Events.OnTick = OnTick;
 
-	Game.Initialize("Shrek 2 Health Mod", false);
+	Game.Initialize("Shrek 2 Twitch Emotes", false);
 
 	FreeLibraryAndExitThread(hModule, 0);
 	return 0;

@@ -253,10 +253,49 @@ namespace Shrek2ModManager
 
                 if (mods == null || mods.Count <= 0) return false;
 
-                foreach(var mod in mods)
+                foreach (var mod in mods)
                 {
                     Directory.CreateDirectory(Path.Combine(Shrek2Utils.GetGameSystemModsFolderPath(gameFolderPath), mod.UUID));
-                    File.Copy(Path.Combine(Shrek2Utils.GetAddedModsFolderPath(), mod.FileName), Path.Combine(Shrek2Utils.GetGameSystemModsFolderPath(gameFolderPath), mod.UUID, mod.FileName));
+                    if (mod.ModType == Shrek2ModListItem.ModTypes.ModFile)
+                    {
+                        File.Copy(Path.Combine(Shrek2Utils.GetAddedModsFolderPath(), mod.FileName), Path.Combine(Shrek2Utils.GetGameSystemModsFolderPath(gameFolderPath), mod.UUID, mod.FileName));
+                    }
+                    else if (mod.ModType == Shrek2ModListItem.ModTypes.ModZip)
+                    {
+                        var zipFilePath = Path.Combine(Shrek2Utils.GetAddedModsFolderPath(), mod.FileName);
+                        var targetDir = Path.Combine(Shrek2Utils.GetGameSystemModsFolderPath(gameFolderPath), mod.UUID);
+                        FastZip fastZip = new FastZip();
+                        fastZip.ExtractZip(zipFilePath, targetDir, null);
+
+                        string dllFilePath = Path.Combine(Shrek2Utils.GetGameSystemModsFolderPath(gameFolderPath), mod.UUID, $"{mod.UUID}.dll");
+
+                        var files = Directory.GetFiles(targetDir);
+
+                        if(files.Length <= 0)
+                        {
+                            Shrek2Utils.LogError(new Exception($"Failed to install the mod '{mod.Title}' because it had no files inside of it's .zip file."));
+                            return false;
+                        }
+
+                        var zipDllName = files.FirstOrDefault(p => Path.GetExtension(p) == ".dll");
+
+                        if(string.IsNullOrWhiteSpace(zipDllName))
+                        {
+                            Shrek2Utils.LogError(new Exception($"Failed to install the mod '{mod.Title}' a .dll file inside of the .zip file doesn't exist!"));
+                            return false;
+                        }
+
+                        if(File.Exists(zipDllName))
+                        {
+                            FileInfo fi = new FileInfo(zipDllName);
+
+                            if (fi.Exists)
+                            {
+                                fi.MoveTo(dllFilePath);
+                            }
+                        }
+
+                    }
                 }
 
                 return true;
