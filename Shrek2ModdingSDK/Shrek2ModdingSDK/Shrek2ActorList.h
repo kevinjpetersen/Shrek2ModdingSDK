@@ -6,7 +6,9 @@ public:
 	static bool Exists(int classId);
 
 	static Shrek2Actor* GetActor(Shrek2ActorTypes actorType);
+	static Shrek2Actor* GetActor(Shrek2ActorTypes actorType, std::string label);
 	static Shrek2Actor* GetActor(int classId);
+	static Shrek2Actor* GetActor(int classId, std::string label);
 
 
 	static Shrek2ActorCharacter* GetCharacter(Shrek2CharacterTypes characterType);

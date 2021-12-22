@@ -18,19 +18,19 @@ public:
 	union {
 		DEFINE_MEMBER_N(Shrek2ActorClassInfo*, ClassInfo, 0x24);
 		DEFINE_MEMBER_N(Shrek2Vector3, Position, 0x150);
-		DEFINE_MEMBER_N(WCHAR*, Name, 0x364);
+		DEFINE_MEMBER_N(WCHAR*, Label, 0x364);
 	};
 
 	Shrek2Actor() {
 
 	}
 
-	std::string GetName()
+	std::string GetLabel()
 	{
 		try {
-			if (!Name) return "";
+			if (!Label) return "";
 
-			std::wstring str = reinterpret_cast<wchar_t*>(Name);
+			std::wstring str = reinterpret_cast<wchar_t*>(Label);
 			if (!str.empty())
 			{
 				return Shrek2Utils::WS2String(str);
@@ -39,7 +39,7 @@ public:
 		}
 		catch (std::exception& ex)
 		{
-			Shrek2Logging::LogError("Shrek2Actor::GetName", ex.what());
+			Shrek2Logging::LogError("Shrek2Actor::GetLabel", ex.what());
 			return "";
 		}
 	}

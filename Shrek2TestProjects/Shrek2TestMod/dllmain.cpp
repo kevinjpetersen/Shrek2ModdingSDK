@@ -13,9 +13,31 @@ bool freecamOn = false;
 
 void OnTick()
 {
-	/*if (Game.Input.OnKeyPress(Shrek2Input::H)) {
-		Game.Variables.SetPlayerHealth(9999);
-	}*/
+	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
+		auto actor = Game.Actors.GetActor(Shrek2ActorTypes::Coin, "MagicCoin");
+
+		system("cls");
+
+		if (actor)
+		{
+			Game.LogToConsole("Found the Magic Coin!");
+		}
+		else {
+			Game.LogToConsole("No Magic Coin found.");
+		}
+		
+		/*auto actor = Game.Actors.GetCharacter(Shrek2CharacterTypes::Shrek);
+		std::cout << actor << std::endl;
+		system("cls");
+		auto actors = Game.Actors.GetActors(2582);
+
+		for (auto& p : actors)
+		{
+			std::cout << p << std::endl;
+			Game.LogToConsole(p->GetLabel());
+			Game.LogToConsole("------");
+		}*/
+	}
 
 	/*if (Game.Input.OnKeyPress(Shrek2Input::G)) {
 		freecamOn = !freecamOn;
@@ -54,15 +76,10 @@ void OnTick()
 
 void RenderUI()
 {
-	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("PogU"), Shrek2Position(50, 50), 0);
-	Shrek2UI::RenderTexture(Shrek2Textures::GetTexture("KEKW"), Shrek2Position(100, 50), 0);
 }
 
 void OnStart()
 {
-	Shrek2Textures::AddTexture("Images/pogu.png", "PogU");
-	Shrek2Textures::AddTexture("Images/kekw.png", "KEKW");
-
 	Shrek2UI::GameWindowSize = Game.GameWindowSize;
 	Shrek2UI::RenderUI = RenderUI;
 	Shrek2UI::Initialize();
@@ -73,7 +90,7 @@ DWORD WINAPI InitializationThread(HINSTANCE hModule)
 	Game.Events.OnStart = OnStart;
 	Game.Events.OnTick = OnTick;
 
-	Game.Initialize("Shrek 2 Twitch Emotes", false);
+	Game.Initialize("Shrek 2 Twitch Emotes", true);
 
 	FreeLibraryAndExitThread(hModule, 0);
 	return 0;
