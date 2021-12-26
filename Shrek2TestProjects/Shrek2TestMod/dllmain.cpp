@@ -14,17 +14,69 @@ bool freecamOn = false;
 void OnTick()
 {
 	if (Game.Input.OnKeyPress(Shrek2Input::G)) {
-		auto actor = Game.Actors.GetActor(Shrek2ActorTypes::Coin, "MagicCoin");
-
 		system("cls");
 
-		if (actor)
+		auto shreks = Game.Actors.GetActors(79);
+		auto looktargets = Game.Actors.GetActors(2582);
+
+		Game.LogToConsole("Shreks");
+		Game.LogToConsole("------");
+
+		if (shreks.empty() == false)
 		{
-			Game.LogToConsole("Found the Magic Coin!");
+			for (auto& p : shreks)
+			{
+				Game.LogToConsole(p->GetLabel());
+			}
 		}
-		else {
-			Game.LogToConsole("No Magic Coin found.");
+		Game.LogToConsole("");
+
+		Game.LogToConsole("KWLookTargets");
+		Game.LogToConsole("------");
+		for (auto& p : looktargets)
+		{
+			std::string label = p->GetLabel();
+			if (label.empty()) continue;
+			Game.LogToConsole(label);
 		}
+		Game.LogToConsole("");
+
+		/*auto actor1 = Game.Actors.GetActor(79, "CoopPlayer1");
+		auto actor2 = Game.Actors.GetActor(79, "CoopPlayer2");
+		auto actor3 = Game.Actors.GetActor(79, "CoopPlayer3");
+		auto actor4 = Game.Actors.GetActor(79, "CoopPlayer4");
+		auto actor5 = Game.Actors.GetActor(79, "CoopPlayer5");
+		auto actor6 = Game.Actors.GetActor(79, "CoopPlayer6");
+		auto actor7 = Game.Actors.GetActor(79, "CoopPlayer7");
+		auto actor8 = Game.Actors.GetActor(79, "CoopPlayer8");
+		auto spawn = Game.Actors.GetActor(2582, "Coop_Player_Spawn");
+		auto despawn1 = Game.Actors.GetActor(2582, "Coop_Player_DespawnPoint1");
+		auto despawn2 = Game.Actors.GetActor(2582, "Coop_Player_DespawnPoint2");
+		auto despawn3 = Game.Actors.GetActor(2582, "Coop_Player_DespawnPoint3");
+		auto despawn4 = Game.Actors.GetActor(2582, "Coop_Player_DespawnPoint4");
+		auto despawn5 = Game.Actors.GetActor(2582, "Coop_Player_DespawnPoint5");
+		auto despawn6 = Game.Actors.GetActor(2582, "Coop_Player_DespawnPoint6");
+		auto despawn7 = Game.Actors.GetActor(2582, "Coop_Player_DespawnPoint7");
+		auto despawn8 = Game.Actors.GetActor(2582, "Coop_Player_DespawnPoint8");
+
+
+		if (actor1) std::cout << actor1->GetLabel() << std::endl;
+		if (actor2) std::cout << actor2->GetLabel() << std::endl;
+		if (actor3) std::cout << actor3->GetLabel() << std::endl;
+		if (actor4) std::cout << actor4->GetLabel() << std::endl;
+		if (actor5) std::cout << actor5->GetLabel() << std::endl;
+		if (actor6) std::cout << actor6->GetLabel() << std::endl;
+		if (actor7) std::cout << actor7->GetLabel() << std::endl;
+		if (actor8) std::cout << actor8->GetLabel() << std::endl;
+		if (spawn) std::cout << spawn->GetLabel() << std::endl;
+		if (despawn1) std::cout << despawn1->GetLabel() << std::endl;
+		if (despawn2) std::cout << despawn2->GetLabel() << std::endl;
+		if (despawn3) std::cout << despawn3->GetLabel() << std::endl;
+		if (despawn4) std::cout << despawn4->GetLabel() << std::endl;
+		if (despawn5) std::cout << despawn5->GetLabel() << std::endl;
+		if (despawn6) std::cout << despawn6->GetLabel() << std::endl;
+		if (despawn7) std::cout << despawn7->GetLabel() << std::endl;
+		if (despawn8) std::cout << despawn8->GetLabel() << std::endl;*/
 		
 		/*auto actor = Game.Actors.GetCharacter(Shrek2CharacterTypes::Shrek);
 		std::cout << actor << std::endl;
