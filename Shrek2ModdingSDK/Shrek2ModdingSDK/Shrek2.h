@@ -41,6 +41,7 @@ public:
 	RECT GameWindowSize;
 	RECT GameClientSize;
 	bool PauseGameOnFocusLost = true;
+	bool IsGameFocused = false;
 
 	int OnTickTPS = 1000;
 	int OnCutLogTPS = 1000;

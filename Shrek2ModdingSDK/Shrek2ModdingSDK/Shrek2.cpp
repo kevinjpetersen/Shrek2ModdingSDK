@@ -122,7 +122,7 @@ void Shrek2::Initialize(std::string ModName, bool ShowConsoleByDefault = true)
 		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)CutLogThread, NULL, 0, NULL);
 		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ActorListThread, NULL, 0, NULL);
 
-		bool IsGameFocused = true;
+		IsGameFocused = true;
 
 		if (Events.OnStart) Events.OnStart();
 		while (IsModRunning) {
