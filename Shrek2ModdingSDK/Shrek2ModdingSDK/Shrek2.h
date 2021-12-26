@@ -16,6 +16,7 @@ public:
 	void Initialize(std::string ModName, bool ShowConsoleByDefault);
 	void ShowConsole();
 	void HideConsole();
+	void MinimizeConsole();
 	bool IsConsoleVisible();
 	void LogToConsole(std::string logMessage);
 	LONG GetGameWindowHeight();

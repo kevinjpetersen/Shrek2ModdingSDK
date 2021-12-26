@@ -283,6 +283,17 @@ task<void> Shrek2::Delay(unsigned int delayAmountInMs)
 	}
 }
 
+void Shrek2::MinimizeConsole()
+{
+	try {
+		::ShowWindow(::GetConsoleWindow(), SW_MINIMIZE);
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2::MinimizeConsole", ex.what());
+	}
+}
+
 void Shrek2::HideConsole()
 {
 	try {
