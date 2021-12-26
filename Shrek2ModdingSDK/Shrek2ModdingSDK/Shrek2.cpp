@@ -161,17 +161,17 @@ void Shrek2::Initialize(std::string ModName, bool ShowConsoleByDefault = true)
 					{
 						IsGameFocused = false;
 						if (!PauseGameOnFocusLost) {
-							LogToConsole("Game Paused -- Setting Pauser to None");
-							Functions.CC("set levelinfo pauser none");
+							LogToConsole("Game Paused -- Setting PauseDelay to 32140800");
+							Functions.CC("Set Engine.LevelInfo PauseDelay 32140800");
 						}
 					}
-					continue;
 				}
-				
-				if (!IsGameFocused) {
-					IsGameFocused = true;
-					if (!PauseGameOnFocusLost) {
-						LogToConsole("Game Unpaused");
+				else {
+					if (!IsGameFocused) {
+						IsGameFocused = true;
+						if (!PauseGameOnFocusLost) {
+							LogToConsole("Game Unpaused");
+						}
 					}
 				}
 
