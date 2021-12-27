@@ -161,8 +161,7 @@ void Shrek2::Initialize(std::string ModName, bool ShowConsoleByDefault = true)
 					{
 						IsGameFocused = false;
 						if (!PauseGameOnFocusLost) {
-							LogToConsole("Game Paused -- Setting PauseDelay to 32140800");
-							Functions.CC("Set Engine.LevelInfo PauseDelay 32140800");
+							LogToConsole("Game Paused");
 						}
 					}
 				}
@@ -170,7 +169,8 @@ void Shrek2::Initialize(std::string ModName, bool ShowConsoleByDefault = true)
 					if (!IsGameFocused) {
 						IsGameFocused = true;
 						if (!PauseGameOnFocusLost) {
-							LogToConsole("Game Unpaused");
+							LogToConsole("Game Unpaused -- Setting PauseDelay to 32140800");
+							Functions.CC("Set Engine.LevelInfo PauseDelay 32140800");
 						}
 					}
 				}
