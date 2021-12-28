@@ -12,6 +12,7 @@ public:
 
 
 	static Shrek2ActorCharacter* GetCharacter(Shrek2CharacterTypes characterType);
+	static Shrek2ActorCharacter* GetCharacter(Shrek2CharacterTypes characterType, std::string label);
 
 	static std::vector<Shrek2Actor*> GetActors(Shrek2ActorTypes actorType);
 	static std::vector<Shrek2Actor*> GetActors(int classId);
