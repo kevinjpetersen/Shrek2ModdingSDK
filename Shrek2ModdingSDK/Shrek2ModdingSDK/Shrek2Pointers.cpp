@@ -788,3 +788,19 @@ int Shrek2Pointers::GetCameraBehavior()
 {
     return Shrek2Memory::ReadByte("Engine.dll", 0x004DFFF8, 0x30, 0x34, 0x898, 0x1070);
 }
+
+std::string Shrek2Pointers::GetCurrentConsoleCommand()
+{
+    wchar_t* t = Shrek2Memory::ReadText("Engine.dll", 0x004E85F0, 0x18C, 0x254, 0x408);
+    if (t)
+    {
+        return Shrek2Utils::WS2String(t);
+    }
+    return "";
+}
+
+bool Shrek2Pointers::GetIsConsoleOpen()
+{
+    int v = Shrek2Memory::ReadInt("Engine.dll", 0x004E85F0, 0x18C, 0x254, 0x4D4);
+    return v == 0 ? false : true;
+}

@@ -25,5 +25,6 @@ public:
 	static int GameToCharacterType(int gameCharacterId);
 	static std::string GameToCharacterName(int gameCharacterId);
 	static bool ContainsInVector(std::vector<std::string> list, std::string value);
+	static void RemoveNullTerminators(std::string& str);
 };
 

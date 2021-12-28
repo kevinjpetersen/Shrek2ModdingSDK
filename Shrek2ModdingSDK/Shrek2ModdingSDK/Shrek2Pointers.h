@@ -330,5 +330,8 @@ public:
 	bool SetCameraBehavior_LockCameraMovementAndLook();
 	bool SetCameraBehavior_Normal();
 	int GetCameraBehavior();
+
+	std::string GetCurrentConsoleCommand();
+	bool GetIsConsoleOpen();
 };
 

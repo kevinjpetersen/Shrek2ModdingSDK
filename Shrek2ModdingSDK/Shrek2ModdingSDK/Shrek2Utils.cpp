@@ -303,3 +303,9 @@ bool Shrek2Utils::ContainsInVector(std::vector<std::string> list, std::string va
 	return (std::find(list.begin(), list.end(), value) != list.end());
 }
 
+
+void Shrek2Utils::RemoveNullTerminators(std::string& str)
+{
+	str.erase(std::find(str.begin(), str.end(), '\0'), str.end());
+}
+
