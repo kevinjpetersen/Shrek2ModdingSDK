@@ -108,6 +108,28 @@ Shrek2Actor* Shrek2ActorList::GetActor(int classId, std::string label)
 	}
 }
 
+Shrek2Actor* Shrek2ActorList::GetActor(std::string label)
+{
+	try {
+		auto actors = FindActors();
+		if (actors.empty()) return NULL;
+
+		for (Shrek2Actor* actor : actors)
+		{
+			if (Shrek2Utils::DoesEqual(actor->GetLabel(), label)) {
+				return actor;
+			}
+		}
+
+		return NULL;
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2ActorList::GetActor4", ex.what());
+		return NULL;
+	}
+}
+
 Shrek2Actor* Shrek2ActorList::GetActor(Shrek2ActorTypes actorType, std::string label)
 {
 	try {
