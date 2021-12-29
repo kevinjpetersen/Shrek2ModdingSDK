@@ -272,6 +272,21 @@ bool Shrek2Utils::Overlap(Shrek2Vector2 point, Shrek2Rect position, Shrek2Vector
 	}
 }
 
+bool Shrek2Utils::Overlap(Shrek2Vector2 point, Shrek2Position position, Shrek2Vector2 size)
+{
+	try {
+		if (point.X > position.X && point.X < position.X + size.X && point.Y > position.Y && point.Y < position.Y + size.Y)
+			return true;
+
+		return false;
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2Utils::Overlap", ex.what());
+		return false;
+	}
+}
+
 int Shrek2Utils::GameToCharacterType(int gameCharacterId)
 {
 	switch (gameCharacterId)
