@@ -256,6 +256,28 @@ Shrek2ActorCharacter* Shrek2ActorList::GetCharacter(Shrek2CharacterTypes charact
 	}
 }
 
+Shrek2ActorCharacter* Shrek2ActorList::GetCharacter(std::string label)
+{
+	try {
+		auto actors = FindActors();
+		if (actors.empty()) return NULL;
+
+		for (Shrek2Actor* actor : actors)
+		{
+			if (Shrek2Utils::DoesEqual(actor->GetLabel(), label)) {
+				return (Shrek2ActorCharacter*)actor;
+			}
+		}
+
+		return NULL;
+	}
+	catch (std::exception& ex)
+	{
+		Shrek2Logging::LogError("Shrek2ActorList::GetCharacter3", ex.what());
+		return NULL;
+	}
+}
+
 std::vector<Shrek2Actor*> Shrek2ActorList::GetActors(Shrek2ActorTypes actorType)
 {
 	try {

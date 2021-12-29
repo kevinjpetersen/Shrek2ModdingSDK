@@ -18,6 +18,7 @@ public:
 	union {
 		DEFINE_MEMBER_N(Shrek2ActorClassInfo*, ClassInfo, 0x24);
 		DEFINE_MEMBER_N(Shrek2Vector3, Position, 0x150);
+		DEFINE_MEMBER_N(Shrek2Vector3Int, Rotation, 0x15C);
 		DEFINE_MEMBER_N(WCHAR*, Label, 0x364);
 	};
 
